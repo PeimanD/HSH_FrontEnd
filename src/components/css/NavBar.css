@@ -1,0 +1,12 @@
+
+.navbar-brand {
+	font-size: 1.5rem;
+}
+img.top_logo {
+	width: 3em;
+    height: 3em;
+}
+.navbar-nav {
+	font-size: 1.5rem;
+	font-weight: bold;
+}
