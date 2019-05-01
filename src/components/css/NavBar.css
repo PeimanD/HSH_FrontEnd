@@ -12,7 +12,7 @@ img.top_logo {
 }
 
 .navbar-fixed-top {
-    position: static;
+    position: fixed;
     top: 0;
     right: 0;
     left: 0;

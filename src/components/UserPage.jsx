@@ -10,7 +10,7 @@ import { get } from "https";
 import Graph from './Graph'
 import ContentContainer from './ContentContainer';
 
-import "./css/secondNav.css";
+import "./css/container.css";
 
 class UserPage extends Component {
 
@@ -25,7 +25,7 @@ class UserPage extends Component {
 
       return (
          // add flex style
-         <div>
+         <div className="container-flex">
             {/* <h1>   A </h1> */}
             {/* <h1>User page</h1>
             {thermostatLinks()}

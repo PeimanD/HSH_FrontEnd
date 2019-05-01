@@ -6,16 +6,16 @@ import Stats from "./Stats";
 import ThermoCardContainer from "./ThermoCardContainer";
 
 class ContentContainer extends Component {
-    render() {
-        return (
-            <div>
-                <Switch>
-                    <Route exact path="/thermoCards" component={ThermoCardContainer} />
-                    <Route exact path="/stats" component={Stats} />
-                </Switch>
-            </div>
-        );
-    }
+  render() {
+    return (
+      <div>
+        <Switch>
+          <Route exact path="/thermoCards" component={ThermoCardContainer} />
+          <Route exact path="/stats" component={Stats} />
+        </Switch>
+      </div>
+    );
+  }
 }
 
 export default ContentContainer;

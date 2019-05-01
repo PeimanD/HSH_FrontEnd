@@ -9,6 +9,10 @@ body {
   height: 100%;
 }
 
+.margin-space {
+  padding-top: 98px;
+}
+
 @media (min-width: 992px) {
   body {
     /* padding-top: 56px; */

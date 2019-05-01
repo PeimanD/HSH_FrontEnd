@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
-import { BrowserRouter as Router, Route, Link, Switch } from "react-router-dom";
+import { Link } from "react-router-dom";
+
+import "./css/secondNav.css";
 
 class UserNavBar extends Component {
    render() {

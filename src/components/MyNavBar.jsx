@@ -24,19 +24,20 @@ class MyNavBar extends Component {
   }
 
   positionLogic = e => {
-    console.log(this.mainNavRef);
-    if(document.body.scrollTop == 0){
-      //Top of body
-      this.mainNavRef.current.style.position = "static";
-    } else {
-      this.mainNavRef.current.style.position = "fixed";
-    }
+    // if(document.body.scrollTop == 0){
+    //   //Top of body
+    //   console.log("static");
+    //   this.mainNavRef.current.style.position = "static";
+    // } else {
+    //   console.log("fixed");
+    //   this.mainNavRef.current.style.position = "fixed";
+    // }
   }
 
   render() {
     return (
       // **************** Navigation ****************
-      <nav ref={this.mainNavRef} className="navbar navbar-expand-lg navbar-dark bg-dark navbar-fixed-top">
+      <nav ref={this.mainNavRef} data-spy="affix" className="navbar navbar-expand-lg navbar-dark bg-dark navbar-fixed-top">
         <div className="container">
           <Link to="/" className="navbar-brand">
             <img src={top_logo} className="top_logo" />
