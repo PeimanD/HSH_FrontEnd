@@ -8,41 +8,39 @@ import { LineChart, Line, CartesianGrid, XAxis, YAxis, Tooltip } from 'recharts'
 import { get } from "https";
 
 import Graph from './Graph'
+import ContentContainer from './ContentContainer';
 
-
+import "./css/secondNav.css";
 
 class UserPage extends Component {
-   state = {
-      user : null
-   };
-
-   async componentDidMount () {
-      //set host as enviornment variable
-      let host = "http://localhost:3000";
-      const { data } = await axios.get(host+"/api/users/me");
-      //format data
-
-      this.setState({user: data.user});
-   };
-  // [{_id: 1, name: "tes"},{_id: 2, name: "name"},{_id: 3, name: "sdf"}]
 
    render() {
       //const graphData = [{name: 'Page A', uv: 400, pv: 2400, amt: 2400},{name: 'Page b', uv: 100, pv: 400, amt: 2400}];
-      let thermostatLinks = this.state.user.thermostats.map( thermostat => {
-         return(
-         <Link to={"/userpage/thermostat/"+thermostat._id} ></Link>
-         );
-      })
-     return (
-        <div>
-           <h1>   A </h1>
-           <h1>User page</h1>
-            {thermostatLinks}
+
+      // let thermostatLinks = this.state.user.thermostats.map( thermostat => {
+      //    return(
+      //    <Link to={"/userpage/thermostat/"+thermostat._id} ></Link>
+      //    );
+      // })
+
+      return (
+         // add flex style
+         <div>
+            {/* <h1>   A </h1> */}
+            {/* <h1>User page</h1>
+            {thermostatLinks()}
+
             <Route path="/userpage/thermostat/:id" component={Graph}></Route>
             
-           <UserNavBar />
-        </div>
-     );
+            <MainContainer />
+            <UserNavBar /> */}
+            <Router>
+               <UserNavBar />
+               <ContentContainer />
+            </Router>
+
+         </div>
+      );
    };
 }
 
