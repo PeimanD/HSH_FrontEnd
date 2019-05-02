@@ -1,8 +1,12 @@
 import React from "react";
 
+import Graph from './Graph';
+
 let Stats = props => {
     return (
-        <div>Hello</div>
+        // setting for changing the time frames of the graphs
+        // need another router
+        <Graph />
     );
 }
 

@@ -17,11 +17,11 @@ class Graph extends Component {
    async componentDidMount () {
       //set host as enviornment variable
       let host = "http://localhost:3000";
-      const { data } = await axios.get(host+"/api/thermostat/"+this.match.params.id);
+      //const { data } = await axios.get(host+"/api/thermostat/"+this.match.params.id);
       //format data
       
 
-      this.setState({graphData: data});
+      //this.setState({graphData: data});
        
    };
 

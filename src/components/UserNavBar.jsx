@@ -7,7 +7,7 @@ class UserNavBar extends Component {
    render() {
       return (
          <div className="secondNav-parent">
-            <div className="secondNav-child"><Link to="/thermoCard">User Home</Link></div>
+            <div className="secondNav-child"><Link to="/thermoCards">User Home</Link></div>
             <div className="secondNav-child"><Link to="/stats">Statistic</Link></div>
          </div>
       );

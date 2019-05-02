@@ -30,7 +30,7 @@ class ThermoCardContainer extends Component {
 
         return (
             <div>
-
+                {thermostatLinks()}
             </div>
         );
     }
