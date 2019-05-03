@@ -13,16 +13,19 @@ import UserPage from './UserPage';
 
 
 class App extends Component {
+
   render() {
     return (
       <Router>
         <div className="App">
           <MyNavBar />
-          <Switch>
-            <Route exact path="/" component={Index} />
-            <Route path="/login" component={Login} />
-            <Route path="/userpage" component={UserPage}/> 
-          </Switch>
+          <section className="margin-space">
+            <Switch>
+              <Route exact path="/" component={Index} />
+              <Route path="/login" component={Login} />
+              <Route path="/userpage" component={UserPage} />
+            </Switch>
+          </section>
         </div>
       </Router>
     );
@@ -32,8 +35,8 @@ class App extends Component {
 function Index() {
   return (
     <header>
-      <MainPageHeader/>
-      <MainPageBody/>
+      <MainPageHeader />
+      <MainPageBody />
     </header>
   );
 }
