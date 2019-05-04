@@ -5,7 +5,8 @@ import './App.css';
 import NavBar from './Navbar';
 import Home from '../home/Home'
 import Login from '../login/Login';
-import UserPage from '../user/UserPage';
+import Thermostat from "../user/thermostats/Thermostats";
+import Statistics from "../user/statistics/Stats";
 
 class App extends Component {
     render() {
@@ -17,7 +18,8 @@ class App extends Component {
                         <Switch>
                             <Route exact path="/" component={Home}/>
                             <Route path="/login" component={Login}/>
-                            <Route path="/userpage" component={UserPage}/>
+                            <Route path="/Statistics" component={Statistics}/>
+                            <Route path="/Thermostats" component={Thermostat}/>
                         </Switch>
                     </section>
                 </div>
