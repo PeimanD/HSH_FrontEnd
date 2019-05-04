@@ -1,15 +1,15 @@
 import React, { createRef, Component} from "react";
-import top_logo from './img/logo.png';
+import top_logo from '../../assets/images/logo.png';
 import { Link } from "react-router-dom";
 
-import "./css/vendor/bootstrap/css/bootstrap.min.css";
-import "./css/animate.css";
-import "./css/full-width-pics.css";
-import "./css/NavBar.css";
+import "../css/vendor/bootstrap/css/bootstrap.min.css";
+import "./animate.css";
+import "./full-width-pics.css";
+import "./NavBar.css";
 //import ReactDOM from 'react-dom';
 
-//const MyNavBar = () => {
-class MyNavBar extends Component {
+//const NavBar = () => {
+class NavBar extends Component {
   constructor (props) {
     super(props);
     this.mainNavRef = React.createRef();
@@ -74,4 +74,4 @@ class MyNavBar extends Component {
   }
 };
 
-export default MyNavBar;
+export default NavBar;

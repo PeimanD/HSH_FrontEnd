@@ -1,6 +1,6 @@
 import React from "react";
 
-import './css/thermo_card.css';
+import './thermo_card.css';
 
 let ThermoCard = props => {
     return (

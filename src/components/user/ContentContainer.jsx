@@ -2,10 +2,10 @@ import React, { Component } from 'react';
 
 import { BrowserRouter as Router, Route, Link, Switch } from "react-router-dom";
 
-import Stats from "./Stats";
-import ThermoCardContainer from "./ThermoCardContainer";
+import Stats from "./statistics/Stats";
+import ThermoCardContainer from "./thermostats/ThermoCardContainer";
 
-import "./css/content.css";
+import "./content.css";
 
 class ContentContainer extends Component {
   render() {

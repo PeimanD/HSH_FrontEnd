@@ -1,6 +1,6 @@
 import React from "react"
 
-function MainPageBody() {
+function Body() {
     return(
         <div>
             <h1>This is the Body of the website</h1>
@@ -9,4 +9,4 @@ function MainPageBody() {
     );
 }
 
-export default MainPageBody;
+export default Body;

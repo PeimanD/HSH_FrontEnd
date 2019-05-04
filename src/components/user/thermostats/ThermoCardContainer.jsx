@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios from "axios/index";
 import React, { Component } from 'react';
 import ThermoCard from "./ThermoCard.jsx";
 

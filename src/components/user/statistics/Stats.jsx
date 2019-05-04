@@ -3,7 +3,7 @@ import { Combobox } from 'react-widgets';
 import Graph from './Graph';
 
 import 'react-widgets/dist/css/react-widgets.css';
-import './css/graph.css';
+import './graph.css';
 
 class Stats extends Component {
     state = {

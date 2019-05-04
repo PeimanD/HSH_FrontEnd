@@ -1,12 +1,12 @@
 import React from "react"
-import logo from './img/logo.png'
-import building0 from './img/building0.jpg';
-import "./css/vendor/bootstrap/css/bootstrap.min.css";
-import "./css/animate.css";
-import "./css/full-width-pics.css";
-import "./css/Header.css";
+import logo from '../../assets/images/logo.png'
+import building0 from '../../assets/images/building0.jpg';
+import "../css/vendor/bootstrap/css/bootstrap.min.css";
+import "./animate.css";
+import "./full-width-pics.css";
+import "./Header.css";
 
-function MainPageHeader() {
+function Header() {
     return(
         <div>
             {/* **************** Header **************** */}
@@ -46,7 +46,7 @@ function MainPageHeader() {
     );
 }
 
-export default MainPageHeader;
+export default Header;
 
 
 

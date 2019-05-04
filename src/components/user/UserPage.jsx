@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios from "axios/index";
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Link, Switch } from "react-router-dom";
 
@@ -7,10 +7,10 @@ import UserNavBar from './UserNavBar.jsx';
 import { LineChart, Line, CartesianGrid, XAxis, YAxis, Tooltip } from 'recharts';
 import { get } from "https";
 
-import Graph from './Graph'
+import Graph from './statistics/Graph'
 import ContentContainer from './ContentContainer';
 
-import "./css/container.css";
+import "./container.css";
 
 class UserPage extends Component {
 

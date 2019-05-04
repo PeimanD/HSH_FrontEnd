@@ -182,7 +182,7 @@ footer.footer {
  header.masthead{
  	position:relative;
  	background-color:#343a40;
- 	background:url(../img/building0.jpg) no-repeat center center;
+ 	background:url(../../assets/images/building0.jpg) no-repeat center center;
  	background-size:cover;padding-top:8rem;
  	padding-bottom:8rem
  }
@@ -229,7 +229,7 @@ header.masthead h1{font-size:2rem}
 .call-to-action{
 	position:relative;
 	background-color:#343a40;
-	background:url(../img/building0.jpg) no-repeat center center;
+	background:url(../../assets/images/building0.jpg) no-repeat center center;
 	background-size:cover;padding-top:7rem;padding-bottom:7rem
 }
 

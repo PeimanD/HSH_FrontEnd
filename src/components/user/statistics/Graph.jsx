@@ -1,10 +1,10 @@
-import axios from "axios";
+import axios from "axios/index";
 import React, { Component } from 'react';
 
 import { LineChart, Line, CartesianGrid, XAxis, YAxis, Tooltip, ResponsiveContainer, Legend } from 'recharts';
 import { get } from "https";
 
-import './css/graph.css';
+import './graph.css';
 
 import { Labels } from './string.js';
 
