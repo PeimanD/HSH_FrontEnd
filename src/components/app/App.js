@@ -5,8 +5,9 @@ import './App.css';
 import NavBar from './Navbar';
 import Home from '../home/Home'
 import Login from '../login/Login';
-import Thermostat from "../user/thermostats/Thermostats";
+import Thermostats from "../user/thermostats/Thermostats";
 import Statistics from "../user/statistics/Stats";
+import Schedule from "../user/schedule/Schedule";
 
 class App extends Component {
     render() {
@@ -19,7 +20,8 @@ class App extends Component {
                             <Route exact path="/" component={Home}/>
                             <Route path="/login" component={Login}/>
                             <Route path="/Statistics" component={Statistics}/>
-                            <Route path="/Thermostats" component={Thermostat}/>
+                            <Route path="/Thermostats" component={Thermostats}/>
+                            <Route path="/Schedule" component={Schedule}/>
                         </Switch>
                     </section>
                 </div>
