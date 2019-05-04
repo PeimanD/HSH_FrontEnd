@@ -4,18 +4,14 @@ import {withStyles} from '@material-ui/core/styles/index';
 import Button from '@material-ui/core/Button/index';
 import {Link} from 'react-router-dom'
 import Grid from '@material-ui/core/Grid/index';
+import Avatar from '@material-ui/core/Avatar/index';
+
 import showcase1 from "../../assets/images/showcase-1.jpg";
 import showcase2 from "../../assets/images/bg-showcase-2.jpg";
 import showcase3 from "../../assets/images/showcase-3.jpg";
 import peiman from "../../assets/images/Peiman.jpg";
 import julie from "../../assets/images/julie.jpg";
 import kyle from "../../assets/images/Kyle.JPG";
-
-import Avatar from '@material-ui/core/Avatar/index';
-
-import logo from "../../assets/images/logo.png";
-import building from "../../assets/images/building0.jpg";
-import Paper from "@material-ui/core/Paper/index";
 
 function Body(props) {
     const {classes} = props;
