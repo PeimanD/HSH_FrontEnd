@@ -1,11 +1,10 @@
-import React from "react";
+import React, {Component} from "react";
 
-let ThermoCard = props => {
-    return (
-        <div>
-            Hello
-        </div>
-    );
+class Thermostat extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {};
+    };
 }
 
-export default ThermoCard;
+export default Thermostat;

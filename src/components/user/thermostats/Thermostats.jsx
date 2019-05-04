@@ -1,12 +1,15 @@
 import axios from "axios/index";
 import React, {Component} from 'react';
 import Grid from '@material-ui/core/Grid/index';
-import ThermoCard from "./ThermoCard.jsx";
+import Thermostat from "./Thermostat.jsx";
 import SideNav from '../SideNav'
 
-class ThermoCardContainer extends Component {
-    state = {
-        user: null
+class Thermostats extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            user: null
+        };
     };
 
     async componentWillMount() {
@@ -19,26 +22,15 @@ class ThermoCardContainer extends Component {
         return (
             <div>
                 <SideNav/>
-                <Grid container
-                      direction="column"
-                      justify="center"
-                      alignItems="center">
-                    <Grid item xs={6}>
-                        <ThermoCard/>
-                    </Grid>
-                    <Grid item xs={6}>
-                        <ThermoCard/>
-                    </Grid>
-                    <Grid item xs={6}>
-                        <ThermoCard/>
-                    </Grid>
-                    <Grid item xs={6}>
-                        <ThermoCard/>
-                    </Grid>
+                <Grid container>
+                    <Grid item xs={6}><Thermostat/></Grid>
+                    <Grid item xs={6}><Thermostat/></Grid>
+                    <Grid item xs={6}><Thermostat/></Grid>
+                    <Grid item xs={6}><Thermostat/></Grid>
                 </Grid>
             </div>
         );
     }
 }
 
-export default ThermoCardContainer;
+export default Thermostats;
