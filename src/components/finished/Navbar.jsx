@@ -14,9 +14,9 @@ function Navbar(props) {
         <div className={classes.root}>
             <AppBar position="relative" className={classes.appBar}>
                 <Toolbar className={classes.toolBar}>
-                    <span className={classes.container}>
-                        <img src={logo} alt="Logo" height={48}/>
-                        <span className={classes.font}>Home Sweet Home</span>
+                    <span className={classes.headerLeft}>
+                        <img className={classes.headerLeftLogo} src={logo} alt="Logo" height={48}/>
+                        <span className={classes.headerLeftFont}>Home Sweet Home</span>
                     </span>
                     <Grid container className={classes.root} spacing={16}>
                         <Grid item xs={12}>
@@ -47,14 +47,17 @@ const styles = {
     toolBar: {
         alignItems: 'center'
     },
-    container: {
+    headerLeft: {
         width: '100%',
         marginRight: 'auto',
         marginLeft: 'auto',
-        justifyContent: 'space-between'
+        justifyContent: 'space-between',
     },
-    font: {
-        fontSize: '150%'
+    headerLeftFont: {
+        fontSize: '150%',
+    },
+    headerLeftLogo: {
+        verticalAlign: 'middle'
     }
 };
 
