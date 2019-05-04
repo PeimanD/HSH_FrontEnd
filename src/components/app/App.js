@@ -1,10 +1,11 @@
 import React, {Component} from 'react';
-import {BrowserRouter as Router, Route, Link, Switch} from "react-router-dom";
+import {BrowserRouter as Router, Route, Switch} from "react-router-dom";
 
 import './App.css';
 
 import NavBar from '../finished/Navbar';
-import Header from '../home/Header.jsx';
+import Header from '../finished/Header';
+// import Header from '../home/Header.jsx';
 import Body from '../home/Body';
 import Login from '../login/Login';
 import UserPage from '../user/UserPage';
