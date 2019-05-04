@@ -6,6 +6,7 @@ import './App.css';
 import NavBar from '../finished/Navbar';
 import Header from '../finished/Header';
 import Body from '../finished/Body';
+import Footer from '../finished/Footer';
 import Login from '../login/Login';
 import UserPage from '../user/UserPage';
 
@@ -33,6 +34,7 @@ function Index() {
         <header>
             <Header/>
             <Body/>
+            <Footer/>
         </header>
     );
 }
