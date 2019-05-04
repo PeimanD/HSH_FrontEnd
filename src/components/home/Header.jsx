@@ -1,10 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {withStyles} from '@material-ui/core/styles';
-import Paper from '@material-ui/core/Paper';
+import {withStyles} from '@material-ui/core/styles/index';
+import Paper from '@material-ui/core/Paper/index';
 import building from '../../assets/images/building0.jpg';
 import logo from "../../assets/images/logo.png";
-import '../home/animate.css'
+import './animate.css'
 
 function Header(props) {
     const {classes} = props;
