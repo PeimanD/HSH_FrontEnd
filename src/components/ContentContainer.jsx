@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Route, Link, Switch } from "react-router-dom";
 
 import Stats from "./Stats";
 import ThermoCardContainer from "./ThermoCardContainer";
+import SliderContainer from "./SliderContainer";
 
 import "./css/content.css";
 
@@ -14,6 +15,7 @@ class ContentContainer extends Component {
         <Switch>
           <Route exact path="/thermoCards" component={ThermoCardContainer} />
           <Route exact path="/stats" component={Stats} />
+          <Route exact path="/settings" component={SliderContainer} />
         </Switch>
       </div>
     );

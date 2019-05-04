@@ -9,6 +9,7 @@ class UserNavBar extends Component {
          <div className="secondNav-parent">
             <div className="secondNav-child"><Link to="/thermoCards">User Home</Link></div>
             <div className="secondNav-child"><Link to="/stats">Statistic</Link></div>
+            <div className="secondNav-child"><Link to="/settings">Settings</Link></div>
          </div>
       );
    };
