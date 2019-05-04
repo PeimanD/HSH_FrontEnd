@@ -1,11 +1,9 @@
 import React, {Component} from 'react';
-import {BrowserRouter as Router, Route, Link, Switch} from "react-router-dom";
-
+import {BrowserRouter as Router, Route, Switch} from "react-router-dom";
 import './App.css';
 
-import NavBar from '../home/NavBar.jsx';
-import Header from '../home/Header.jsx';
-import Body from '../home/Body';
+import NavBar from './Navbar';
+import Home from '../home/Home'
 import Login from '../login/Login';
 import UserPage from '../user/UserPage';
 
@@ -17,7 +15,7 @@ class App extends Component {
                     <NavBar/>
                     <section className="margin-space">
                         <Switch>
-                            <Route exact path="/" component={Index}/>
+                            <Route exact path="/" component={Home}/>
                             <Route path="/login" component={Login}/>
                             <Route path="/userpage" component={UserPage}/>
                         </Switch>
@@ -26,15 +24,6 @@ class App extends Component {
             </Router>
         );
     }
-}
-
-function Index() {
-    return (
-        <header>
-            <Header/>
-            <Body/>
-        </header>
-    );
 }
 
 export default App;
