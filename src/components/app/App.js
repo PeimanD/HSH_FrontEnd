@@ -5,7 +5,7 @@ import './App.css';
 
 import NavBar from '../finished/Navbar';
 import Header from '../finished/Header';
-import Body from '../home/Body';
+import Body from '../finished/Body';
 import Login from '../login/Login';
 import UserPage from '../user/UserPage';
 
