@@ -1,5 +1,5 @@
-import React, {Component} from 'react';
-import {Combobox} from 'react-widgets';
+import React, { Component } from 'react';
+import { Combobox } from 'react-widgets';
 import Graph from './Graph';
 
 import 'react-widgets/dist/css/react-widgets.css';
@@ -12,31 +12,28 @@ class Stats extends Component {
     }
 
     changeDisplay = (type) => {
-        this.setState({graphType: type});
+        this.setState({ graphType: type });
     }
 
     render() {
         let graphOptions = ["Day", "Week", "Month", "Year"];
         return (
-            <div>
+            <div className="graph-outer-container">
+                {/* drop down menu component to pick between day, week, month, year */}
                 <SideNav/>
-                <div className="graph-outer-container">
-                    {/* drop down menu component to pick between day, week, month, year */}
-                    <div className="graph-combobox">
-                        <Combobox
-                            data={graphOptions}
-                            defaultValue={'Day'}
-                            onChange={value => {
-                                this.setState({graphType: value});
-                            }}
-                        />
-                    </div>
-                    <div className="graph-mid-container card">
-                        <Graph graphType={this.state.graphType}/>
-                    </div>
+                <div className="graph-combobox">
+                    <Combobox
+                        data={graphOptions}
+                        defaultValue={'Day'}
+                        onChange={value => {
+                            this.setState({ graphType: value });
+                        }}
+                    />
+                </div>
+                <div className="graph-mid-container card">
+                    <Graph graphType={this.state.graphType} />
                 </div>
             </div>
-
         );
     }
 }

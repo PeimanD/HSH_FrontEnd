@@ -1,4 +1,4 @@
-import axios from "axios/index";
+import axios from "axios";
 import React, { Component } from 'react';
 
 import { LineChart, Line, CartesianGrid, XAxis, YAxis, Tooltip, ResponsiveContainer, Legend } from 'recharts';

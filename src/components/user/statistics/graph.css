@@ -1,6 +1,7 @@
 .graph-outer-container {
-    width: 100%;
+    width: 80%;
     height: 100%;
+    margin: 0 18vw;
 }
 
 .graph-mid-container {
@@ -22,8 +23,8 @@
 }
 
 .graph-inner-container {
-    width: 90%;
-    height: 90%;
+    width: 70vw;
+    height: 35vw;
     margin: auto;
     padding: 20px;
     font-family: 'Open Sans';
