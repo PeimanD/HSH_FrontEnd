@@ -24,7 +24,13 @@ class SliderContainer extends Component {
     populateSliders = () => {
         let sliders = [];
         for (let i = 0; i < 24; ++i) {
-            sliders.push(<TemperatureSlider key={this.state.drawer + i} setTemp={20} />); //will need to get setTemp from database
+            let time = i + ":00";
+            sliders.push(
+                <div>
+                    <p>{time}</p>
+                    <TemperatureSlider key={this.state.drawer + i} setTemp={20} />
+                </div>
+            ); //will need to get setTemp from database
         }
         return (
             <div className="sliderContainer-midContainer">

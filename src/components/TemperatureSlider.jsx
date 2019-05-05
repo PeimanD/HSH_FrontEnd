@@ -10,7 +10,7 @@ const minTemp = 0;
 const styles = {
     root: {
         display: 'flex',
-        height: 300,
+        height: '75%',
     },
     slider: {
         padding: '0 25px',
@@ -24,11 +24,11 @@ const styles = {
     label: {
         padding: '10px 0 0 0',
         margin: 'auto',
-        height: '50px',
+        height: '20%',
     },
     overContainer: {
         paddingTop: '20px',
-        height: 370,
+        height: '100%',
     },
 };
 
@@ -62,7 +62,7 @@ class TemperatureSlider extends Component {
                         vertical
                     />
                 </div>
-                <Typography className={classes.label}>{this.state.setTemp}</Typography>
+                <Typography className={classes.label}>{this.state.setTemp + "\xB0C"}</Typography>
             </div>
         );
     };
