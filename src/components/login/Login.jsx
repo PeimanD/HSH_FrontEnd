@@ -64,7 +64,7 @@ function Login(props) {
                             }}
                         />
                         <div className={classes.loginButtonContainer}>
-                            <Button component={Link} to="/" variant="contained" size="medium"
+                            <Button component={Link} to="/Thermostats" variant="contained" size="medium"
                                     color="primary" className={classes.loginButton}>Login</Button>
                         </div>
                         <div className={classes.bottomContainer}>
