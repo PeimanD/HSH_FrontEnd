@@ -7,6 +7,7 @@ import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Typography from '@material-ui/core/Typography';
 import SideNav from "../SideNav";
+import SliderContainer from "./SliderContainer";
 
 function TabContainer({children, dir}) {
     return (
@@ -72,13 +73,13 @@ class Schedule extends React.Component {
                         index={this.state.value}
                         onChangeIndex={this.handleChangeIndex}
                     >
-                        <TabContainer dir={theme.direction}>M</TabContainer>
-                        <TabContainer dir={theme.direction}>Tues</TabContainer>
-                        <TabContainer dir={theme.direction}>Weds</TabContainer>
-                        <TabContainer dir={theme.direction}>Thurs</TabContainer>
-                        <TabContainer dir={theme.direction}>Fri</TabContainer>
-                        <TabContainer dir={theme.direction}>Sat</TabContainer>
-                        <TabContainer dir={theme.direction}>Sun</TabContainer>
+                        <TabContainer dir={theme.direction}><SliderContainer/></TabContainer>
+                        <TabContainer dir={theme.direction}><SliderContainer/></TabContainer>
+                        <TabContainer dir={theme.direction}><SliderContainer/></TabContainer>
+                        <TabContainer dir={theme.direction}><SliderContainer/></TabContainer>
+                        <TabContainer dir={theme.direction}><SliderContainer/></TabContainer>
+                        <TabContainer dir={theme.direction}><SliderContainer/></TabContainer>
+                        <TabContainer dir={theme.direction}><SliderContainer/></TabContainer>
                     </SwipeableViews>
                 </div>
             </div>
