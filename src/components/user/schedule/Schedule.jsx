@@ -1,33 +1,95 @@
-import React, {Component} from "react";
+import React from 'react';
 import PropTypes from 'prop-types';
 import {withStyles} from '@material-ui/core/styles';
+import SwipeableViews from 'react-swipeable-views';
+import AppBar from '@material-ui/core/AppBar';
+import Tabs from '@material-ui/core/Tabs';
+import Tab from '@material-ui/core/Tab';
+import Typography from '@material-ui/core/Typography';
 import SideNav from "../SideNav";
 
-class Schedule extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
+function TabContainer({children, dir}) {
+    return (
+        <Typography component="div" dir={dir} style={{padding: 8 * 3}}>
+            {children}
+        </Typography>
+    );
+}
 
-        };
+TabContainer.propTypes = {
+    children: PropTypes.node.isRequired,
+    dir: PropTypes.string.isRequired,
+};
+
+const styles = theme => ({
+    root: {
+        backgroundColor: theme.palette.background.paper,
+        width: '60vw',
+        marginLeft: '27vw',
+    },
+});
+
+class Schedule extends React.Component {
+    state = {
+        value: 0,
+    };
+
+    handleChange = (event, value) => {
+        this.setState({value});
+    };
+
+    handleChangeIndex = index => {
+        this.setState({value: index});
     };
 
     render() {
-        const {classes} = this.props;
+        const {classes, theme} = this.props;
+
         return (
             <div>
                 <SideNav/>
-
+                <div className={classes.root}>
+                    <AppBar position="static" color="default">
+                        <Tabs
+                            value={this.state.value}
+                            onChange={this.handleChange}
+                            indicatorColor="primary"
+                            textColor="primary"
+                            variant="scrollable"
+                            scrollButtons={'auto'}
+                        >
+                            <Tab label="Monday"/>
+                            <Tab label="Tuesday"/>
+                            <Tab label="Wednesday"/>
+                            <Tab label="Thursday"/>
+                            <Tab label="Friday"/>
+                            <Tab label="Saturday"/>
+                            <Tab label="Sunday"/>
+                        </Tabs>
+                    </AppBar>
+                    <SwipeableViews
+                        axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
+                        index={this.state.value}
+                        onChangeIndex={this.handleChangeIndex}
+                    >
+                        <TabContainer dir={theme.direction}>M</TabContainer>
+                        <TabContainer dir={theme.direction}>Tues</TabContainer>
+                        <TabContainer dir={theme.direction}>Weds</TabContainer>
+                        <TabContainer dir={theme.direction}>Thurs</TabContainer>
+                        <TabContainer dir={theme.direction}>Fri</TabContainer>
+                        <TabContainer dir={theme.direction}>Sat</TabContainer>
+                        <TabContainer dir={theme.direction}>Sun</TabContainer>
+                    </SwipeableViews>
+                </div>
             </div>
+
         );
     }
 }
 
-const styles = {
-
-};
-
 Schedule.propTypes = {
     classes: PropTypes.object.isRequired,
+    theme: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(Schedule);
+export default withStyles(styles, {withTheme: true})(Schedule);

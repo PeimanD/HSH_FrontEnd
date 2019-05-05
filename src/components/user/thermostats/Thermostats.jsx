@@ -80,8 +80,10 @@ const styles = {
     },
     paper: {
         height: '50%',
-        width: '100%',
+        width: '80%',
         marginTop: '10%',
+        marginRight: '10%',
+        marginLeft: '10%',
         borderRadius: '15px',
         textAlign: 'center',
     },

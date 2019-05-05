@@ -5,8 +5,7 @@ import Drawer from '@material-ui/core/Drawer';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
-import {Link, Route, Switch} from "react-router-dom";
-import Thermostat from './thermostats/Thermostats'
+import {Link} from "react-router-dom";
 import Statistics from './statistics/Stats'
 
 function SideNav(props) {
@@ -29,15 +28,11 @@ function SideNav(props) {
                     ))}
                 </List>
             </Drawer>
-            {/*<Switch>*/}
-            {/*    <Route path="/SideNav" component={Thermostat}/>*/}
-            {/*    <Route path="/Statistics" component={Statistics}/>*/}
-            {/*</Switch>*/}
         </div>
     );
 }
 
-const drawerWidth = 240;
+const drawerWidth = '15vw';
 
 const styles = theme => ({
     root: {
