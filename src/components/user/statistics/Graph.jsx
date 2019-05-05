@@ -16,6 +16,7 @@ class Graph extends Component {
    state = {
       graphType: "Day",
       graphInterval: "preserveEnd",
+      currentThermostat: "Thermostat #1",
       graphData: [
          {
             name: '00:00', sTemp: 21, cTemp: 18, oTemp: 2,
@@ -45,14 +46,15 @@ class Graph extends Component {
          tempData.oTemp = tempData.sTemp - 12 - this.getRandomInt(2);
          data[i] = tempData;
       }
-      this.setState({graphData: data});
+      this.setState({graphData: data, currentThermostat: this.props.currentThermostat});
    }
 
    getRandomInt = max => {
       return Math.floor(Math.random() * Math.floor(max));
    }
 
-   updateGraph = (type) => {
+   updateGraph = (type, thermostat) => {
+      // use the thermostat we got to get data from db
       switch (type) {
          case "Day":
             //axio get Day data
@@ -85,6 +87,9 @@ class Graph extends Component {
    }
 
    componentDidUpdate(prevProps) {
+      if (prevProps.currentThermostat !== this.props.currentThermostat) {
+         this.updateGraph(this.props.graphType, this.props.currentThermostat); //need to add in the type of thermostats
+      }
       if (prevProps.graphType !== this.props.graphType) {
          this.updateGraph(this.props.graphType);
       }
