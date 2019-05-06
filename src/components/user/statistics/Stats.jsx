@@ -13,12 +13,16 @@ class Stats extends Component {
         currentThermostat: 'Thermostat #1',
     }
 
+    componentDidMount() {
+        this.setState({ currentThermostat: this.props.currentThermostat} );
+    }
+
     changeDisplay = (type) => {
         this.setState({ graphType: type });
     }
 
     changeThermostat = (thermostat) => {
-        this.setState({currentThermostat: thermostat});
+        this.setState({ currentThermostat: thermostat });
     }
 
     render() {
@@ -56,6 +60,10 @@ class Stats extends Component {
             </div>
         );
     }
+}
+
+Stats.defaultProps = {
+    currentThermostat: 'Thermostat #1'
 }
 
 export default Stats;
