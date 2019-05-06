@@ -17,6 +17,10 @@ class Stats extends Component {
         this.setState({ graphType: type });
     }
 
+    changeThermostat = (thermostat) => {
+        this.setState({currentThermostat: thermostat});
+    }
+
     render() {
         let graphOptions = ["Day", "Week", "Month", "Year"];
         let thermostats = ["Thermostat #1", "Thermostat #2", "Thermostat #3", "Thermostat #4"];
