@@ -9,9 +9,11 @@ import Typography from '@material-ui/core/Typography';
 import SideNav from "../SideNav";
 import SliderContainer from "./SliderContainer";
 
-import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
+
+import RadioGroup from '@material-ui/core/RadioGroup';
+import Radio from '@material-ui/core/Radio';
 
 function TabContainer({ children, dir }) {
     return (
@@ -33,7 +35,6 @@ const styles = theme => ({
         marginLeft: '27vw',
     },
     colorSwitchBase: {
-        // color: 'orange',
         '&$colorChecked': {
             color: 'orange',
             '& + $colorBar': {
@@ -52,7 +53,8 @@ const styles = theme => ({
 class Schedule extends React.Component {
     state = {
         value: 0,
-        weekState: true,
+        mode: 'Schedule',
+        status: true,
     };
 
     handleChange = (event, value) => {
@@ -65,7 +67,11 @@ class Schedule extends React.Component {
 
     handleStatusChange = () => event => {
         // handle the big on/off state change
-        this.setState({ weekState: event.target.checked });
+        this.setState({ status: event.target.checked });
+    }
+
+    handleModeChange = event => {
+        this.setState({ mode: event.target.value });
     }
 
     render() {
@@ -88,7 +94,37 @@ class Schedule extends React.Component {
                             />
                         }
                         label="Status"
-                        labelPlacement='Start'
+                        labelPlacement='start'
+                    />
+                    <FormControlLabel
+                        control={
+                            <RadioGroup
+                                aria-label="Mode"
+                                name="mode"
+                                value={this.state.mode}
+                                onChange={this.handleModeChange}
+                                row
+                            >
+                                <FormControlLabel
+                                    value="Manual"
+                                    control={<Radio color="primary" />}
+                                    label="Manual"
+                                    labelPlacement="start"
+                                />
+                                <FormControlLabel
+                                    value="Schedule"
+                                    control={<Radio color="primary" />}
+                                    label="Schedule"
+                                    labelPlacement="start"
+                                />
+                                <FormControlLabel
+                                    value="Smart"
+                                    control={<Radio color="primary" />}
+                                    label="Smart"
+                                    labelPlacement="start"
+                                />
+                            </RadioGroup>
+                        }
                     />
                     <AppBar position="static" color="default">
                         <Tabs

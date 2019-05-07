@@ -26,7 +26,7 @@ class SliderContainer extends Component {
         for (let i = 0; i < 24; ++i) {
             let time = i + ":00";
             sliders.push(
-                <div>
+                <div key={"div-" + this.state.drawer + i}>
                     <p>{time}</p>
                     <TemperatureSlider key={this.state.drawer + i} setTemp={20} />
                 </div>
