@@ -17,6 +17,7 @@ class Graph extends Component {
       graphType: "Day",
       graphInterval: "preserveEnd",
       currentThermostat: "Thermostat #1",
+      granularity: hours,
       graphData: [
          {
             name: '00:00', sTemp: 21, cTemp: 18, oTemp: 2,
@@ -46,7 +47,7 @@ class Graph extends Component {
          tempData.oTemp = tempData.sTemp - 12 - this.getRandomInt(2);
          data[i] = tempData;
       }
-      this.setState({graphData: data, currentThermostat: this.props.currentThermostat});
+      this.setState({graphData: data, currentThermostat: this.props.currentThermostat, granularity: unit});
    }
 
    getRandomInt = max => {
@@ -101,7 +102,7 @@ class Graph extends Component {
             <ResponsiveContainer>
                <LineChart data={this.state.graphData}>
                   <CartesianGrid stroke="#ccc" strokeDasharray="5 5" />
-                  <XAxis dataKey="name" interval={this.state.graphInterval} />
+                  <XAxis ticks={this.state.granularity} dataKey="name" interval={this.state.graphInterval}/>
                   <YAxis label={{ value: 'Temperature (\xB0C)', angle: -90, position: 'center', dx: -15}} />
                   <Tooltip />
                   <Legend />
