@@ -10,11 +10,12 @@ import SideNav from "../SideNav";
 class Stats extends Component {
     state = {
         graphType: 'Day',
-        currentThermostat: 'Thermostat #1',
+        currentThermostat: "Thermostat #1",
     }
 
     componentDidMount() {
-        this.setState({ currentThermostat: this.props.currentThermostat} );
+        // this.setState({ currentThermostat: this.props.currentThermostat} );
+        // this.setState({ currentThermostat: this.props.currentThermostat} );
     }
 
     changeDisplay = (type) => {
@@ -26,6 +27,7 @@ class Stats extends Component {
     }
 
     render() {
+        // let {match: {params}} = this.props;
         let graphOptions = ["Day", "Week", "Month", "Year"];
         let thermostats = ["Thermostat #1", "Thermostat #2", "Thermostat #3", "Thermostat #4"];
         return (
@@ -46,7 +48,7 @@ class Stats extends Component {
                         <Grid item xs={6}>
                             <Combobox
                                 data={thermostats}
-                                defaultValue={this.state.currentThermostat}
+                                defaultValue={thermostats[0]}
                                 onChange={value => {
                                     this.setState({ graphType: this.state.graphType, currentThermostat: value });
                                 }}
@@ -55,7 +57,8 @@ class Stats extends Component {
                     </Grid>
                 </div>
                 <div className="graph-mid-container card">
-                    <Graph graphType={this.state.graphType} currentThermostat={this.state.currentThermostat} />
+                    {/* <Graph graphType={this.state.graphType} currentThermostat={this.state.currentThermostat} /> */}
+                    <Graph graphType={this.state.graphType} currentThermostat={thermostats[this.props.match.params.graphNum]} />
                 </div>
             </div>
         );
@@ -63,7 +66,11 @@ class Stats extends Component {
 }
 
 Stats.defaultProps = {
-    currentThermostat: 'Thermostat #1'
+    match : {
+        params : {
+            graphNum : 0
+        }
+    }
 }
 
 export default Stats;
