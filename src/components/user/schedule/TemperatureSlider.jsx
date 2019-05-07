@@ -21,12 +21,11 @@ const styles = {
         backgroundColor: 'green',
     },
     label: {
-        padding: '10px 0 0 0',
         margin: 'auto',
-        height: '20%',
+        height: '20px',
     },
     overContainer: {
-        height: '25vw',
+        height: '28vw',
     },
 };
 
@@ -37,12 +36,16 @@ class TemperatureSlider extends Component {
     }
 
     componentDidMount() {
-        this.setState({index: this.props.key, setTemp: this.props.setTemp});
+        this.setState({ index: this.props.key, setTemp: this.props.setTemp });
     }
 
     handleChange = (event, value) => {
         this.setState({ setTemp: value });
     };
+
+    resetZero = () => {
+        this.setState({ setTemp: 0 });
+    }
 
     render() {
         const { classes } = this.props;
@@ -60,7 +63,12 @@ class TemperatureSlider extends Component {
                         vertical
                     />
                 </div>
-                <Typography className={classes.label}>{this.state.setTemp + "\xB0C"}</Typography>
+                <div className={classes.label}>
+                    <p>{this.state.setTemp + "\xB0C"}</p>
+                    <button size="small" onClick={this.resetZero}>
+                        Zero
+                    </button>
+                </div>
             </div>
         );
     };
