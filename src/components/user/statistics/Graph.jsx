@@ -39,6 +39,8 @@ class Graph extends Component {
 
    populateData = (amount, unit) => {
       let data = [];
+      // will need to replace the for loop with axios.get request to get data from mongodb
+      // use this,props.currentThermostat to find out which thermostat we want
       for (let i = 0; i < amount; ++i) {
          let tempData = {name: '', sTemp: 0, cTemp: 0, oTemp: 0};
          tempData.name = unit[i];
@@ -47,6 +49,8 @@ class Graph extends Component {
          tempData.oTemp = tempData.sTemp - 12 - this.getRandomInt(2);
          data[i] = tempData;
       }
+
+      // update state with the data, 
       this.setState({graphData: data, currentThermostat: this.props.currentThermostat, granularity: unit});
    }
 
@@ -54,8 +58,7 @@ class Graph extends Component {
       return Math.floor(Math.random() * Math.floor(max));
    }
 
-   updateGraph = (type, thermostat) => {
-      // use the thermostat we got to get data from db
+   updateGraph = (type) => {
       switch (type) {
          case "Day":
             //axio get Day data
@@ -89,7 +92,7 @@ class Graph extends Component {
 
    componentDidUpdate(prevProps) {
       if (prevProps.currentThermostat !== this.props.currentThermostat) {
-         this.updateGraph(this.props.graphType, this.props.currentThermostat); //need to add in the type of thermostats
+         this.updateGraph(this.props.graphType, this.props.currentThermostat);
       }
       if (prevProps.graphType !== this.props.graphType) {
          this.updateGraph(this.props.graphType);
