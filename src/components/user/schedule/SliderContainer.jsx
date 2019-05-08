@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import Slider from '@material-ui/lab/Slider';
 import Typography from '@material-ui/core/Typography';
 import TemperatureSlider from './TemperatureSlider';
@@ -7,8 +7,8 @@ import './sliderContainer.css';
 class SliderContainer extends Component {
     state = {
         weekDay: 'Mon',
-        setTemp: [20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20],
-    }
+        setTemp: this.props.temperatures
+    };
 
     componentDidMount() {
         this.setTemperatures();
@@ -17,8 +17,8 @@ class SliderContainer extends Component {
     setTemperatures = () => {
         //axio get the temperature schedule
         //set the weekly temperature
-        this.setState({ weekDay: this.props.weekDay })
-    }
+        this.setState({weekDay: this.props.weekDay})
+    };
 
     populateSliders = () => {
         let sliders = [];
@@ -27,7 +27,11 @@ class SliderContainer extends Component {
             sliders.push(
                 <div key={"div-" + this.state.weekDay + i}>
                     <p>{time}</p>
-                    <TemperatureSlider key={this.state.weekDay + i} setTemp={this.state.setTemp[i]} /> {/*20 for now, but will need to be axio get from db*/}
+                    <TemperatureSlider key={this.state.weekDay + i}
+                                       setTemp={this.state.setTemp[i]}
+                                       onUpdateTemperature={this.props.onUpdateTemperature}
+                                       temperatureIndex={this.props.temperatureIndex}
+                                       sliderIndex={i}/> {/*20 for now, but will need to be axio get from db*/}
                 </div>
             ); //will need to get setTemp from database
         }
@@ -45,16 +49,15 @@ class SliderContainer extends Component {
         for (let i = 0; i < 24; ++i) {
             temp[i] = event.target.value;
         }
-        this.setState({ setTemp: temp });
-    }
+        this.setState({setTemp: temp});
+    };
 
     render() {
-        const { classes } = this.props;
+        const {classes} = this.props;
         let sliderList = this.populateSliders();
 
         return (
             <div className="sliderContainer-outerContainer">
-                
                 {sliderList}
             </div>
         )

@@ -1,8 +1,8 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import Slider from '@material-ui/lab/Slider';
 import Typography from '@material-ui/core/Typography';
 
-import { withStyles } from '@material-ui/core/styles';
+import {withStyles} from '@material-ui/core/styles';
 
 const maxTemp = 30;
 const minTemp = 0;
@@ -33,28 +33,36 @@ class TemperatureSlider extends Component {
     state = {
         key: '',
         setTemp: 0,
-    }
+        temperatureIndex: this.props.temperatureIndex,
+        sliderIndex: this.props.sliderIndex
+    };
 
     componentDidMount() {
-        this.setState({ index: this.props.key, setTemp: this.props.setTemp });
+        this.setState({index: this.props.key, setTemp: this.props.setTemp});
     }
 
     handleChange = (event, value) => {
-        this.setState({ setTemp: value });
+        this.setState({setTemp: value});
+        this.props.onUpdateTemperature(this.state.temperatureIndex, this.state.sliderIndex, value);
+        // console.log(this.state.temperatureIndex, this.state.index)
     };
 
     resetZero = () => {
-        this.setState({ setTemp: 0 });
-    }
+        this.setState({setTemp: 0});
+    };
+
+    onChangeTemperature = (index, val) => {
+        this.props.onUpdateTemperature(index, val);
+    };
 
     render() {
-        const { classes } = this.props;
+        const {classes} = this.props;
 
         return (
             <div className={classes.overContainer}>
                 <div className={classes.root}>
                     <Slider
-                        classes={{ container: classes.slider, track: classes.track, thumb: classes.thumb }}
+                        classes={{container: classes.slider, track: classes.track, thumb: classes.thumb}}
                         max={maxTemp}
                         min={minTemp}
                         value={this.state.setTemp}

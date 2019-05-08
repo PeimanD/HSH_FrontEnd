@@ -144,7 +144,6 @@ const styles = theme => ({
     },
     bottomContainer: {
         textAlign: 'center',
-        // width: '90%',
         marginTop: '60px',
     },
     bottomLinks: {

@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
+import {withStyles} from '@material-ui/core/styles';
 import SwipeableViews from 'react-swipeable-views';
 import AppBar from '@material-ui/core/AppBar';
 import Tabs from '@material-ui/core/Tabs';
@@ -16,166 +16,246 @@ import RadioGroup from '@material-ui/core/RadioGroup';
 import Radio from '@material-ui/core/Radio';
 
 import Grid from '@material-ui/core/Grid';
+import {Link} from "react-router-dom";
+import Button from "@material-ui/core/Button";
 
-function TabContainer({ children, dir }) {
-  return (
-    <Typography component="div" dir={dir} style={{ padding: 8 * 3 }}>
-      {children}
-    </Typography>
-  );
+function TabContainer({children, dir}) {
+    return (
+        <Typography component="div" dir={dir} style={{padding: 8 * 3}}>
+            {children}
+        </Typography>
+    );
 }
 
 TabContainer.propTypes = {
-  children: PropTypes.node.isRequired,
-  dir: PropTypes.string.isRequired,
+    children: PropTypes.node.isRequired,
+    dir: PropTypes.string.isRequired,
 };
 
 const styles = theme => ({
-  root: {
-    backgroundColor: theme.palette.background.paper,
-    width: '60vw',
-    marginLeft: '27vw',
-  },
-  colorSwitchBase: {
-    '&$colorChecked': {
-      color: 'orange',
-      '& + $colorBar': {
-        backgroundColor: 'orange',
-      },
+    root: {
+        backgroundColor: theme.palette.background.paper,
+        width: '60vw',
+        marginLeft: '27vw',
     },
-  },
-  colorChecked: {
-    color: 'orange',
-  },
-  colorBar: {
-    color: 'orange',
-  },
+    colorSwitchBase: {
+        '&$colorChecked': {
+            color: 'orange',
+            '& + $colorBar': {
+                backgroundColor: 'orange',
+            },
+        },
+    },
+    colorChecked: {
+        color: 'orange',
+    },
+    colorBar: {
+        color: 'orange',
+    },
+    loginButton: {
+        textAlign: 'center',
+        background: 'linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)',
+        borderRadius: '15px',
+        border: 0,
+        color: 'white',
+        height: 48,
+        padding: '0 30px',
+        boxShadow: '0 3px 5px 2px rgba(255, 105, 135, .3)',
+    },
 });
 
 class Schedule extends React.Component {
-  state = {
-    value: 0,
-    mode: 'Schedule',
-    status: true,
-  };
+    state = {
+        value: 0,
+        mode: 'Schedule',
+        status: true,
+        temperatures: [
+            Array(24).fill(20),
+            Array(24).fill(20),
+            Array(24).fill(20),
+            Array(24).fill(20),
+            Array(24).fill(20),
+            Array(24).fill(20),
+            Array(24).fill(20)
+        ]
+    };
 
-  handleChange = (event, value) => {
-    this.setState({ value });
-  };
+    handleChange = (event, value) => {
+        this.setState({value});
+    };
 
-  handleChangeIndex = index => {
-    this.setState({ value: index });
-  };
+    handleChangeIndex = index => {
+        this.setState({value: index});
+    };
 
-  handleStatusChange = () => event => {
-    // handle the big on/off state change
-    this.setState({ status: event.target.checked });
-  }
+    handleStatusChange = () => event => {
+        // handle the big on/off state change
+        this.setState({status: event.target.checked});
+    };
 
-  handleModeChange = event => {
-    this.setState({ mode: event.target.value });
-  }
+    handleModeChange = event => {
+        this.setState({mode: event.target.value});
+    };
 
-  render() {
-    const { classes, theme } = this.props;
+    onUpdateTemperature = (tempIndex, sliderIndex, val) => {
+        if (!isNaN(tempIndex)) {
+            let temp = this.state.temperatures;
+            this.state.temperatures[tempIndex][sliderIndex] = val;
+            this.setState({temperatures: temp});
+        }
+    };
 
-    return (
-      <div>
-        <SideNav />
-        <div className={classes.root}>
-          <Grid container justify="space-between" spacing={24}>
-            <Grid style={{display: "flex"}} justify="flex-start" item xs={12} sm={6} >
-              <FormControlLabel
-                control={
-                  <Switch
-                    checked={this.state.status}
-                    onChange={this.handleStatusChange()}
-                    classes={{
-                      switchBase: classes.colorSwitchBase,
-                      checked: classes.colorChecked,
-                      bar: classes.colorBar,
-                    }}
-                  />
-                }
-                label="Status"
-                labelPlacement='start'
-              />
-            </Grid>
-            <Grid style={{display: "flex"}} justify="flex-end" item xs={12} sm={6}>
-              <FormControlLabel
-                control={
-                  <RadioGroup
-                    aria-label="Mode"
-                    name="mode"
-                    value={this.state.mode}
-                    onChange={this.handleModeChange}
-                    row
-                  >
-                    <FormControlLabel
-                      value="Manual"
-                      control={<Radio color="primary" />}
-                      label="Manual"
-                      labelPlacement="start"
-                    />
-                    <FormControlLabel
-                      value="Schedule"
-                      control={<Radio color="primary" />}
-                      label="Schedule"
-                      labelPlacement="start"
-                    />
-                    <FormControlLabel
-                      value="Smart"
-                      control={<Radio color="primary" />}
-                      label="Smart"
-                      labelPlacement="start"
-                    />
-                  </RadioGroup>
-                }
-              />
-            </Grid>
-          </Grid>
-          <AppBar position="static" color="default">
-            <Tabs
-              value={this.state.value}
-              onChange={this.handleChange}
-              indicatorColor="primary"
-              textColor="primary"
-              variant="scrollable"
-              scrollButtons={'auto'}
-            >
-              <Tab label="Monday" />
-              <Tab label="Tuesday" />
-              <Tab label="Wednesday" />
-              <Tab label="Thursday" />
-              <Tab label="Friday" />
-              <Tab label="Saturday" />
-              <Tab label="Sunday" />
-            </Tabs>
-          </AppBar>
-          <SwipeableViews
-            axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
-            index={this.state.value}
-            onChangeIndex={this.handleChangeIndex}
-          >
-            <TabContainer dir={theme.direction}><SliderContainer weekDay={'Mon'} /></TabContainer>
-            <TabContainer dir={theme.direction}><SliderContainer weekDay={'Tue'} /></TabContainer>
-            <TabContainer dir={theme.direction}><SliderContainer weekDay={'Wed'} /></TabContainer>
-            <TabContainer dir={theme.direction}><SliderContainer weekDay={'Thu'} /></TabContainer>
-            <TabContainer dir={theme.direction}><SliderContainer weekDay={'Fri'} /></TabContainer>
-            <TabContainer dir={theme.direction}><SliderContainer weekDay={'Sat'} /></TabContainer>
-            <TabContainer dir={theme.direction}><SliderContainer weekDay={'Sun'} /></TabContainer>
-          </SwipeableViews>
+    onClickSave = () => {
+        console.log(this.state.temperatures);
+    };
 
-        </div>
-      </div>
+    render() {
+        const {classes, theme} = this.props;
 
-    );
-  }
+        return (
+            <div>
+                <SideNav/>
+                <div className={classes.root}>
+                    <Grid container justify="space-between" spacing={24}>
+                        <Grid style={{display: "flex"}} justify="flex-start" item xs={12} sm={6}>
+                            <FormControlLabel
+                                control={
+                                    <Switch
+                                        checked={this.state.status}
+                                        onChange={this.handleStatusChange()}
+                                        classes={{
+                                            switchBase: classes.colorSwitchBase,
+                                            checked: classes.colorChecked,
+                                            bar: classes.colorBar,
+                                        }}
+                                    />
+                                }
+                                label="Status"
+                                labelPlacement='start'
+                            />
+                        </Grid>
+                        <Grid style={{display: "flex"}} justify="flex-end" item xs={12} sm={6}>
+                            <FormControlLabel
+                                control={
+                                    <RadioGroup
+                                        aria-label="Mode"
+                                        name="mode"
+                                        value={this.state.mode}
+                                        onChange={this.handleModeChange}
+                                        row
+                                    >
+                                        <FormControlLabel
+                                            value="Manual"
+                                            control={<Radio color="primary"/>}
+                                            label="Manual"
+                                            labelPlacement="start"
+                                        />
+                                        <FormControlLabel
+                                            value="Schedule"
+                                            control={<Radio color="primary"/>}
+                                            label="Schedule"
+                                            labelPlacement="start"
+                                        />
+                                        <FormControlLabel
+                                            value="Smart"
+                                            control={<Radio color="primary"/>}
+                                            label="Smart"
+                                            labelPlacement="start"
+                                        />
+                                    </RadioGroup>
+                                }
+                            />
+                        </Grid>
+                    </Grid>
+                    <AppBar position="static" color="default">
+                        <Tabs
+                            value={this.state.value}
+                            onChange={this.handleChange}
+                            indicatorColor="primary"
+                            textColor="primary"
+                            variant="scrollable"
+                            scrollButtons={'auto'}
+                        >
+                            <Tab label="Monday"/>
+                            <Tab label="Tuesday"/>
+                            <Tab label="Wednesday"/>
+                            <Tab label="Thursday"/>
+                            <Tab label="Friday"/>
+                            <Tab label="Saturday"/>
+                            <Tab label="Sunday"/>
+                        </Tabs>
+                    </AppBar>
+                    <SwipeableViews
+                        axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
+                        index={this.state.value}
+                        onChangeIndex={this.handleChangeIndex}
+                    >
+                        <TabContainer dir={theme.direction}>
+                            <SliderContainer
+                                weekDay={'Mon'}
+                                temperatures={this.state.temperatures[0]}
+                                onUpdateTemperature={this.onUpdateTemperature}
+                                temperatureIndex={0}/>
+                        </TabContainer>
+                        <TabContainer dir={theme.direction}>
+                            <SliderContainer
+                                weekDay={'Tue'}
+                                temperatures={this.state.temperatures[1]}
+                                onUpdateTemperature={this.onUpdateTemperature}
+                                temperatureIndex={1}/>
+                        </TabContainer>
+                        <TabContainer dir={theme.direction}>
+                            <SliderContainer
+                                weekDay={'Wed'}
+                                temperatures={this.state.temperatures[2]}
+                                onUpdateTemperature={this.onUpdateTemperature}
+                                temperatureIndex={2}/>
+                        </TabContainer>
+                        <TabContainer dir={theme.direction}>
+                            <SliderContainer
+                                weekDay={'Thu'}
+                                temperatures={this.state.temperatures[3]}
+                                onUpdateTemperature={this.onUpdateTemperature}
+                                temperatureIndex={3}/>
+                        </TabContainer>
+                        <TabContainer dir={theme.direction}>
+                            <SliderContainer
+                                weekDay={'Fri'}
+                                temperatures={this.state.temperatures[4]}
+                                onUpdateTemperature={this.onUpdateTemperature}
+                                temperatureIndex={4}/>
+                        </TabContainer>
+                        <TabContainer dir={theme.direction}>
+                            <SliderContainer
+                                weekDay={'Sat'}
+                                temperatures={this.state.temperatures[5]}
+                                onUpdateTemperature={this.onUpdateTemperature}
+                                temperatureIndex={5}/>
+                        </TabContainer>
+                        <TabContainer dir={theme.direction}>
+                            <SliderContainer
+                                weekDay={'Sun'}
+                                temperatures={this.state.temperatures[6]}
+                                onUpdateTemperature={this.onUpdateTemperature}
+                                temperatureIndex={6}/>
+                        </TabContainer>
+                    </SwipeableViews>
+                </div>
+                <Button variant="contained"
+                        size="medium"
+                        color="primary"
+                        className={classes.loginButton}
+                        onClick={this.onClickSave}>
+                    Save
+                </Button>
+            </div>
+        );
+    }
 }
 
 Schedule.propTypes = {
-  classes: PropTypes.object.isRequired,
-  theme: PropTypes.object.isRequired,
+    classes: PropTypes.object.isRequired,
+    theme: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles, { withTheme: true })(Schedule);
+export default withStyles(styles, {withTheme: true})(Schedule);
