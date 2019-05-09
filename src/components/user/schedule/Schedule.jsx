@@ -81,11 +81,11 @@ class Schedule extends React.Component {
     const { classes, theme } = this.props;
 
     // check localStorage for the token, if no token return a div telling the user to log in
-    if (!(window.localStorage.token)) {
-      return (
-        <BadLogin />
-      );
-    }
+    // if (!(window.localStorage.token)) {
+    //   return (
+    //     <BadLogin />
+    //   );
+    // }
 
     return (
       <div>

@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import Slider from '@material-ui/lab/Slider';
-import Typography from '@material-ui/core/Typography';
 
 import { withStyles } from '@material-ui/core/styles';
 
@@ -31,24 +30,26 @@ const styles = {
 
 class TemperatureSlider extends Component {
     state = {
-        key: '',
+        index: 0,
         setTemp: 0,
     }
 
     componentDidMount() {
-        this.setState({ index: this.props.key, setTemp: this.props.setTemp });
+        this.setState({ index: this.props.index, setTemp: this.props.setTemp });
     }
 
     handleChange = (event, value) => {
+        this.props.setParent(this.state.index, value);
         this.setState({ setTemp: value });
     };
 
     resetZero = () => {
+        this.props.setParent(this.state.index, 0);
         this.setState({ setTemp: 0 });
     }
 
-    componentDidUpdate() {
-        if (this.props.setTemp !== this.state.setTemp) {
+    componentDidUpdate(prevProps) {
+        if (prevProps.setTemp !== this.props.setTemp) {
             this.setState({ setTemp: this.props.setTemp });
         }
     }
