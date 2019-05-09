@@ -12,7 +12,8 @@ import Axios from 'axios';
 
 class Login extends React.Component {
     state = {
-        value: "",
+        id: "",
+        password: "",
     }
 
     constructor(props) {
@@ -21,10 +22,21 @@ class Login extends React.Component {
         this.password = React.createRef();
     }
 
+    updateUserID = () => {
+
+    }
+
+    updatePassword = () => {
+
+    }
+
     validateLogin = async () => {
         let host = "http://localhost:3000/api/auth";
-        let userid = this.userid.current.value;
-        let password = this.password.current.value;
+        let userid = this.state.id; //this.userid.current.getValue();
+        let password = this.state.password; //this.password.current.getValue();
+
+        //console.log(this.userid);
+        console.log("userid: " + userid + " password: " + password);
 
         let token = await Axios.post(host, {
             "_id": userid,
@@ -60,6 +72,7 @@ class Login extends React.Component {
                                 className={classes.textField}
                                 margin="normal"
                                 variant="outlined"
+                                onChange={event => this.setState({ id: event.target.value})}
                                 ref={this.userid}
                                 InputProps={{
                                     classes: {
@@ -81,6 +94,7 @@ class Login extends React.Component {
                                 className={classes.textField}
                                 margin="normal"
                                 variant="outlined"
+                                onChange={event => this.setState({ password: event.target.value})}
                                 ref={this.password}
                                 InputProps={{
                                     classes: {

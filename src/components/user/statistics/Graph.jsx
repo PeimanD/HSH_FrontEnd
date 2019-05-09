@@ -60,7 +60,7 @@ class Graph extends Component {
       return Math.floor(Math.random() * Math.floor(max));
    }
 
-   updateGraph = (type) => {
+   updateGraph = async (type) => {
       switch (type) {
          case "Day":
             //axio get Day data
