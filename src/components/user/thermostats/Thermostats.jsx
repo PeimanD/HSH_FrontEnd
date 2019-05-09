@@ -6,6 +6,7 @@ import SideNav from '../SideNav'
 import PropTypes from "prop-types";
 import {withStyles} from "@material-ui/core";
 import Paper from '@material-ui/core/Paper';
+import BadLogin from "../badlogin/badLogin";
 
 class Thermostats extends Component {
     constructor(props) {
@@ -23,6 +24,12 @@ class Thermostats extends Component {
 
     render() {
         const {classes} = this.props;
+        // check localStorage for the token, if no token return a div telling the user to log in
+        if (!(window.localStorage.token)) {
+            return (
+                <BadLogin />
+            );
+        }
 
         return (
             <div>

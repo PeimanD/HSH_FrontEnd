@@ -6,6 +6,7 @@ import Grid from '@material-ui/core/Grid';
 import 'react-widgets/dist/css/react-widgets.css';
 import './graph.css';
 import SideNav from "../SideNav";
+import BadLogin from "../badlogin/badLogin";
 
 class Stats extends Component {
     state = {
@@ -26,6 +27,13 @@ class Stats extends Component {
     }
 
     render() {
+        // check localStorage for the token, if no token return a div telling the user to log in
+        if (!(window.localStorage.token)) {
+            return (
+                <BadLogin />
+            );
+        }
+
         let graphOptions = ["Day", "Week", "Month", "Year"];
         let thermostats = ["Thermostat #1", "Thermostat #2", "Thermostat #3", "Thermostat #4"];
         return (

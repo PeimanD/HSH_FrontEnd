@@ -34,6 +34,8 @@ class Graph extends Component {
 
       //const { data } = await axios.get(host+"/api/thermostat/"+this.match.params.id);
       //this.setState({graphData: data});
+
+      //do a day data population
       this.populateData(24, hours);
    };
 

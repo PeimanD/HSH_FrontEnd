@@ -16,6 +16,7 @@ import RadioGroup from '@material-ui/core/RadioGroup';
 import Radio from '@material-ui/core/Radio';
 
 import Grid from '@material-ui/core/Grid';
+import BadLogin from "../badlogin/badLogin";
 
 function TabContainer({ children, dir }) {
   return (
@@ -79,12 +80,19 @@ class Schedule extends React.Component {
   render() {
     const { classes, theme } = this.props;
 
+    // check localStorage for the token, if no token return a div telling the user to log in
+    if (!(window.localStorage.token)) {
+      return (
+        <BadLogin />
+      );
+    }
+
     return (
       <div>
         <SideNav />
         <div className={classes.root}>
           <Grid container justify="space-between" spacing={24}>
-            <Grid style={{display: "flex"}} justify="flex-start" item xs={12} sm={6} >
+            <Grid style={{ display: "flex" }} container justify="flex-start" item xs={12} sm={6} >
               <FormControlLabel
                 control={
                   <Switch
@@ -101,7 +109,7 @@ class Schedule extends React.Component {
                 labelPlacement='start'
               />
             </Grid>
-            <Grid style={{display: "flex"}} justify="flex-end" item xs={12} sm={6}>
+            <Grid style={{ display: "flex" }} container justify="flex-end" item xs={12} sm={6}>
               <FormControlLabel
                 control={
                   <RadioGroup

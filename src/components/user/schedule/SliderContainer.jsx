@@ -1,8 +1,26 @@
 import React, { Component } from 'react';
-import Slider from '@material-ui/lab/Slider';
-import Typography from '@material-ui/core/Typography';
+
+import { withStyles } from '@material-ui/core/styles';
+import { Combobox } from 'react-widgets';
 import TemperatureSlider from './TemperatureSlider';
 import './sliderContainer.css';
+
+const styles = {
+    root: {
+        width: '100%',
+    },
+    slider: {
+        padding: '0 25px',
+    },
+    track: {
+        backgroundColor: 'orange',
+    },
+    thumb: {
+        backgroundColor: 'green',
+    },
+};
+
+const tempRange = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30];
 
 class SliderContainer extends Component {
     state = {
@@ -14,7 +32,7 @@ class SliderContainer extends Component {
         this.setTemperatures();
     }
 
-    setTemperatures = () => {
+    setTemperatures = async () => {
         //axio get the temperature schedule
         //set the weekly temperature
         this.setState({ weekDay: this.props.weekDay })
@@ -40,10 +58,10 @@ class SliderContainer extends Component {
         );
     };
 
-    resetSliders = () => event => {
+    resetSliders = value => {
         let temp = [];
         for (let i = 0; i < 24; ++i) {
-            temp[i] = event.target.value;
+            temp[i] = value;
         }
         this.setState({ setTemp: temp });
     }
@@ -54,11 +72,15 @@ class SliderContainer extends Component {
 
         return (
             <div className="sliderContainer-outerContainer">
-                
+                <Combobox
+                    data={tempRange}
+                    defaultValue={20}
+                    onChange={ value => {this.resetSliders(value);} }
+                />
                 {sliderList}
-            </div>
+            </div >
         )
     }
 }
 
-export default SliderContainer;
+export default withStyles(styles)(SliderContainer);

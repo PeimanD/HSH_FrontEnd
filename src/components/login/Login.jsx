@@ -1,83 +1,119 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {withStyles} from '@material-ui/core/styles/index';
+import { withStyles } from '@material-ui/core/styles/index';
 import background from '../../assets/images/login_background.jpg';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import TextField from '@material-ui/core/TextField';
 import logo from "../../assets/images/logo.png";
 import Button from '@material-ui/core/Button/index';
-import {Link} from "react-router-dom";
+import { Link } from "react-router-dom";
+import Axios from 'axios';
 
-function Login(props) {
-    const {classes} = props;
-    return (
-        <div className={classes.backgroundImage}>
-            <Grid container
-                  direction="column"
-                  justify="center"
-                  alignItems="center">
-                <Grid item xs={12}>
-                    <Paper className={classes.paper}>
-                        <div className={classes.top}>
-                            <img className={classes.transLogo} src={logo}/>
-                            <h1 className={classes.h1}>Login Here</h1>
-                        </div>
-                        <TextField
-                            label="User Name"
-                            placeholder={'Enter UserName'}
-                            className={classes.textField}
-                            margin="normal"
-                            variant="outlined"
-                            InputProps={{
-                                classes: {
-                                    notchedOutline: classes.notchedOutline
-                                }
-                            }}
-                            InputLabelProps={{
-                                style: {
-                                    textOverflow: 'ellipsis',
-                                    whiteSpace: 'nowrap',
-                                    overflow: 'hidden',
-                                    color: 'white'
-                                }
-                            }}
-                        />
-                        <TextField
-                            label="Password"
-                            placeholder={'Enter Password'}
-                            className={classes.textField}
-                            margin="normal"
-                            variant="outlined"
-                            InputProps={{
-                                classes: {
-                                    notchedOutline: classes.notchedOutline
-                                }
-                            }}
-                            InputLabelProps={{
-                                style: {
-                                    textOverflow: 'ellipsis',
-                                    whiteSpace: 'nowrap',
-                                    overflow: 'hidden',
-                                    color: 'white'
-                                }
-                            }}
-                        />
-                        <div className={classes.loginButtonContainer}>
-                            <Button component={Link} to="/Thermostats" variant="contained" size="medium"
+class Login extends React.Component {
+    state = {
+        value: "",
+    }
+
+    constructor(props) {
+        super(props);
+        this.userid = React.createRef();
+        this.password = React.createRef();
+    }
+
+    validateLogin = async () => {
+        let host = "http://localhost:3000/api/auth";
+        let userid = this.userid.current.value;
+        let password = this.password.current.value;
+
+        let token = await Axios.post(host, {
+            "_id": userid,
+            "password": password
+        })
+
+        window.localStorage.setItem("token", token);
+        
+        if (!(token)) {
+            return;
+        }
+        
+        this.props.history.push('/Thermostats')
+    }
+
+    render() {
+        const { classes } = this.props;
+        return (
+            <div className={classes.backgroundImage}>
+                <Grid container
+                    direction="column"
+                    justify="center"
+                    alignItems="center">
+                    <Grid item xs={12}>
+                        <Paper className={classes.paper}>
+                            <div className={classes.top}>
+                                <img className={classes.transLogo} src={logo} />
+                                <h1 className={classes.h1}>Login Here</h1>
+                            </div>
+                            <TextField
+                                label="User Name"
+                                placeholder={'Enter UserName'}
+                                className={classes.textField}
+                                margin="normal"
+                                variant="outlined"
+                                ref={this.userid}
+                                InputProps={{
+                                    classes: {
+                                        notchedOutline: classes.notchedOutline
+                                    }
+                                }}
+                                InputLabelProps={{
+                                    style: {
+                                        textOverflow: 'ellipsis',
+                                        whiteSpace: 'nowrap',
+                                        overflow: 'hidden',
+                                        color: 'white'
+                                    }
+                                }}
+                            />
+                            <TextField
+                                label="Password"
+                                placeholder={'Enter Password'}
+                                className={classes.textField}
+                                margin="normal"
+                                variant="outlined"
+                                ref={this.password}
+                                InputProps={{
+                                    classes: {
+                                        notchedOutline: classes.notchedOutline
+                                    }
+                                }}
+                                InputLabelProps={{
+                                    style: {
+                                        textOverflow: 'ellipsis',
+                                        whiteSpace: 'nowrap',
+                                        overflow: 'hidden',
+                                        color: 'white'
+                                    }
+                                }}
+                            />
+                            <div className={classes.loginButtonContainer}>
+                                {/* <Button component={Link} to="/Thermostats" variant="contained" size="medium"
+                                    color="primary" className={classes.loginButton}>Login</Button> */}
+                                <Button onClick={this.validateLogin} variant="contained" size="medium"
                                     color="primary" className={classes.loginButton}>Login</Button>
-                        </div>
-                        <div className={classes.bottomContainer}>
-                            <a href="/" style={{textDecoration: 'none'}}><p className={classes.bottomLinks}>Forgot your
+                            </div>
+                            <div className={classes.bottomContainer}>
+                                <a href="/" style={{ textDecoration: 'none' }}><p className={classes.bottomLinks}>Forgot your
                                 password?</p></a>
-                            <a href="/" style={{textDecoration: 'none'}}><p className={classes.bottomLinks}>Don't have
+                                <a href="/" style={{ textDecoration: 'none' }}><p className={classes.bottomLinks}>Don't have
                                 an account?</p></a>
-                        </div>
-                    </Paper>
+                            </div>
+                        </Paper>
+                    </Grid>
                 </Grid>
-            </Grid>
-        </div>
-    );
+            </div>
+        );
+    }
 }
 
 const styles = theme => ({

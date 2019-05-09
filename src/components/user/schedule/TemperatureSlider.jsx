@@ -47,6 +47,12 @@ class TemperatureSlider extends Component {
         this.setState({ setTemp: 0 });
     }
 
+    componentDidUpdate() {
+        if (this.props.setTemp !== this.state.setTemp) {
+            this.setState({ setTemp: this.props.setTemp });
+        }
+    }
+
     render() {
         const { classes } = this.props;
 
