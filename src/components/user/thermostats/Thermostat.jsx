@@ -11,7 +11,6 @@ class Thermostat extends Component {
         this.state = {
             id: this.props.id,
             status: this.props.status,
-            mode: this.props.mode,
             setTemp: this.props.setTemp,
             currentTemp: this.props.currentTemp
         };

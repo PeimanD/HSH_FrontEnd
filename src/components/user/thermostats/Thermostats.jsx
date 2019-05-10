@@ -12,34 +12,47 @@ class Thermostats extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            user: null,
-            token: ''
+            dataReceived: false,
+            thermostats: null,
         };
     };
 
-    async componentWillMount() {
+    async componentDidMount() {
         let host = "http://localhost:3000";
         try {
             const {data} = await axios.get(host + "/api/thermostat", {
                 headers: {
                     "x-auth-token": window.localStorage.token,
                 }
+            }).then(({data}) => {
+                let thermostats = data.thermostats;
+                this.setState({thermostats: thermostats, dataReceived: true})
             });
-
-            console.log(data);
-            for (let i = 0; i < data.length; ++i) {
-                let tempData = {
-                    "thermostatId": data[i].thermostatId,
-                    "masterDevId": data[i].masterDevId,
-                }
-            }
         } catch (e) {
         }
     };
 
+    renderThermostats = () => {
+        let thermostats = [];
+        for (let i = 0; i < this.state.thermostats.length; ++i) {
+            let status = this.state.thermostats[i].status;
+            let setTemp = this.state.thermostats[i].setTemp;
+            thermostats.push(
+                <Grid item xs={6} key={i}>
+                    <Thermostat
+                        id={i}
+                        status={status}
+                        setTemp={setTemp}
+                        currentTemp={30}
+                    />
+                </Grid>
+            );
+        }
+        return thermostats;
+    };
+
     render() {
         const {classes} = this.props;
-        // check localStorage for the token, if no token return a div telling the user to log in
         if (!(window.localStorage.token)) {
             return (
                 <BadLogin/>
@@ -50,46 +63,12 @@ class Thermostats extends Component {
             <div>
                 <SideNav/>
                 <div className={classes.root}>
-                    <Paper className={classes.paper}>
-                        <Grid container spacing={8}>
-                            <Grid item xs={6}>
-                                <Thermostat
-                                    id={1}
-                                    status={true}
-                                    mode={true}
-                                    setTemp={20}
-                                    currentTemp={30}
-                                />
+                    {this.state.dataReceived ?
+                        <Paper className={classes.paper}>
+                            <Grid container spacing={8}>
+                                {this.renderThermostats()}
                             </Grid>
-                            <Grid item xs={6}>
-                                <Thermostat
-                                    id={2}
-                                    status={true}
-                                    mode={true}
-                                    setTemp={20}
-                                    currentTemp={30}
-                                />
-                            </Grid>
-                            <Grid item xs={6}>
-                                <Thermostat
-                                    id={3}
-                                    status={false}
-                                    mode={true}
-                                    setTemp={20}
-                                    currentTemp={30}
-                                />
-                            </Grid>
-                            <Grid item xs={6}>
-                                <Thermostat
-                                    id={4}
-                                    status={false}
-                                    mode={true}
-                                    setTemp={20}
-                                    currentTemp={30}
-                                />
-                            </Grid>
-                        </Grid>
-                    </Paper>
+                        </Paper> : ''}
                 </div>
             </div>
         );
