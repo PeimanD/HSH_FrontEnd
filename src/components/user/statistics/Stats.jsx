@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import { Combobox } from 'react-widgets';
+import React, {Component} from 'react';
+import {Combobox} from 'react-widgets';
 import Graph from './Graph';
 import Grid from '@material-ui/core/Grid';
 
@@ -9,28 +9,30 @@ import SideNav from "../SideNav";
 import BadLogin from "../badlogin/badLogin";
 
 class Stats extends Component {
-    state = {
-        graphType: 'Day',
-        currentThermostat: 'Thermostat #1',
-    }
+    constructor(props) {
+        super(props);
+        this.state = {
+            graphType: 'Day',
+            currentThermostat: 'Thermostat #1',
+        };
+    };
 
     componentDidMount() {
-        this.setState({ currentThermostat: this.props.currentThermostat} );
+        this.setState({currentThermostat: this.props.currentThermostat});
     }
 
     changeDisplay = (type) => {
-        this.setState({ graphType: type });
-    }
+        this.setState({graphType: type});
+    };
 
     changeThermostat = (thermostat) => {
-        this.setState({ currentThermostat: thermostat });
-    }
+        this.setState({currentThermostat: thermostat});
+    };
 
     render() {
-        // check localStorage for the token, if no token return a div telling the user to log in
         if (!(window.localStorage.token)) {
             return (
-                <BadLogin />
+                <BadLogin/>
             );
         }
 
@@ -39,7 +41,7 @@ class Stats extends Component {
         return (
             <div className="graph-outer-container">
                 {/* drop down menu component to pick between day, week, month, year */}
-                <SideNav />
+                <SideNav/>
                 <div className="graph-combobox">
                     <Grid container spacing={24}>
                         <Grid item xs={6}>
@@ -47,7 +49,7 @@ class Stats extends Component {
                                 data={graphOptions}
                                 defaultValue={'Day'}
                                 onChange={value => {
-                                    this.setState({ graphType: value });
+                                    this.setState({graphType: value});
                                 }}
                             />
                         </Grid>
@@ -56,22 +58,18 @@ class Stats extends Component {
                                 data={thermostats}
                                 defaultValue={this.state.currentThermostat}
                                 onChange={value => {
-                                    this.setState({ graphType: this.state.graphType, currentThermostat: value });
+                                    this.setState({graphType: this.state.graphType, currentThermostat: value});
                                 }}
                             />
                         </Grid>
                     </Grid>
                 </div>
                 <div className="graph-mid-container card">
-                    <Graph graphType={this.state.graphType} currentThermostat={this.state.currentThermostat} />
+                    <Graph graphType={this.state.graphType} currentThermostat={this.state.currentThermostat}/>
                 </div>
             </div>
         );
     }
-}
-
-Stats.defaultProps = {
-    currentThermostat: 'Thermostat #1'
 }
 
 export default Stats;

@@ -13,7 +13,7 @@ class Thermostats extends Component {
         super(props);
         this.state = {
             dataReceived: false,
-            thermostats: null,
+            thermostats: null, //move this to app
         };
     };
 
