@@ -38,18 +38,23 @@ class Login extends React.Component {
         //console.log(this.userid);
         console.log("userid: " + userid + " password: " + password);
 
-        let token = await Axios.post(host, {
-            "_id": userid,
-            "password": password
-        })
+        try {
+            let { data } = await Axios.post(host, {
+                // "_id": userid,
+                // "password": password
+                "_id": "5ccf70df00f1f61e5889f3d3",
+                "password" : "123456remimi",
+            })
+            console.log(data);
+            window.localStorage.setItem(data);
 
-        window.localStorage.setItem("token", token);
-        
-        if (!(token)) {
-            return;
+            // if (!(token)) {
+            //     return;
+            // }
+            this.props.history.push('/Thermostats');
+        } catch (e) {
+            // tell them they have a bad login
         }
-        
-        this.props.history.push('/Thermostats')
     }
 
     render() {
@@ -72,7 +77,7 @@ class Login extends React.Component {
                                 className={classes.textField}
                                 margin="normal"
                                 variant="outlined"
-                                onChange={event => this.setState({ id: event.target.value})}
+                                onChange={event => this.setState({ id: event.target.value })}
                                 ref={this.userid}
                                 InputProps={{
                                     classes: {
@@ -94,7 +99,7 @@ class Login extends React.Component {
                                 className={classes.textField}
                                 margin="normal"
                                 variant="outlined"
-                                onChange={event => this.setState({ password: event.target.value})}
+                                onChange={event => this.setState({ password: event.target.value })}
                                 ref={this.password}
                                 InputProps={{
                                     classes: {

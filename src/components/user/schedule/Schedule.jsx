@@ -58,6 +58,15 @@ class Schedule extends React.Component {
     value: 0,
     mode: 'Schedule',
     status: true,
+    // setTemp: [
+    //   [20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20],
+    //   [20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20],
+    //   [20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20],
+    //   [20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20],
+    //   [20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20],
+    //   [20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20],
+    //   [20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20],
+    // ]
   };
 
   handleChange = (event, value) => {
@@ -76,6 +85,12 @@ class Schedule extends React.Component {
   handleModeChange = event => {
     this.setState({ mode: event.target.value });
   }
+
+  // changeSetTemp = (index, value) => {
+  //   let temp = this.state.setTemp;
+  //   temp[index] = value;
+  //   this.setState({ setTemp: temp })
+  // }
 
   render() {
     const { classes, theme } = this.props;
