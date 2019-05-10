@@ -1,59 +1,54 @@
 import axios from "axios/index";
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import Grid from '@material-ui/core/Grid/index';
 import Thermostat from "./Thermostat.jsx";
 import SideNav from '../SideNav'
 import PropTypes from "prop-types";
-import { withStyles } from "@material-ui/core";
+import {withStyles} from "@material-ui/core";
 import Paper from '@material-ui/core/Paper';
 import BadLogin from "../badlogin/badLogin";
-import {ThermostatContext} from "../context/context";
 
 class Thermostats extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            user: null
+            user: null,
+            token: ''
         };
     };
 
     async componentWillMount() {
         let host = "http://localhost:3000";
-
         try {
-            const { data } = await axios.get(host + "/api/thermostat", {
+            const {data} = await axios.get(host + "/api/thermostat", {
                 headers: {
                     "x-auth-token": window.localStorage.token,
                 }
             });
-            
+
             console.log(data);
             for (let i = 0; i < data.length; ++i) {
                 let tempData = {
                     "thermostatId": data[i].thermostatId,
                     "masterDevId": data[i].masterDevId,
                 }
-                ThermostatContext.thermostats.push();
             }
-
-            //this.setState({ user: data.user });
         } catch (e) {
-            //this.setState({ user: test });
         }
     };
 
     render() {
-        const { classes } = this.props;
+        const {classes} = this.props;
         // check localStorage for the token, if no token return a div telling the user to log in
         if (!(window.localStorage.token)) {
             return (
-                <BadLogin />
+                <BadLogin/>
             );
         }
 
         return (
             <div>
-                <SideNav />
+                <SideNav/>
                 <div className={classes.root}>
                     <Paper className={classes.paper}>
                         <Grid container spacing={8}>
