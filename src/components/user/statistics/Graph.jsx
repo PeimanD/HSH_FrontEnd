@@ -40,7 +40,8 @@ class Graph extends Component {
       this.populateData(24, hours);
    };
 
-   injectData = () => {
+   injectData = async () => {
+      let host = "http://localhost:3000/api/log/dev/days";
       let monthDaysCount = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
       let data = [];
 
@@ -68,6 +69,12 @@ class Graph extends Component {
       }
 
       console.log(data);
+
+      await axios.post(host, {
+         data : {
+            logs : data
+         }
+      });
    }
 
    populateData = (amount, unit) => {
