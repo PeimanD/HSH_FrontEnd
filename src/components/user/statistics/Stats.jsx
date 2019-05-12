@@ -14,11 +14,13 @@ class Stats extends Component {
         this.state = {
             graphType: 'Day',
             currentThermostat: 'Thermostat #1',
+            weekSchedule: this.props.weekSchedule
         };
     };
 
     componentDidMount() {
         this.setState({currentThermostat: this.props.currentThermostat});
+        console.log(this.state.weekSchedule);
     }
 
     changeDisplay = (type) => {
