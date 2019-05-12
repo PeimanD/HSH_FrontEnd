@@ -6,8 +6,8 @@ import NavBar from './Navbar';
 import Home from '../home/Home'
 import Login from '../login/Login';
 import Thermostats from "../user/thermostats/Thermostats";
-import Statistics from "../user/statistics/Stats";
 import Schedule from "../user/schedule/Schedule";
+import Statistics from "../user/statistics/Stats";
 import axios from "axios";
 
 class App extends Component {
@@ -16,25 +16,81 @@ class App extends Component {
         this.state = {
             dataReceived: false,
             thermostats: null,
-            weekSchedule: null
+            day: null,
+            week: null,
+            month: null,
+            year: null,
         };
     };
 
-    async componentDidMount() {
+    componentDidMount() {
         let host = "http://localhost:3000";
         try {
-            const {thermostats} = await axios.get(host + "/api/thermostat", {
+            const {thermostats} = axios.get(host + "/api/thermostat/all", {
                 headers: {
                     "x-auth-token": window.localStorage.token,
                 }
             }).then(({data}) => {
                 let thermostats = data.thermostats;
-                let weekSchedule = [];
-                for (let i = 0; i < thermostats.length; ++i) weekSchedule.push(thermostats[i]['weekSchedule']);
-                this.setState({thermostats: thermostats, dataReceived: true, weekSchedule: weekSchedule});
-                console.log(weekSchedule);
+                this.setState({thermostats: thermostats, dataReceived: true});
             });
 
+            const day = axios.get(host + "/api/log/day", {
+                headers: {
+                    "x-auth-token": window.localStorage.token,
+                },
+                params: {
+                    master_id: 'ree',
+                    thermostat_id: 'pre-ree',
+                    day: 8,
+                    month: 5,
+                    year: 2019
+                }
+            }).then(({data}) => {
+                this.setState({day: data});
+            });
+
+            const week = axios.get(host + "/api/log/week", {
+                headers: {
+                    "x-auth-token": window.localStorage.token,
+                },
+                params: {
+                    master_id: 'ree',
+                    thermostat_id: 'pre-ree',
+                    day: 8,
+                    month: 5,
+                    year: 2019
+                }
+            }).then(({data}) => {
+                this.setState({week: data});
+            });
+
+            const month = axios.get(host + "/api/log/month", {
+                headers: {
+                    "x-auth-token": window.localStorage.token,
+                },
+                params: {
+                    master_id: 'ree',
+                    thermostat_id: 'pre-ree',
+                    month: 5,
+                    year: 2019
+                }
+            }).then(({data}) => {
+                this.setState({month: data});
+            });
+
+            const year = axios.get(host + "/api/log/year", {
+                headers: {
+                    "x-auth-token": window.localStorage.token,
+                },
+                params: {
+                    master_id: 'ree',
+                    thermostat_id: 'pre-ree',
+                    year: 2019
+                }
+            }).then(({data}) => {
+                this.setState({year: data});
+            });
         } catch (e) {
         }
     };
@@ -52,9 +108,13 @@ class App extends Component {
                                    render={() => <Thermostats thermostats={this.state.thermostats}
                                                               dataReceived={this.state.dataReceived}/>}/>
                             <Route path="/Statistics"
-                                   render={() => <Statistics weekSchedule={this.state.weekSchedule}
-                                                             dataReceived={this.state.dataReceived}/>}/>
-                            <Route path="/Schedule" component={Schedule}/>
+                                   render={() => <Statistics day={this.state.day}
+                                                             week={this.state.week}
+                                                             month={this.state.month}
+                                                             year={this.state.year}/>}/>
+
+                            <Route path="/Schedule"
+                                   render={() => <Schedule/>}/>
                         </Switch>
                     </section>
                 </div>

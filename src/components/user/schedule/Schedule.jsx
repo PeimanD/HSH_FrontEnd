@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
+import {withStyles} from '@material-ui/core/styles';
 import SwipeableViews from 'react-swipeable-views';
 import AppBar from '@material-ui/core/AppBar';
 import Tabs from '@material-ui/core/Tabs';
@@ -16,7 +16,6 @@ import RadioGroup from '@material-ui/core/RadioGroup';
 import Radio from '@material-ui/core/Radio';
 
 import Grid from '@material-ui/core/Grid';
-import BadLogin from "../badlogin/badLogin";
 
 function TabContainer({ children, dir }) {
   return (
@@ -167,7 +166,6 @@ class Schedule extends React.Component {
             <TabContainer dir={theme.direction}><SliderContainer weekDay={'Sat'} /></TabContainer>
             <TabContainer dir={theme.direction}><SliderContainer weekDay={'Sun'} /></TabContainer>
           </SwipeableViews>
-
         </div>
       </div>
 
