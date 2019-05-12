@@ -30,11 +30,7 @@ class Graph extends Component {
    };
 
    async componentDidMount() {
-      //set host as enviornment variable
-      let host = "http://localhost:3000";
-
-      //const { data } = await axios.get(host+"/api/thermostat/"+this.match.params.id);
-      //this.setState({graphData: data});
+      //set the currentThermostat to the prop thermostat
 
       //do a day data population
       this.populateData(24, hours);
@@ -42,17 +38,17 @@ class Graph extends Component {
 
    injectData = async () => {
       let host = "http://localhost:3000/api/log/dev/days";
-      let monthDaysCount = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+      let monthDaysCount = [31, 28, 31, 30, 17, 30, 31, 31, 30, 31, 30, 31];
       let data = [];
 
-      for (let k = 0; k < 12; ++k) {
+      for (let k = 0; k < 5; ++k) {
          for (let j = 0; j < monthDaysCount[k]; ++j) {
             let log = {
-               year: 2018,
+               year: 2019,
                month: 1,
                day: 1,
-               thermostatId: "",
-               masterDevId: "",
+               thermostatId: "pre-ree",
+               masterDevId: "ree",
                cTemps: [],
                oTemps: [],
                sTemps: [],
