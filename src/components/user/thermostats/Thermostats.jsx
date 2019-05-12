@@ -1,4 +1,3 @@
-import axios from "axios/index";
 import React, {Component} from 'react';
 import Grid from '@material-ui/core/Grid/index';
 import Thermostat from "./Thermostat.jsx";
@@ -12,24 +11,9 @@ class Thermostats extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            dataReceived: false,
-            thermostats: null, //move this to app
+            dataReceived: this.props.dataReceived,
+            thermostats: this.props.thermostats,
         };
-    };
-
-    async componentDidMount() {
-        let host = "http://localhost:3000";
-        try {
-            const {data} = await axios.get(host + "/api/thermostat", {
-                headers: {
-                    "x-auth-token": window.localStorage.token,
-                }
-            }).then(({data}) => {
-                let thermostats = data.thermostats;
-                this.setState({thermostats: thermostats, dataReceived: true})
-            });
-        } catch (e) {
-        }
     };
 
     renderThermostats = () => {
@@ -58,7 +42,6 @@ class Thermostats extends Component {
                 <BadLogin/>
             );
         }
-
         return (
             <div>
                 <SideNav/>
