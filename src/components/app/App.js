@@ -1,5 +1,5 @@
-import React, {Component} from 'react';
-import {BrowserRouter as Router, Route, Switch} from "react-router-dom";
+import React, { Component } from 'react';
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import './App.css';
 
 import NavBar from './Navbar';
@@ -9,6 +9,8 @@ import Thermostats from "../user/thermostats/Thermostats";
 import Schedule from "../user/schedule/Schedule";
 import Statistics from "../user/statistics/Stats";
 import axios from "axios";
+
+import { ApplicationProvider, ApplicationConsumer } from '../context/ThermostatContext';
 
 class App extends Component {
     constructor(props) {
@@ -23,20 +25,31 @@ class App extends Component {
         };
     };
 
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        let host = "http://localhost:3000";
+        if (!this.state.dataReceived) {
+            const { thermostats } = axios.get(host + "/api/thermostat/all", {
+                headers: {
+                    "x-auth-token": window.localStorage.token,
+                }
+            }).then(({ data }) => {
+                let thermostats = data.thermostats;
+                this.setState({ thermostats: thermostats, dataReceived: true });
+            });
+        }
+    }
+
     componentDidMount() {
         let host = "http://localhost:3000";
-        try {
-            const {thermostats} = axios.get(host + "/api/thermostat/all", {
-                headers: {
-                    "x-auth-token": window.localStorage.token,
-                }
-            }).then(({data}) => {
-                let thermostats = data.thermostats;
-                this.setState({thermostats: thermostats, dataReceived: true});
-                console.log(this.state.thermostats);
-            });
+        // if (!(window.localStorage.token)) {
+        //     return;
+        //     // window.location.replace("./login");
+        // }
+        // try {
 
-            const day = axios.get(host + "/api/log/day", {
+
+        const getDay = () => {
+            axios.get(host + "/api/log/day", {
                 headers: {
                     "x-auth-token": window.localStorage.token,
                 },
@@ -47,11 +60,13 @@ class App extends Component {
                     month: 5,
                     year: 2019
                 }
-            }).then(({data}) => {
-                this.setState({day: data});
-            });
+            }).then(({ data }) => {
+                this.setState({ day: data });
+            })
+        };
 
-            const week = axios.get(host + "/api/log/week", {
+        const getWeek = () => {
+            axios.get(host + "/api/log/week", {
                 headers: {
                     "x-auth-token": window.localStorage.token,
                 },
@@ -62,11 +77,13 @@ class App extends Component {
                     month: 5,
                     year: 2019
                 }
-            }).then(({data}) => {
-                this.setState({week: data});
-            });
+            }).then(({ data }) => {
+                this.setState({ week: data });
+            })
+        };
 
-            const month = axios.get(host + "/api/log/month", {
+        const getMonth = () => {
+            axios.get(host + "/api/log/month", {
                 headers: {
                     "x-auth-token": window.localStorage.token,
                 },
@@ -76,11 +93,13 @@ class App extends Component {
                     month: 5,
                     year: 2019
                 }
-            }).then(({data}) => {
-                this.setState({month: data});
-            });
+            }).then(({ data }) => {
+                this.setState({ month: data });
+            })
+        };
 
-            const year = axios.get(host + "/api/log/year", {
+        const getYear = () => {
+            axios.get(host + "/api/log/year", {
                 headers: {
                     "x-auth-token": window.localStorage.token,
                 },
@@ -89,36 +108,48 @@ class App extends Component {
                     thermostat_id: 'pre-ree',
                     year: 2019
                 }
-            }).then(({data}) => {
-                this.setState({year: data});
-            });
-        } catch (e) {
-        }
+            }).then(({ data }) => {
+                this.setState({ year: data });
+            })
+        };
+        //} 
+        // catch (e) {
+        // }
     };
 
     render() {
         return (
             <Router>
                 <div className="App">
-                    <NavBar/>
-                    <section className="margin-space">
+                    <NavBar />
+                    <ApplicationProvider>
+                        <section className="margin-space">
                         <Switch>
-                            <Route exact path="/" component={Home}/>
-                            <Route path="/login" component={Login}/>
+                            {/* {(this.state.dataReceived ? <Route exact path="/" component={Home} /> : <Route exact path="/" component={Login} />)} */}
+                            <Route exact path="/" component={Home} />
+                            <ApplicationConsumer>
+                                { (consumerProps) => (
+                                    <Route 
+                                        path="/login"
+                                        render={consumerProps => <Login {...consumerProps} />}
+                                    />
+                                )}
+                            </ApplicationConsumer>
                             <Route path="/Thermostats"
-                                   render={() => <Thermostats thermostats={this.state.thermostats}
-                                                              dataReceived={this.state.dataReceived}/>}/>
+                                render={() => <Thermostats thermostats={this.state.thermostats}
+                                    dataReceived={this.state.dataReceived} />} />
                             <Route path="/Statistics"
-                                   render={() => <Statistics day={this.state.day}
-                                                             week={this.state.week}
-                                                             month={this.state.month}
-                                                             year={this.state.year}
-                                                             thermostats={this.state.thermostats}/>}/>
+                                render={() => <Statistics day={this.state.day}
+                                    week={this.state.week}
+                                    month={this.state.month}
+                                    year={this.state.year}
+                                    thermostats={this.state.thermostats} />} />
 
                             <Route path="/Schedule"
-                                   render={() => <Schedule/>}/>
+                                render={() => <Schedule />} />
                         </Switch>
                     </section>
+                    </ApplicationProvider>
                 </div>
             </Router>
         );

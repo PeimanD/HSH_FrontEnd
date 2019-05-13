@@ -8,6 +8,7 @@ import 'react-widgets/dist/css/react-widgets.css';
 import './graph.css';
 import SideNav from "../SideNav";
 import BadLogin from "../badlogin/badLogin";
+import axios from "axios";
 
 class Stats extends Component {
   constructor(props) {
@@ -40,6 +41,7 @@ class Stats extends Component {
 
   componentDidMount() {
     //this.setState({ currentThermostat: this.props.currentThermostat });
+    //getStatsData();
     console.log(this.state.day);
     console.log(this.state.week);
     console.log(this.state.month);
@@ -61,6 +63,70 @@ class Stats extends Component {
       id.push(this.state.thermostats[i].thermostatId);
     }
     return id;
+  }
+
+  getStatsData = () => {
+    let host = "http://localhost:3000";
+    try {
+      const day = axios.get(host + "/api/log/day", {
+        headers: {
+          "x-auth-token": window.localStorage.token,
+        },
+        params: {
+          master_id: 'ree',
+          thermostat_id: 'pre-ree',
+          day: 8,
+          month: 5,
+          year: 2019
+        }
+      }).then(({ data }) => {
+        this.setState({ day: data });
+      });
+
+      const week = axios.get(host + "/api/log/week", {
+        headers: {
+          "x-auth-token": window.localStorage.token,
+        },
+        params: {
+          master_id: 'ree',
+          thermostat_id: 'pre-ree',
+          day: 8,
+          month: 5,
+          year: 2019
+        }
+      }).then(({ data }) => {
+        this.setState({ week: data });
+      });
+
+      const month = axios.get(host + "/api/log/month", {
+        headers: {
+          "x-auth-token": window.localStorage.token,
+        },
+        params: {
+          master_id: 'ree',
+          thermostat_id: 'pre-ree',
+          month: 5,
+          year: 2019
+        }
+      }).then(({ data }) => {
+        this.setState({ month: data });
+      });
+
+      const year = axios.get(host + "/api/log/year", {
+        headers: {
+          "x-auth-token": window.localStorage.token,
+        },
+        params: {
+          master_id: 'ree',
+          thermostat_id: 'pre-ree',
+          year: 2019
+        }
+      }).then(({ data }) => {
+        this.setState({ year: data });
+      });
+    } catch (e) {
+
+    }
   }
 
   render() {

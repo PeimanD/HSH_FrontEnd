@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {withStyles} from '@material-ui/core/styles/index';
+import { withStyles } from '@material-ui/core/styles/index';
 import background from '../../assets/images/login_background.jpg';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
@@ -28,31 +28,41 @@ class Login extends React.Component {
         console.log("userid: " + userid + " password: " + password);
 
         try {
-            let {data} = await Axios.post(host, {
+            let { data } = await Axios.post(host, {
                 "_id": "5ccf70df00f1f61e5889f3d3",
                 "password": "123456remimi",
-            }).then(({data}) => {
-                window.localStorage.setItem("token", data.token);
-            }).then(() => {
-                this.props.history.push('/Thermostats');
-            });
+            })
+            window.localStorage.setItem("token", data.token);
+            this.props.history.push('/Thermostats');
+            // .then(({data}) => {
+            //     window.localStorage.setItem("token", data.token);
+            // }).then(() => {
+            //     this.props.history.push('/Thermostats');
+            // });
+            let { thermostats } = await Axios.get(host + "/api/thermostat/all", {
+                headers: {
+                    "x-auth-token": window.localStorage.token,
+                }
+            })
+            // this.props.updateUser();
         } catch (e) {
             // tell them they have a bad login
+
         }
     };
 
     render() {
-        const {classes} = this.props;
+        const { classes } = this.props;
         return (
             <div className={classes.backgroundImage}>
                 <Grid container
-                      direction="column"
-                      justify="center"
-                      alignItems="center">
+                    direction="column"
+                    justify="center"
+                    alignItems="center">
                     <Grid item xs={12}>
                         <Paper className={classes.paper}>
                             <div className={classes.top}>
-                                <img className={classes.transLogo} src={logo}/>
+                                <img className={classes.transLogo} src={logo} />
                                 <h1 className={classes.h1}>Login Here</h1>
                             </div>
                             <TextField
@@ -61,7 +71,7 @@ class Login extends React.Component {
                                 className={classes.textField}
                                 margin="normal"
                                 variant="outlined"
-                                onChange={event => this.setState({id: event.target.value})}
+                                onChange={event => this.setState({ id: event.target.value })}
                                 ref={this.userid}
                                 InputProps={{
                                     classes: {
@@ -83,7 +93,7 @@ class Login extends React.Component {
                                 className={classes.textField}
                                 margin="normal"
                                 variant="outlined"
-                                onChange={event => this.setState({password: event.target.value})}
+                                onChange={event => this.setState({ password: event.target.value })}
                                 ref={this.password}
                                 InputProps={{
                                     classes: {
@@ -103,8 +113,8 @@ class Login extends React.Component {
                                 <Button onClick={this.validateLogin} variant="contained" size="medium" color="primary" className={classes.loginButton}>Login</Button>
                             </div>
                             <div className={classes.bottomContainer}>
-                                <a href="/" style={{textDecoration: 'none'}}><p className={classes.bottomLinks}>Forgot your password?</p></a>
-                                <a href="/" style={{textDecoration: 'none'}}><p className={classes.bottomLinks}>Don't have an account?</p></a>
+                                <a href="/" style={{ textDecoration: 'none' }}><p className={classes.bottomLinks}>Forgot your password?</p></a>
+                                <a href="/" style={{ textDecoration: 'none' }}><p className={classes.bottomLinks}>Don't have an account?</p></a>
                             </div>
                         </Paper>
                     </Grid>
