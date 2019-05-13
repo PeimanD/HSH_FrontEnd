@@ -8,9 +8,10 @@ import './graph.css';
 
 import { Labels } from './string.js';
 
-const hours = ["00:00", "01:00", "02:00", "03:00", "04:00","05:00", "06:00","07:00", "08:00","09:00", "10:00","11:00", "12:00","13:00", "14:00","15:00", "16:00","17:00", "18:00","19:00", "20:00","21:00", "22:00", "23:00"]
+const hours = ["0:00", "1:00", "2:00", "3:00", "4:00", "5:00", "6:00", "7:00", "8:00", "9:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00", "19:00", "20:00", "21:00", "22:00", "23:00"];
 const weekDays = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
-const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+const months = ["1/1", "2/1", "3/1", "4/1", "5/1", "6/1", "7/1", "8/1", "9/1", "10/1", "11/1", "12/1"];
+let monthCount = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
 
 class Graph extends Component {
    state = {
@@ -29,67 +30,146 @@ class Graph extends Component {
    };
 
    async componentDidMount() {
-      //set host as enviornment variable
-      let host = "http://localhost:3000";
-
-      //const { data } = await axios.get(host+"/api/thermostat/"+this.match.params.id);
-      //this.setState({graphData: data});
-
-      //do a day data population
-      this.populateData(24, hours);
+      // let length = this.props.data.cTemps.length;
+      // let data = {
+      //    sTemp: this.props.data.sTemps,
+      //    cTemp: this.props.data.cTemps,
+      //    oTemp: this.props.data.oTemps,
+      // }
+      // this.populateData(this.makeDayAxis(length), data, hours);
+      this.updateGraph(this.state.graphType);
    };
 
-   populateData = (amount, unit) => {
+   adjustLeapYear = (year) => {
+      if (new Date(year, 1, 29).getDate() === 29) {
+         monthCount[1] = 29;
+      }
+   }
+
+   populateData = (xaxis, array, type) => {
       let data = [];
-      // will need to replace the for loop with axios.get request to get data from mongodb
-      // use this,props.currentThermostat to find out which thermostat we want
-      for (let i = 0; i < amount; ++i) {
-         let tempData = {name: '', sTemp: 0, cTemp: 0, oTemp: 0};
-         tempData.name = unit[i];
-         tempData.sTemp = 20 + this.getRandomInt(2);
-         tempData.cTemp = tempData.sTemp - 1 - this.getRandomInt(3);
-         tempData.oTemp = tempData.sTemp - 12 - this.getRandomInt(2);
+      for (let i = 0; i < array.sTemp.length; ++i) {
+         let tempData = { name: '', sTemp: 0, cTemp: 0, oTemp: 0 };
+         tempData.name = xaxis[i];
+         tempData.sTemp = array.sTemp[i];
+         tempData.cTemp = array.cTemp[i];
+         tempData.oTemp = array.oTemp[i];
          data[i] = tempData;
       }
 
       // update state with the data, 
-      this.setState({graphData: data, currentThermostat: this.props.currentThermostat, granularity: unit});
-   }
-
-   getRandomInt = max => {
-      return Math.floor(Math.random() * Math.floor(max));
+      this.setState({ graphData: data, currentThermostat: this.props.currentThermostat, granularity: type });
    }
 
    updateGraph = async (type) => {
+      let length = 0;
+      let data = {
+         sTemp: [],
+         cTemp: [],
+         oTemp: [],
+      }
       switch (type) {
          case "Day":
-            //axio get Day data
-            this.populateData(24, hours);
+            length = this.props.data.sTemps.length;
+            data.sTemp = this.props.data.sTemps;
+            data.cTemp = this.props.data.cTemps;
+            data.oTemp = this.props.data.oTemps;
+            this.populateData(this.makeDayAxis(length), data, hours);
             break;
          case "Week":
-            //axio get Week data
-            this.populateData(7, weekDays);
+            length = this.props.data[0].sTemps.length;
+            for (let i = 0; i < this.props.data.length; ++i) {
+               data.sTemp.push(this.makeAverage(this.props.data[i].sTemps));
+               data.cTemp.push(this.makeAverage(this.props.data[i].cTemps));
+               data.oTemp.push(this.makeAverage(this.props.data[i].oTemps));
+            }
+            this.populateData(this.makeWeekAxis(length), data, weekDays);
             break;
          case "Month":
-            //axio get Month data
-            this.populateData(30, this.getMonth());
+            length = this.props.data[0].sTemps.length;
+            for (let i = 0; i < this.props.data.length; ++i) {
+               data.sTemp.push(this.makeAverage(this.props.data[i].sTemps));
+               data.cTemp.push(this.makeAverage(this.props.data[i].cTemps));
+               data.oTemp.push(this.makeAverage(this.props.data[i].oTemps));
+            }
+            this.populateData(this.makeMonthAxis(length, this.props.data[0].month), data, []);
             break;
          default:
-            //axio get Year data
-            this.populateData(12, months);
+            this.adjustLeapYear(this.props.data[0].year);
+            length = this.props.data[0].sTemps.length;
+            for (let i = 0; i < this.props.data.length; ++i) {
+               data.sTemp.push(this.makeAverage(this.props.data[i].sTemps));
+               data.cTemp.push(this.makeAverage(this.props.data[i].cTemps));
+               data.oTemp.push(this.makeAverage(this.props.data[i].oTemps));
+            }
+            this.populateData(this.makeYearAxis(length), data, months);
             break;
       }
+      console.log(this.props);
    }
 
-   getMonth = () => {
-      let date = new Date();
-      let curMonth = date.getMonth();
-      let dateArray = [];
-      let numDays = new Date(date.getFullYear(), curMonth + 1, 0).getDate();
-      for (let i = 0; i < numDays; ++i) {
-         dateArray[i] = months[curMonth] + " " + (i + 1); 
+   makeDayAxis = (length) => {
+      let xaxis = [];
+      let hour = -1;
+
+      for (let i = 0; i < length; ++i) {
+         if (i % 6 == 0) {
+            ++hour;
+         }
+         let min = i % 6;
+         let axisString = hour + ":" + min + "0";
+         xaxis.push(axisString);
       }
-      return dateArray;
+      return xaxis;
+   }
+
+   makeWeekAxis = (length) => {
+      let xaxis = [];
+      for (let i = 0; i < length; ++i) {
+         xaxis.push(weekDays[i]);
+      }
+      return xaxis;
+   }
+
+   makeMonthAxis = (length, month) => {
+      let xaxis = [];
+      for (let i = 1; i <= length; ++i) {
+         let axisString = month + "/" + i;
+         xaxis.push(axisString);
+      }
+      return xaxis;
+   }
+
+   makeYearAxis = (length) => {
+      let xaxis = [];
+      let counter = 0;
+      let month = 0;
+
+      for (let j = 0; j < 12; ++j) {
+         ++month;
+         let day = 0;
+         for (let i = 0; i < monthCount[j]; ++i) {
+            ++day;
+            let axisString = month + "/" + day;
+            xaxis.push(axisString);
+            ++counter;
+            if (counter >= length) {
+               console.log(xaxis);
+               return xaxis;
+            }
+         }
+      }
+      console.log(xaxis);
+      return xaxis;
+   }
+
+   makeAverage = array => {
+      let sum = array.reduce(
+         (previous, current) => {
+            return current + previous;
+         });
+      let average = sum / array.length;
+      return Math.round(average * 100) / 100;
    }
 
    componentDidUpdate(prevProps) {
@@ -107,14 +187,15 @@ class Graph extends Component {
             <ResponsiveContainer>
                <LineChart data={this.state.graphData}>
                   <CartesianGrid stroke="#ccc" strokeDasharray="5 5" />
-                  <XAxis ticks={this.state.granularity} dataKey="name" interval={this.state.graphInterval}/>
-                  <YAxis label={{ value: 'Temperature (\xB0C)', angle: -90, position: 'center', dx: -15}} />
+                  <XAxis ticks={this.state.granularity} dataKey="name" interval={this.state.graphInterval} />
+                  <YAxis label={{ value: 'Temperature (\xB0C)', angle: -90, position: 'center', dx: -15 }} />
                   <Tooltip />
-                  <Legend />
 
-                  <Line type="monotone" dataKey="sTemp" stroke="orange" />
-                  <Line type="monotone" dataKey="cTemp" stroke="green" />
-                  <Line type="monotone" dataKey="oTemp" stroke="dodgerblue" />
+                  <Line type="monotone" dataKey="sTemp" stroke="orange" dot={false}/>
+                  <Line type="monotone" dataKey="cTemp" stroke="green" dot={false}/>
+                  <Line type="monotone" dataKey="oTemp" stroke="dodgerblue" dot={false}/>
+
+                  <Legend wrapperStyle={{ bottom: -10 }} />
                </LineChart>
             </ResponsiveContainer>
          </div>

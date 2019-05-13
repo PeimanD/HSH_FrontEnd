@@ -33,6 +33,7 @@ class App extends Component {
             }).then(({data}) => {
                 let thermostats = data.thermostats;
                 this.setState({thermostats: thermostats, dataReceived: true});
+                console.log(this.state.thermostats);
             });
 
             const day = axios.get(host + "/api/log/day", {
@@ -111,7 +112,8 @@ class App extends Component {
                                    render={() => <Statistics day={this.state.day}
                                                              week={this.state.week}
                                                              month={this.state.month}
-                                                             year={this.state.year}/>}/>
+                                                             year={this.state.year}
+                                                             thermostats={this.state.thermostats}/>}/>
 
                             <Route path="/Schedule"
                                    render={() => <Schedule/>}/>
