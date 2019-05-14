@@ -56,15 +56,15 @@ class Stats extends Component {
   }
 
   getWeekData = async () => {
-    await this.props.updateDay(this.state.currentThermostat, this.state.currentMasterDevId);
+    await this.props.updateWeek(this.state.currentThermostat, this.state.currentMasterDevId);
   }
 
   getMonthData = async () => {
-    await this.props.updateDay(this.state.currentThermostat, this.state.currentMasterDevId);
+    await this.props.updateMonth(this.state.currentThermostat, this.state.currentMasterDevId);
   }
 
   getYearData = async () => {
-    await this.props.updateDay(this.state.currentThermostat, this.state.currentMasterDevId);
+    await this.props.updateYear(this.state.currentThermostat, this.state.currentMasterDevId);
   }
 
   changeDisplay = (type) => {
@@ -107,16 +107,16 @@ class Stats extends Component {
                 defaultValue={'Day'}
                 onChange={value => {
                   if (value === 'Day') {
-                    this.props.updateDay();
+                    this.getDayData();
                     //this.setState({ graphType: value, data: this.state.day });
                   } else if (value === 'Week') {
-                    this.props.updateWeek();
+                    this.getWeekData();
                     //this.setState({ graphType: value, data: this.state.week });
                   } else if (value === 'Month') {
-                    this.props.updateMonth();
+                    this.getMonthData();
                     //this.setState({ graphType: value, data: this.state.month });
                   } else {
-                    this.props.updateYear();
+                    this.getYearData();
                     //this.setState({ graphType: value, data: this.state.year });
                   }
                 }}
