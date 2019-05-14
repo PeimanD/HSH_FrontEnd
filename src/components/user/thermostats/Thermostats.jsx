@@ -14,7 +14,6 @@ class Thermostats extends Component {
             dataReceived: this.props.dataReceived,
             thermostats: this.props.thermostats,
         };
-        console.log(this.props);
     };
 
     componentDidMount = async () => {
@@ -22,7 +21,6 @@ class Thermostats extends Component {
     }
 
     renderThermostats = () => {
-        console.log("renderThermostats called");
         let thermostats = [];
         for (let i = 0; i < this.props.thermostats.length; ++i) {
             let status = this.props.thermostats[i].status;
@@ -48,9 +46,7 @@ class Thermostats extends Component {
                 <BadLogin />
             );
         }
-        console.log("props thermo:" , this.props);
         let renderedThermostats = this.props.thermostats.map((thermo, i) => {
-            console.log("rendering thermo:", thermo);
             return (
                 <Grid item xs={6} key={i}>
                     <Thermostat
@@ -70,7 +66,6 @@ class Thermostats extends Component {
                     {this.props.dataReceived ?
                         <Paper className={classes.paper}>
                             <Grid container spacing={8}>
-                                {/* {this.renderThermostats()} */}
                                 {renderedThermostats}
                             </Grid>
                         </Paper> : ''}

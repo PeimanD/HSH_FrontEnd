@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { withRouter } from "react-router";
-import { Combobox } from 'react-widgets';
+import { DropdownList } from 'react-widgets';
 import Graph from './Graph';
 import Grid from '@material-ui/core/Grid';
 
@@ -8,63 +8,161 @@ import 'react-widgets/dist/css/react-widgets.css';
 import './graph.css';
 import SideNav from "../SideNav";
 import BadLogin from "../badlogin/badLogin";
+import axios from "axios";
+
+const graphOptions = ["Day", "Week", "Month", "Year"];
 
 class Stats extends Component {
   constructor(props) {
     super(props);
 
-    if (props.day === null) {
+    if (props.thermostats[0].id === 1) {
       if (!(window.localStorage.statsState)) {
         this.props.history.push('/Login');
         return;
       } else {
-        console.log("has state saved locally");
         this.state = JSON.parse(window.localStorage.statsState);
       }
     } else {
+      console.log(this.props.thermostats);
       this.state = {
         graphType: 'Day',
-        //currentThermostat: 'Thermostat #1',
-        currentThermostat: this.props.thermostats[0].thermostatId,
-        currentMasterDev: this.props.thermostats[0].masterDevId,
-        day: this.props.day,
-        week: this.props.week,
-        month: this.props.month,
-        year: this.props.year,
-        data: this.props.day,
+        currentIndex: 0,
+        // currentThermostat: this.props.thermostats[0].thermostatId,
+        // currentMasterDev: this.props.thermostats[0].masterDevId,
+        // currentRoomName: this.props.thermostats[0].roomName,
+        day: {
+          sTemps: [0],
+          cTemps: [0],
+          oTemps: [0],
+        },
+        week: [
+          {
+            sTemps: [0],
+            cTemps: [0],
+            oTemps: [0],
+          }
+        ],
+        month: [
+          {
+            sTemps: [0],
+            cTemps: [0],
+            oTemps: [0],
+          }
+        ],
+        year: [
+          {
+            sTemps: [0],
+            cTemps: [0],
+            oTemps: [0],
+          }
+        ],
+        data: {
+          sTemps: [0],
+          cTemps: [0],
+          oTemps: [0],
+        },
         thermostats: this.props.thermostats,
+        firstLoad: true,
       };
       window.localStorage.setItem("statsState", JSON.stringify(this.state));
-      console.log("new state saved locally");
     }
   };
 
   async componentDidMount() {
-    //this.setState({ currentThermostat: this.props.currentThermostat });
-    await this.props.updateDay(this.state.thermostats[0].thermostatId, this.state.thermostats[0].masterDevId);
-    //this.setState({ day: this.props.day });
-
-    console.log(this.state.day);
-    console.log(this.state.week);
-    console.log(this.state.month);
-    console.log(this.state.year);
-    console.log(this.state.thermostats);
+    this.getDayData(this.state.currentIndex);
   }
 
-  getDayData = async () => {
-    await this.props.updateDay(this.state.currentThermostat, this.state.currentMasterDevId);
+  getDayData = async (index) => {
+    let date = new Date();
+    let dayDate = date.getDate();
+    let monthDate = date.getMonth() + 1;
+    let yearDate = date.getFullYear();
+    try {
+      let host = "http://localhost:3000";
+      let { data } = await axios.get(host + "/api/log/day", {
+        headers: {
+          "x-auth-token": window.localStorage.token,
+        },
+        params: {
+          master_id: 'ree',
+          thermostat_id: 'pre-ree',
+          day: dayDate,
+          month: monthDate,
+          year: yearDate
+        }
+      });
+      this.setState({ graphType: 'Day', data: data, day: data, currentIndex: index, firstLoad: false });
+    } catch (e) {
+      this.props.history.push("/Login");
+    }
   }
 
-  getWeekData = async () => {
-    await this.props.updateWeek(this.state.currentThermostat, this.state.currentMasterDevId);
+  getWeekData = async (index) => {
+    let date = new Date();
+    let monthDate = date.getMonth() + 1;
+    let yearDate = date.getFullYear();
+    try {
+      let host = "http://localhost:3000";
+      let { data } = await axios.get(host + "/api/log/week", {
+        headers: {
+          "x-auth-token": window.localStorage.token,
+        },
+        params: {
+          master_id: 'ree',
+          thermostat_id: 'pre-ree',
+          day: 8,
+          month: monthDate,
+          year: yearDate
+        }
+      });
+      this.setState({ graphType: 'Week', data: data, week: data, currentIndex: index });
+    } catch (e) {
+      this.props.history.push("/Login");
+    }
   }
 
-  getMonthData = async () => {
-    await this.props.updateMonth(this.state.currentThermostat, this.state.currentMasterDevId);
+  getMonthData = async (index) => {
+    let date = new Date();
+    let monthDate = date.getMonth() + 1;
+    let yearDate = date.getFullYear();
+    try {
+      let host = "http://localhost:3000";
+      let { data } = await axios.get(host + "/api/log/month", {
+        headers: {
+          "x-auth-token": window.localStorage.token,
+        },
+        params: {
+          master_id: 'ree',
+          thermostat_id: 'pre-ree',
+          month: monthDate,
+          year: yearDate
+        }
+      });
+      this.setState({ graphType: 'Month', data: data, month: data, currentIndex: index });
+    } catch (e) {
+      this.props.history.push("/Login");
+    }
   }
 
-  getYearData = async () => {
-    await this.props.updateYear(this.state.currentThermostat, this.state.currentMasterDevId);
+  getYearData = async (index) => {
+    let yearDate = new Date().getFullYear();
+    try {
+      let host = "http://localhost:3000";
+      let { data } = await axios.get(host + "/api/log/year", {
+        headers: {
+          "x-auth-token": window.localStorage.token,
+        },
+        params: {
+          master_id: 'ree',
+          thermostat_id: 'pre-ree',
+          year: yearDate
+        }
+      });
+      this.setState({ graphType: 'Year', data: data, year: data, currentIndex: index });
+    } catch (e) {
+      this.props.history.push("/Login");
+    }
   }
 
   changeDisplay = (type) => {
@@ -75,12 +173,15 @@ class Stats extends Component {
     this.setState({ currentThermostat: thermostat });
   };
 
-  getThermostatId = () => {
-    let id = [];
+  getThermostatName = () => {
+    let name = [];
     for (let i = 0; i < this.state.thermostats.length; ++i) {
-      id.push(this.state.thermostats[i].thermostatId);
+      let item = { id: 0, name: "", };
+      item.id = i;
+      item.name = this.state.thermostats[i].roomName
+      name.push(item);
     }
-    return id;
+    return name;
   }
 
   render() {
@@ -90,10 +191,9 @@ class Stats extends Component {
       );
     }
 
-    let graphOptions = ["Day", "Week", "Month", "Year"];
-    let thermostats = this.getThermostatId();
+    let thermostats = this.getThermostatName();
 
-    let graph = (this.props.firstLoad) ? <></> : <Graph graphType={this.state.graphType} currentThermostat={this.state.currentThermostat} data={this.state.data} />
+    let graph = (this.state.firstLoad) ? <></> : <Graph graphType={this.state.graphType} currentThermostat={this.state.currentThermostat} data={this.state.data} />
 
     return (
       <div className="graph-outer-container">
@@ -102,32 +202,44 @@ class Stats extends Component {
         <div className="graph-combobox">
           <Grid container spacing={24}>
             <Grid item xs={6}>
-              <Combobox
+              <DropdownList
                 data={graphOptions}
                 defaultValue={'Day'}
                 onChange={value => {
                   if (value === 'Day') {
-                    this.getDayData();
-                    //this.setState({ graphType: value, data: this.state.day });
+                    this.getDayData(this.state.currentIndex);
                   } else if (value === 'Week') {
-                    this.getWeekData();
-                    //this.setState({ graphType: value, data: this.state.week });
+                    this.getWeekData(this.state.currentIndex);
                   } else if (value === 'Month') {
-                    this.getMonthData();
-                    //this.setState({ graphType: value, data: this.state.month });
+                    this.getMonthData(this.state.currentIndex);
                   } else {
-                    this.getYearData();
-                    //this.setState({ graphType: value, data: this.state.year });
+                    this.getYearData(this.state.currentIndex);
                   }
                 }}
               />
             </Grid>
             <Grid item xs={6}>
-              <Combobox
+              <DropdownList
                 data={thermostats}
-                defaultValue={this.state.currentThermostat}
+                defaultValue={this.state.thermostats[this.state.currentIndex].roomName}
+                valueField="id"
+                textField="name"
                 onChange={value => {
-                  this.setState({ graphType: this.state.graphType, currentThermostat: value });
+                  switch (this.state.graphType) {
+                    case "Day":
+                      this.getDayData(value.id);
+                      break;
+                    case "Week":
+                      this.getWeekData(value.id);
+                      break;
+                    case "Month":
+                      this.getMonthData(value.id);
+                      break;
+                    default:
+                      this.getYearData(value.id);
+                      break;
+                  }
+                  //this.setState({ graphType: this.state.graphType, currentIndex: value.id });
                 }}
               />
             </Grid>

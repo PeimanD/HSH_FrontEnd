@@ -1,16 +1,11 @@
-import axios from "axios";
 import React, { Component } from 'react';
-
 import { LineChart, Line, CartesianGrid, XAxis, YAxis, Tooltip, ResponsiveContainer, Legend } from 'recharts';
-import { get } from "https";
 
 import './graph.css';
 
-import { Labels } from './string.js';
-
 const hours = ["0:00", "1:00", "2:00", "3:00", "4:00", "5:00", "6:00", "7:00", "8:00", "9:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00", "19:00", "20:00", "21:00", "22:00", "23:00"];
-const weekDays = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
-const months = ["1/1", "2/1", "3/1", "4/1", "5/1", "6/1", "7/1", "8/1", "9/1", "10/1", "11/1", "12/1"];
+const weekDays = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+const months = ["01/01", "02/01", "03/01", "04/01", "05/01", "06/01", "07/01", "08/01", "09/01", "10/01", "11/01", "12/01"];
 let monthCount = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
 
 class Graph extends Component {
@@ -30,13 +25,6 @@ class Graph extends Component {
    };
 
    async componentDidMount() {
-      // let length = this.props.data.cTemps.length;
-      // let data = {
-      //    sTemp: this.props.data.sTemps,
-      //    cTemp: this.props.data.cTemps,
-      //    oTemp: this.props.data.oTemps,
-      // }
-      // this.populateData(this.makeDayAxis(length), data, hours);
       this.updateGraph(this.state.graphType);
    };
 
@@ -61,7 +49,7 @@ class Graph extends Component {
       this.setState({ graphData: data, currentThermostat: this.props.currentThermostat, granularity: type });
    }
 
-   updateGraph = async (type) => {
+   updateGraph = type => {
       let length = 0;
       let data = {
          sTemp: [],
@@ -77,13 +65,15 @@ class Graph extends Component {
             this.populateData(this.makeDayAxis(length), data, hours);
             break;
          case "Week":
-            length = this.props.data[0].sTemps.length;
-            for (let i = 0; i < this.props.data.length; ++i) {
-               data.sTemp.push(this.makeAverage(this.props.data[i].sTemps));
-               data.cTemp.push(this.makeAverage(this.props.data[i].cTemps));
-               data.oTemp.push(this.makeAverage(this.props.data[i].oTemps));
+            if (this.props.data) {
+               length = this.props.data[0].sTemps.length;
+               for (let i = 0; i < this.props.data.length; ++i) {
+                  data.sTemp.push(this.makeAverage(this.props.data[i].sTemps));
+                  data.cTemp.push(this.makeAverage(this.props.data[i].cTemps));
+                  data.oTemp.push(this.makeAverage(this.props.data[i].oTemps));
+               }
+               this.populateData(this.makeWeekAxis(length), data, weekDays);
             }
-            this.populateData(this.makeWeekAxis(length), data, weekDays);
             break;
          case "Month":
             length = this.props.data[0].sTemps.length;
@@ -95,7 +85,6 @@ class Graph extends Component {
             this.populateData(this.makeMonthAxis(length, this.props.data[0].month), data, []);
             break;
          default:
-            this.adjustLeapYear(this.props.data[0].year);
             length = this.props.data[0].sTemps.length;
             for (let i = 0; i < this.props.data.length; ++i) {
                data.sTemp.push(this.makeAverage(this.props.data[i].sTemps));
@@ -105,7 +94,6 @@ class Graph extends Component {
             this.populateData(this.makeYearAxis(length), data, months);
             break;
       }
-      console.log(this.props);
    }
 
    makeDayAxis = (length) => {
@@ -134,7 +122,7 @@ class Graph extends Component {
    makeMonthAxis = (length, month) => {
       let xaxis = [];
       for (let i = 1; i <= length; ++i) {
-         let axisString = month + "/" + i;
+         let axisString = month + "/" + this.padNumber(i);
          xaxis.push(axisString);
       }
       return xaxis;
@@ -150,16 +138,14 @@ class Graph extends Component {
          let day = 0;
          for (let i = 0; i < monthCount[j]; ++i) {
             ++day;
-            let axisString = month + "/" + day;
+            let axisString = this.padNumber(month) + "/" + this.padNumber(day);
             xaxis.push(axisString);
             ++counter;
             if (counter >= length) {
-               console.log(xaxis);
                return xaxis;
             }
          }
       }
-      console.log(xaxis);
       return xaxis;
    }
 
@@ -172,9 +158,13 @@ class Graph extends Component {
       return Math.round(average * 100) / 100;
    }
 
+   padNumber = number => {
+      return (number < 10) ? '0' + number.toString() : number.toString();
+   }
+
    componentDidUpdate(prevProps) {
       if (prevProps.currentThermostat !== this.props.currentThermostat) {
-         this.updateGraph(this.props.graphType, this.props.currentThermostat);
+         this.updateGraph(this.props.graphType);
       }
       if (prevProps.graphType !== this.props.graphType) {
          this.updateGraph(this.props.graphType);
