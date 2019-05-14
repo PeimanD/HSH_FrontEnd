@@ -1,13 +1,13 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import Grid from '@material-ui/core/Grid/index';
-import { withStyles } from '@material-ui/core/styles';
+import {withStyles} from '@material-ui/core/styles';
 import DropdownList from 'react-widgets/lib/DropdownList'
-import { Combobox } from 'react-widgets';
+import {Combobox} from 'react-widgets';
 import TemperatureSlider from './TemperatureSlider';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import './sliderContainer.css';
-import { orange } from '@material-ui/core/colors';
+import {orange} from '@material-ui/core/colors';
 
 const styles = {
     root: {
@@ -24,15 +24,18 @@ const tempRange = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17,
 
 class SliderContainer extends Component {
     state = {
-        weekDay: 'Mon',
+        weekDay: this.props.weekDay,
         setTemp: [20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20],
         tempTemp: 20,
-    }
+    };
 
     async componentDidMount() {
         //axio get the temperature schedule
         //set the weekly temperature
-        this.setState({ weekDay: this.props.weekDay })
+        console.log("in container:");
+        this.setState({setTemp: this.props.thermostats[this.props.schedule_cur_thermo_id]['weekSchedule'][this.state.weekDay]}, () => {
+            console.log(this.state.setTemp);
+        })
     }
 
     populateSliders = () => {
@@ -42,7 +45,10 @@ class SliderContainer extends Component {
             sliders.push(
                 <div key={"div-" + this.state.weekDay + i}>
                     <p>{time}</p>
-                    <TemperatureSlider key={"tempSlider" + i} setTemp={this.state.setTemp[i]} setParent={this.setTempState} index={i}/> {/*20 for now, but will need to be axio get from db*/}
+                    <TemperatureSlider key={"tempSlider" + i}
+                                       setTemp={this.state.setTemp[i]}
+                                       setParent={this.setTempState}
+                                       index={i}/> {/*20 for now, but will need to be axio get from db*/}
                 </div>
             ); //will need to get setTemp from database
         }
@@ -60,24 +66,24 @@ class SliderContainer extends Component {
         for (let i = 0; i < 24; ++i) {
             temp[i] = this.state.tempTemp;
         }
-        this.setState({ setTemp: temp });
+        this.setState({setTemp: temp});
     }
 
     setResetTemp = value => {
         let temp = 0;
         if (Number.isInteger(value)) {
-            this.setState({ tempTemp: value });
+            this.setState({tempTemp: value});
         }
     }
 
     setTempState = (index, value) => {
         let temp = this.state.setTemp;
         temp[index] = value;
-        this.setState({ setTemp: temp });
+        this.setState({setTemp: temp});
     }
 
     render() {
-        const { classes } = this.props;
+        const {classes} = this.props;
         let sliderList = this.populateSliders();
 
         return (
@@ -87,11 +93,13 @@ class SliderContainer extends Component {
                         <Combobox
                             data={tempRange}
                             defaultValue={20}
-                            onChange={value => { this.setResetTemp(value); }}
+                            onChange={value => {
+                                this.setResetTemp(value);
+                            }}
                         />
                     </Grid>
                     <Grid item xs={3}>
-                        <Button 
+                        <Button
                             className={classes.root}
                             onClick={this.resetSliders}
                         >
@@ -100,7 +108,7 @@ class SliderContainer extends Component {
                     </Grid>
                     {sliderList}
                 </Grid>
-            </div >
+            </div>
         )
     }
 }

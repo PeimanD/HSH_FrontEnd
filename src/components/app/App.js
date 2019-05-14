@@ -25,6 +25,8 @@ class App extends Component {
             month: null,
             year: null,
             firstLoad: true,
+            schedule: [],
+            schedule_cur_thermo_id: 0
         };
     };
 
@@ -50,7 +52,27 @@ class App extends Component {
         } catch (e) {
 
         }
-    }
+    };
+
+    // updateSchedule = async (thermostatId, masterDevId) => {
+    //     try {
+    //         let host = "http://localhost:3000";
+    //         let {data} = await axios.get(host + "/api/schedule", {
+    //             headers: {
+    //                 "x-auth-token": window.localStorage.token,
+    //             },
+    //             params: {
+    //                 master_id: 'ree',
+    //                 thermostat_id: 'pre-ree',
+    //             }
+    //         });
+    //         // this.setState({schedule: data.thermostats, dataReceived: true});
+    //         console.log("app updateSchedule:");
+    //         console.log(data);
+    //     } catch (e) {
+    //
+    //     }
+    // };
 
     updateStatisticDay = async (thermostatId, masterDevId) => {
         try {
@@ -171,7 +193,10 @@ class App extends Component {
                                        updateYear={this.updateStatisticYear}/>}/>
 
                             <Route path="/Schedule"
-                                   render={() => <Schedule/>}/>
+                                   render={() =>
+                                       <Schedule
+                                           thermostats={this.state.thermostats}
+                                           schedule_cur_thermo_id={this.state.schedule_cur_thermo_id}/>}/>
                         </Switch>
                     </section>
                 </div>

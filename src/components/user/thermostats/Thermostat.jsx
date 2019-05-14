@@ -20,12 +20,15 @@ class Thermostat extends Component {
         const {classes} = this.props;
         return (
             <Card className={classes.card}>
-                <CardContent>
-                    <Typography variant="h5" component="h2">Thermostat #{this.state.id}</Typography>
-                    <Typography className={classes.pos} color="textSecondary">Status: {this.state.status ? 'Automatic' : 'Manual'}</Typography>
-                    <Typography component="p">Set Temperature: {this.state.setTemp}</Typography>
-                    <Typography component="p">Current Temperature: {this.state.currentTemp}</Typography>
-                </CardContent>
+                <button className={classes.card}>
+                    <CardContent>
+                        <Typography variant="h5" component="h2">Thermostat #{this.state.id}</Typography>
+                        <Typography className={classes.pos}
+                                    color="textSecondary">Status: {this.state.status ? 'Automatic' : 'Manual'}</Typography>
+                        <Typography component="p">Set Temperature: {this.state.setTemp}</Typography>
+                        <Typography component="p">Current Temperature: {this.state.currentTemp}</Typography>
+                    </CardContent>
+                </button>
             </Card>
         );
     }
