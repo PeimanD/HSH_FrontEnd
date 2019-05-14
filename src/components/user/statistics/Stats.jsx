@@ -26,6 +26,7 @@ class Stats extends Component {
         graphType: 'Day',
         //currentThermostat: 'Thermostat #1',
         currentThermostat: this.props.thermostats[0].thermostatId,
+        currentMasterDev: this.props.thermostats[0].masterDevId,
         day: this.props.day,
         week: this.props.week,
         month: this.props.month,
@@ -38,13 +39,32 @@ class Stats extends Component {
     }
   };
 
-  componentDidMount() {
+  async componentDidMount() {
     //this.setState({ currentThermostat: this.props.currentThermostat });
+    await this.props.updateDay(this.state.thermostats[0].thermostatId, this.state.thermostats[0].masterDevId);
+    //this.setState({ day: this.props.day });
+
     console.log(this.state.day);
     console.log(this.state.week);
     console.log(this.state.month);
     console.log(this.state.year);
     console.log(this.state.thermostats);
+  }
+
+  getDayData = async () => {
+    await this.props.updateDay(this.state.currentThermostat, this.state.currentMasterDevId);
+  }
+
+  getWeekData = async () => {
+    await this.props.updateDay(this.state.currentThermostat, this.state.currentMasterDevId);
+  }
+
+  getMonthData = async () => {
+    await this.props.updateDay(this.state.currentThermostat, this.state.currentMasterDevId);
+  }
+
+  getYearData = async () => {
+    await this.props.updateDay(this.state.currentThermostat, this.state.currentMasterDevId);
   }
 
   changeDisplay = (type) => {
@@ -73,6 +93,8 @@ class Stats extends Component {
     let graphOptions = ["Day", "Week", "Month", "Year"];
     let thermostats = this.getThermostatId();
 
+    let graph = (this.props.firstLoad) ? <></> : <Graph graphType={this.state.graphType} currentThermostat={this.state.currentThermostat} data={this.state.data} />
+
     return (
       <div className="graph-outer-container">
         {/* drop down menu component to pick between day, week, month, year */}
@@ -85,13 +107,17 @@ class Stats extends Component {
                 defaultValue={'Day'}
                 onChange={value => {
                   if (value === 'Day') {
-                    this.setState({ graphType: value, data: this.state.day });
+                    this.props.updateDay();
+                    //this.setState({ graphType: value, data: this.state.day });
                   } else if (value === 'Week') {
-                    this.setState({ graphType: value, data: this.state.week });
+                    this.props.updateWeek();
+                    //this.setState({ graphType: value, data: this.state.week });
                   } else if (value === 'Month') {
-                    this.setState({ graphType: value, data: this.state.month });
+                    this.props.updateMonth();
+                    //this.setState({ graphType: value, data: this.state.month });
                   } else {
-                    this.setState({ graphType: value, data: this.state.year });
+                    this.props.updateYear();
+                    //this.setState({ graphType: value, data: this.state.year });
                   }
                 }}
               />
@@ -108,7 +134,8 @@ class Stats extends Component {
           </Grid>
         </div>
         <div className="graph-mid-container card">
-          <Graph graphType={this.state.graphType} currentThermostat={this.state.currentThermostat} data={this.state.data} />
+          {/* <Graph graphType={this.state.graphType} currentThermostat={this.state.currentThermostat} data={this.state.data} /> */}
+          {graph}
         </div>
       </div>
     );

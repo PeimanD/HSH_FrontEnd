@@ -28,14 +28,14 @@ class Login extends React.Component {
         console.log("userid: " + userid + " password: " + password);
 
         try {
-            let {data} = await Axios.post(host, {
+            let { data } = await Axios.post(host, {
                 "_id": "5ccf70df00f1f61e5889f3d3",
                 "password": "123456remimi",
-            }).then(({data}) => {
-                window.localStorage.setItem("token", data.token);
-            }).then(() => {
-                this.props.history.push('/Thermostats');
             });
+
+            window.localStorage.setItem("token", data.token);
+            this.props.history.replace('./Thermostats');
+                
         } catch (e) {
             // tell them they have a bad login
         }
