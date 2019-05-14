@@ -24,13 +24,9 @@ class Stats extends Component {
         this.state = JSON.parse(window.localStorage.statsState);
       }
     } else {
-      console.log(this.props.thermostats);
       this.state = {
         graphType: 'Day',
         currentIndex: 0,
-        // currentThermostat: this.props.thermostats[0].thermostatId,
-        // currentMasterDev: this.props.thermostats[0].masterDevId,
-        // currentRoomName: this.props.thermostats[0].roomName,
         day: {
           sTemps: [0],
           cTemps: [0],
@@ -85,8 +81,8 @@ class Stats extends Component {
           "x-auth-token": window.localStorage.token,
         },
         params: {
-          master_id: 'ree',
-          thermostat_id: 'pre-ree',
+          master_id: this.state.thermostats[index].masterDevId,
+          thermostat_id: this.state.thermostats[index].thermostatId,
           day: dayDate,
           month: monthDate,
           year: yearDate
@@ -109,8 +105,8 @@ class Stats extends Component {
           "x-auth-token": window.localStorage.token,
         },
         params: {
-          master_id: 'ree',
-          thermostat_id: 'pre-ree',
+          master_id: this.state.thermostats[index].masterDevId,
+          thermostat_id: this.state.thermostats[index].thermostatId,
           day: 8,
           month: monthDate,
           year: yearDate
@@ -133,8 +129,8 @@ class Stats extends Component {
           "x-auth-token": window.localStorage.token,
         },
         params: {
-          master_id: 'ree',
-          thermostat_id: 'pre-ree',
+          master_id: this.state.thermostats[index].masterDevId,
+          thermostat_id: this.state.thermostats[index].thermostatId,
           month: monthDate,
           year: yearDate
         }
@@ -154,8 +150,8 @@ class Stats extends Component {
           "x-auth-token": window.localStorage.token,
         },
         params: {
-          master_id: 'ree',
-          thermostat_id: 'pre-ree',
+          master_id: this.state.thermostats[index].masterDevId,
+          thermostat_id: this.state.thermostats[index].thermostatId,
           year: yearDate
         }
       });
@@ -164,14 +160,6 @@ class Stats extends Component {
       this.props.history.push("/Login");
     }
   }
-
-  changeDisplay = (type) => {
-    this.setState({ graphType: type });
-  };
-
-  changeThermostat = (thermostat) => {
-    this.setState({ currentThermostat: thermostat });
-  };
 
   getThermostatName = () => {
     let name = [];
@@ -192,8 +180,7 @@ class Stats extends Component {
     }
 
     let thermostats = this.getThermostatName();
-
-    let graph = (this.state.firstLoad) ? <></> : <Graph graphType={this.state.graphType} currentThermostat={this.state.currentThermostat} data={this.state.data} />
+    let graph = (this.state.firstLoad) ? <></> : <Graph graphType={this.state.graphType} currentThermostat={this.state.thermostats[this.state.currentIndex].thermostatId} data={this.state.data} />
 
     return (
       <div className="graph-outer-container">
@@ -239,7 +226,6 @@ class Stats extends Component {
                       this.getYearData(value.id);
                       break;
                   }
-                  //this.setState({ graphType: this.state.graphType, currentIndex: value.id });
                 }}
               />
             </Grid>
