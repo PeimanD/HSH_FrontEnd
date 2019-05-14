@@ -16,11 +16,17 @@ class Thermostat extends Component {
         };
     };
 
+    set_schedule_cur_thermo_id = () => {
+        this.props.set_schedule_cur_thermo_id(this.state.id);
+    };
+
     render() {
         const {classes} = this.props;
         return (
             <Card className={classes.card}>
-                <button className={classes.card}>
+                <button
+                    className={classes.card}
+                    onClick={this.set_schedule_cur_thermo_id}>
                     <CardContent>
                         <Typography variant="h5" component="h2">Thermostat #{this.state.id}</Typography>
                         <Typography className={classes.pos}

@@ -34,6 +34,7 @@ class Thermostats extends Component {
                         status={thermo.status}
                         setTemp={thermo.setTemp}
                         currentTemp={30}
+                        set_schedule_cur_thermo_id={this.props.set_schedule_cur_thermo_id}
                     />
                 </Grid>
             )

@@ -25,17 +25,11 @@ const tempRange = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17,
 class SliderContainer extends Component {
     state = {
         weekDay: this.props.weekDay,
-        setTemp: [20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20],
+        setTemp: this.props.setTemp,
         tempTemp: 20,
     };
 
     async componentDidMount() {
-        //axio get the temperature schedule
-        //set the weekly temperature
-        console.log("in container:");
-        this.setState({setTemp: this.props.thermostats[this.props.schedule_cur_thermo_id]['weekSchedule'][this.state.weekDay]}, () => {
-            console.log(this.state.setTemp);
-        })
     }
 
     populateSliders = () => {
@@ -46,7 +40,7 @@ class SliderContainer extends Component {
                 <div key={"div-" + this.state.weekDay + i}>
                     <p>{time}</p>
                     <TemperatureSlider key={"tempSlider" + i}
-                                       setTemp={this.state.setTemp[i]}
+                                       setTemp={this.props.setTemp ? this.props.setTemp[i] : 20}
                                        setParent={this.setTempState}
                                        index={i}/> {/*20 for now, but will need to be axio get from db*/}
                 </div>

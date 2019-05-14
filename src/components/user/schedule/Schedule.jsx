@@ -59,13 +59,15 @@ class Schedule extends React.Component {
             value: 0,
             mode: 'Schedule',
             status: true,
-            schedule_cur_thermo_id: this.props.schedule_cur_thermo_id,
-            thermostats: this.props.thermostats
+            setTemp: [20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20],
         };
     };
 
-    componentDidMount = async () => {
-        console.log(this.props.thermostats)
+    componentDidMount = () => {
+        console.log(this.props.thermostats[this.props.schedule_cur_thermo_id]['weekSchedule']);
+        this.setState({setTemp: this.props.thermostats[this.props.schedule_cur_thermo_id]['weekSchedule']}, () => {
+            console.log(this.state.setTemp);
+        })
     };
 
     handleChange = (event, value) => {
@@ -169,45 +171,38 @@ class Schedule extends React.Component {
                     >
                         <TabContainer dir={theme.direction}>
                             <SliderContainer
-                                weekDay={'mon'}
                                 schedule_cur_thermo_id={this.props.schedule_cur_thermo_id}
-                                thermostats={this.props.thermostats}/>
+                                setTemp={this.state.setTemp ? this.state.setTemp['mon'] : this.state.setTemp}/>
                         </TabContainer>
                         <TabContainer dir={theme.direction}>
                             <SliderContainer
-                                weekDay={'tue'}
                                 schedule_cur_thermo_id={this.props.schedule_cur_thermo_id}
-                                thermostats={this.props.thermostats}/>
+                                setTemp={this.state.setTemp ? this.state.setTemp['tue'] : this.state.setTemp}/>
                         </TabContainer>
                         <TabContainer dir={theme.direction}>
                             <SliderContainer
-                                weekDay={'wed'}
                                 schedule_cur_thermo_id={this.props.schedule_cur_thermo_id}
-                                thermostats={this.props.thermostats}/>
+                                setTemp={this.state.setTemp ? this.state.setTemp['wed'] : this.state.setTemp}/>
                         </TabContainer>
                         <TabContainer dir={theme.direction}>
                             <SliderContainer
-                                weekDay={'thu'}
                                 schedule_cur_thermo_id={this.props.schedule_cur_thermo_id}
-                                thermostats={this.props.thermostats}/>
+                                setTemp={this.state.setTemp ? this.state.setTemp['thu'] : this.state.setTemp}/>
                         </TabContainer>
                         <TabContainer dir={theme.direction}>
                             <SliderContainer
-                                weekDay={'fri'}
                                 schedule_cur_thermo_id={this.props.schedule_cur_thermo_id}
-                                thermostats={this.props.thermostats}/>
+                                setTemp={this.state.setTemp ? this.state.setTemp['fri'] : this.state.setTemp}/>
                         </TabContainer>
                         <TabContainer dir={theme.direction}>
                             <SliderContainer
-                                weekDay={'sat'}
                                 schedule_cur_thermo_id={this.props.schedule_cur_thermo_id}
-                                thermostats={this.props.thermostats}/>
+                                setTemp={this.state.setTemp ? this.state.setTemp['sat'] : this.state.setTemp}/>
                         </TabContainer>
                         <TabContainer dir={theme.direction}>
                             <SliderContainer
-                                weekDay={'sun'}
                                 schedule_cur_thermo_id={this.props.schedule_cur_thermo_id}
-                                thermostats={this.props.thermostats}/>
+                                setTemp={this.state.setTemp ? this.state.setTemp['sun'] : this.state.setTemp}/>
                         </TabContainer>
                     </SwipeableViews>
                 </div>

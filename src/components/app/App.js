@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {BrowserRouter as Router, Route, Switch} from "react-router-dom";
+import {BrowserRouter as Router, Route, Switch, Redirect} from "react-router-dom";
 import './App.css';
 
 import NavBar from './Navbar';
@@ -26,8 +26,10 @@ class App extends Component {
             year: null,
             firstLoad: true,
             schedule: [],
-            schedule_cur_thermo_id: 0
-        };
+            schedule_cur_thermo_id: 0,
+            isThermoSelected: false
+        }
+        ;
     };
 
     componentDidMount() {
@@ -161,7 +163,19 @@ class App extends Component {
         }
     }
 
+    set_schedule_cur_thermo_id = (selected_thermostat) => {
+        this.setState({schedule_cur_thermo_id: selected_thermostat, isThermoSelected: true},
+            () => {
+                console.log(this.state.schedule_cur_thermo_id);
+                // window.location.assign('/Schedule');
+            });
+
+    };
+
     render() {
+        if (this.state.isThermoSelected) {
+            return <Redirect to="/Schedule/"/>
+        }
         return (
             <Router>
                 <div className="App">
@@ -178,7 +192,8 @@ class App extends Component {
                                        <Thermostats
                                            update={this.updateThermostat}
                                            thermostats={this.state.thermostats}
-                                           dataReceived={this.state.dataReceived}/>}/>
+                                           dataReceived={this.state.dataReceived}
+                                           set_schedule_cur_thermo_id={this.set_schedule_cur_thermo_id}/>}/>
                             <Route path="/Statistics"
                                    render={() => <Statistics
                                        day={this.state.day}
@@ -191,12 +206,13 @@ class App extends Component {
                                        updateWeek={this.updateStatisticWeek}
                                        updateMonth={this.updateStatisticMonth}
                                        updateYear={this.updateStatisticYear}/>}/>
-
                             <Route path="/Schedule"
                                    render={() =>
                                        <Schedule
                                            thermostats={this.state.thermostats}
-                                           schedule_cur_thermo_id={this.state.schedule_cur_thermo_id}/>}/>
+                                           schedule_cur_thermo_id={this.state.schedule_cur_thermo_id}/>}
+                            />
+
                         </Switch>
                     </section>
                 </div>
