@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import React, {Component} from 'react';
+import {BrowserRouter as Router, Route, Switch} from "react-router-dom";
 import './App.css';
 
 import NavBar from './Navbar';
@@ -15,12 +15,7 @@ class App extends Component {
         super(props);
         this.state = {
             dataReceived: false,
-            thermostats: [{
-                id: 1,
-                status: false,
-                setTemp: 4,
-                currentTemp: 30
-            }],
+            thermostats: [],
             day: {
                 sTemps: [0],
                 cTemps: [0],
@@ -37,86 +32,20 @@ class App extends Component {
         let host = "http://localhost:3000";
         try {
 
-            // const { thermostats } = axios.get(host + "/api/thermostat/all", {
-            //     headers: {
-            //         "x-auth-token": window.localStorage.token,
-            //     }
-            // }).then(({ data }) => {
-            //     let thermostats = data.thermostats;
-            //     this.setState({ thermostats: thermostats, dataReceived: true });
-            //     console.log(this.state.thermostats);
-            // });
-
-            // const day = axios.get(host + "/api/log/day", {
-            //     headers: {
-            //         "x-auth-token": window.localStorage.token,
-            //     },
-            //     params: {
-            //         master_id: 'ree',
-            //         thermostat_id: 'pre-ree',
-            //         day: 8,
-            //         month: 5,
-            //         year: 2019
-            //     }
-            // }).then(({ data }) => {
-            //     this.setState({ day: data });
-            // });
-
-            // const week = axios.get(host + "/api/log/week", {
-            //     headers: {
-            //         "x-auth-token": window.localStorage.token,
-            //     },
-            //     params: {
-            //         master_id: 'ree',
-            //         thermostat_id: 'pre-ree',
-            //         day: 8,
-            //         month: 5,
-            //         year: 2019
-            //     }
-            // }).then(({ data }) => {
-            //     this.setState({ week: data });
-            // });
-
-            // const month = axios.get(host + "/api/log/month", {
-            //     headers: {
-            //         "x-auth-token": window.localStorage.token,
-            //     },
-            //     params: {
-            //         master_id: 'ree',
-            //         thermostat_id: 'pre-ree',
-            //         month: 5,
-            //         year: 2019
-            //     }
-            // }).then(({ data }) => {
-            //     this.setState({ month: data });
-            // });
-
-            // const year = axios.get(host + "/api/log/year", {
-            //     headers: {
-            //         "x-auth-token": window.localStorage.token,
-            //     },
-            //     params: {
-            //         master_id: 'ree',
-            //         thermostat_id: 'pre-ree',
-            //         year: 2019
-            //     }
-            // }).then(({ data }) => {
-            //     this.setState({ year: data });
-            // });
         } catch (e) {
         }
     };
 
     updateThermostat = async () => {
-        console.log("update thermo called")
         try {
             let host = "http://localhost:3000";
-            let { data } = await axios.get(host + "/api/thermostat/all", {
+            let {data} = await axios.get(host + "/api/thermostat/all", {
                 headers: {
                     "x-auth-token": window.localStorage.token,
                 }
             });
-            this.setState({ thermostats: data.thermostats, dataReceived: true });
+            this.setState({thermostats: data.thermostats, dataReceived: true});
+            console.log("app updateThermostat:");
             console.log(this.state.thermostats);
         } catch (e) {
 
@@ -126,7 +55,7 @@ class App extends Component {
     updateStatisticDay = async (thermostatId, masterDevId) => {
         try {
             let host = "http://localhost:3000";
-            let { data } = await axios.get(host + "/api/log/day", {
+            let {data} = await axios.get(host + "/api/log/day", {
                 headers: {
                     "x-auth-token": window.localStorage.token,
                 },
@@ -140,7 +69,7 @@ class App extends Component {
             });
 
             console.log("got data:", data);
-            this.setState({ day: data, firstLoad: false });
+            this.setState({day: data, firstLoad: false});
 
         } catch (e) {
 
@@ -150,7 +79,7 @@ class App extends Component {
     updateStatisticWeek = async (thermostatId, masterDevId) => {
         try {
             let host = "http://localhost:3000";
-            let { data } = await axios.get(host + "/api/log/week", {
+            let {data} = await axios.get(host + "/api/log/week", {
                 headers: {
                     "x-auth-token": window.localStorage.token,
                 },
@@ -162,7 +91,7 @@ class App extends Component {
                     year: 2019
                 }
             });
-            this.setState({ week: data });
+            this.setState({week: data});
 
         } catch (e) {
 
@@ -172,7 +101,7 @@ class App extends Component {
     updateStatisticMonth = async (thermostatId, masterDevId) => {
         try {
             let host = "http://localhost:3000";
-            let { data } = await axios.get(host + "/api/log/month", {
+            let {data} = await axios.get(host + "/api/log/month", {
                 headers: {
                     "x-auth-token": window.localStorage.token,
                 },
@@ -183,7 +112,7 @@ class App extends Component {
                     year: 2019
                 }
             });
-            this.setState({ month: data });
+            this.setState({month: data});
 
         } catch (e) {
 
@@ -193,7 +122,7 @@ class App extends Component {
     updateStatisticYear = async (thermostatId, masterDevId) => {
         try {
             let host = "http://localhost:3000";
-            let { data } = axios.get(host + "/api/log/year", {
+            let {data} = axios.get(host + "/api/log/year", {
                 headers: {
                     "x-auth-token": window.localStorage.token,
                 },
@@ -203,7 +132,7 @@ class App extends Component {
                     year: 2019
                 }
             });
-            this.setState({ year: data });
+            this.setState({year: data});
 
         } catch (e) {
 
@@ -214,34 +143,35 @@ class App extends Component {
         return (
             <Router>
                 <div className="App">
-                    <NavBar />
+                    <NavBar/>
                     <section className="margin-space">
                         <Switch>
-                            <Route exact path="/" component={Home} />
+                            <Route exact path="/" component={Home}/>
                             {/* <Route path="/login" component={Login}/> */}
                             <Route path="/login"
-                                render={(routeProps) => <Login
-                                    {...routeProps}  />} />
+                                   render={(routeProps) => <Login
+                                       {...routeProps}  />}/>
                             <Route path="/Thermostats"
-                                render={(routeProps) => <Thermostats
-                                    update={this.updateThermostat}
-                                    thermostats={this.state.thermostats}
-                                    dataReceived={this.state.dataReceived} />} />
+                                   render={() =>
+                                       <Thermostats
+                                           update={this.updateThermostat}
+                                           thermostats={this.state.thermostats}
+                                           dataReceived={this.state.dataReceived}/>}/>
                             <Route path="/Statistics"
-                                render={() => <Statistics
-                                    day={this.state.day}
-                                    week={this.state.week}
-                                    month={this.state.month}
-                                    year={this.state.year}
-                                    thermostats={this.state.thermostats} 
-                                    firstLoad={this.state.firstLoad}
-                                    updateDay={this.updateStatisticDay}
-                                    updateWeek={this.updateStatisticWeek}
-                                    updateMonth={this.updateStatisticMonth}
-                                    updateYear={this.updateStatisticYear} />} />
+                                   render={() => <Statistics
+                                       day={this.state.day}
+                                       week={this.state.week}
+                                       month={this.state.month}
+                                       year={this.state.year}
+                                       thermostats={this.state.thermostats}
+                                       firstLoad={this.state.firstLoad}
+                                       updateDay={this.updateStatisticDay}
+                                       updateWeek={this.updateStatisticWeek}
+                                       updateMonth={this.updateStatisticMonth}
+                                       updateYear={this.updateStatisticYear}/>}/>
 
                             <Route path="/Schedule"
-                                render={() => <Schedule />} />
+                                   render={() => <Schedule/>}/>
                         </Switch>
                     </section>
                 </div>

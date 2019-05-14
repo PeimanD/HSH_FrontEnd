@@ -1,9 +1,9 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import Grid from '@material-ui/core/Grid/index';
 import Thermostat from "./Thermostat.jsx";
 import SideNav from '../SideNav'
 import PropTypes from "prop-types";
-import { withStyles } from "@material-ui/core";
+import {withStyles} from "@material-ui/core";
 import Paper from '@material-ui/core/Paper';
 import BadLogin from "../badlogin/badLogin";
 
@@ -12,45 +12,21 @@ class Thermostats extends Component {
         super(props);
         this.state = {
             dataReceived: this.props.dataReceived,
-            thermostats: this.props.thermostats,
         };
-        console.log(this.props);
     };
 
     componentDidMount = async () => {
         await this.props.update();
-    }
-
-    renderThermostats = () => {
-        console.log("renderThermostats called");
-        let thermostats = [];
-        for (let i = 0; i < this.props.thermostats.length; ++i) {
-            let status = this.props.thermostats[i].status;
-            let setTemp = this.props.thermostats[i].setTemp;
-            thermostats.push(
-                <Grid item xs={6} key={i}>
-                    <Thermostat
-                        id={i}
-                        status={status}
-                        setTemp={setTemp}
-                        currentTemp={30}
-                    />
-                </Grid>
-            );
-        }
-        return thermostats;
     };
 
     render() {
-        const { classes } = this.props;
+        const {classes} = this.props;
         if (!(window.localStorage.token)) {
             return (
-                <BadLogin />
+                <BadLogin/>
             );
         }
-        console.log("props thermo:" , this.props);
         let renderedThermostats = this.props.thermostats.map((thermo, i) => {
-            console.log("rendering thermo:", thermo);
             return (
                 <Grid item xs={6} key={i}>
                     <Thermostat
@@ -65,12 +41,11 @@ class Thermostats extends Component {
 
         return (
             <div>
-                <SideNav />
+                <SideNav/>
                 <div className={classes.root}>
                     {this.props.dataReceived ?
                         <Paper className={classes.paper}>
                             <Grid container spacing={8}>
-                                {/* {this.renderThermostats()} */}
                                 {renderedThermostats}
                             </Grid>
                         </Paper> : ''}
