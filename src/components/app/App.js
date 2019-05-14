@@ -174,7 +174,7 @@ class App extends Component {
 
     render() {
         if (this.state.isThermoSelected) {
-            return <Redirect to="/Schedule/"/>
+            // return <Redirect to="/Schedule"/>
         }
         return (
             <Router>

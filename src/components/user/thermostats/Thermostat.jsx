@@ -4,6 +4,8 @@ import {withStyles} from '@material-ui/core/styles';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import Card from '@material-ui/core/Card';
+import {Link} from "react-router-dom";
+import Button from "@material-ui/core/Button";
 
 class Thermostat extends Component {
     constructor(props) {
@@ -24,9 +26,12 @@ class Thermostat extends Component {
         const {classes} = this.props;
         return (
             <Card className={classes.card}>
-                <button
+
+                <Button
+                    component={Link} to="/Schedule"
                     className={classes.card}
-                    onClick={this.set_schedule_cur_thermo_id}>
+                    onClick={this.set_schedule_cur_thermo_id}
+                >
                     <CardContent>
                         <Typography variant="h5" component="h2">Thermostat #{this.state.id}</Typography>
                         <Typography className={classes.pos}
@@ -34,7 +39,7 @@ class Thermostat extends Component {
                         <Typography component="p">Set Temperature: {this.state.setTemp}</Typography>
                         <Typography component="p">Current Temperature: {this.state.currentTemp}</Typography>
                     </CardContent>
-                </button>
+                </Button>
             </Card>
         );
     }
