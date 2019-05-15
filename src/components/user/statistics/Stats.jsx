@@ -8,6 +8,7 @@ import 'react-widgets/dist/css/react-widgets.css';
 import './graph.css';
 import SideNav from "../SideNav";
 import BadLogin from "../badlogin/badLogin";
+import BadData from "./BadData";
 import axios from "axios";
 
 const graphOptions = ["Day", "Week", "Month", "Year"];
@@ -60,6 +61,7 @@ class Stats extends Component {
         },
         thermostats: this.props.thermostats,
         firstLoad: true,
+        badRequest: false,
       };
       window.localStorage.setItem("statsState", JSON.stringify(this.state));
     }
@@ -88,15 +90,19 @@ class Stats extends Component {
           year: yearDate
         }
       });
-      this.setState({ graphType: 'Day', data: data, day: data, currentIndex: index, firstLoad: false });
+      this.setState({ graphType: 'Day', data: data, day: data, currentIndex: index, firstLoad: false, badRequest: false });
     } catch (e) {
+      if (e.response.status === 404) {
+        this.setState({ badRequest: true, firstLoad: false });
+        return;
+      }
       this.props.history.push("/Login");
     }
   }
 
   getWeekData = async (index) => {
     let date = new Date();
-    let monthDate = date.getMonth() + 1;
+    let monthDate = date.getMonth() + 2;
     let yearDate = date.getFullYear();
     try {
       let host = "http://localhost:3000";
@@ -112,8 +118,12 @@ class Stats extends Component {
           year: yearDate
         }
       });
-      this.setState({ graphType: 'Week', data: data, week: data, currentIndex: index });
+      this.setState({ graphType: 'Week', data: data, week: data, currentIndex: index, badRequest: false });
     } catch (e) {
+      if (e.response.status === 404) {
+        this.setState({ badRequest: true, firstLoad: false });
+        return;
+      }
       this.props.history.push("/Login");
     }
   }
@@ -135,8 +145,12 @@ class Stats extends Component {
           year: yearDate
         }
       });
-      this.setState({ graphType: 'Month', data: data, month: data, currentIndex: index });
+      this.setState({ graphType: 'Month', data: data, month: data, currentIndex: index, badRequest: false });
     } catch (e) {
+      if (e.response.status === 404) {
+        this.setState({ badRequest: true, firstLoad: false });
+        return;
+      }
       this.props.history.push("/Login");
     }
   }
@@ -155,8 +169,12 @@ class Stats extends Component {
           year: yearDate
         }
       });
-      this.setState({ graphType: 'Year', data: data, year: data, currentIndex: index });
+      this.setState({ graphType: 'Year', data: data, year: data, currentIndex: index, badRequest: false });
     } catch (e) {
+      if (e.response.status === 404) {
+        this.setState({ badRequest: true, firstLoad: false });
+        return;
+      }
       this.props.history.push("/Login");
     }
   }
@@ -180,7 +198,13 @@ class Stats extends Component {
     }
 
     let thermostats = this.getThermostatName();
-    let graph = (this.state.firstLoad) ? <></> : <Graph graphType={this.state.graphType} currentThermostat={this.state.thermostats[this.state.currentIndex].thermostatId} data={this.state.data} />
+    let graph;
+
+    if (this.state.badRequest) {
+      graph = (this.state.firstLoad) ? <></> : <BadData />;
+    } else {
+      graph = (this.state.firstLoad) ? <></> : <Graph graphType={this.state.graphType} currentThermostat={this.state.thermostats[this.state.currentIndex].thermostatId} data={this.state.data} />
+    }
 
     return (
       <div className="graph-outer-container">
@@ -192,7 +216,7 @@ class Stats extends Component {
               <DropdownList
                 data={graphOptions}
                 defaultValue={'Day'}
-                onChange={value => {
+                onChange={async value => {
                   if (value === 'Day') {
                     this.getDayData(this.state.currentIndex);
                   } else if (value === 'Week') {
@@ -211,7 +235,7 @@ class Stats extends Component {
                 defaultValue={this.state.thermostats[this.state.currentIndex].roomName}
                 valueField="id"
                 textField="name"
-                onChange={value => {
+                onChange={async value => {
                   switch (this.state.graphType) {
                     case "Day":
                       this.getDayData(value.id);

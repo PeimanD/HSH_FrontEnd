@@ -10,7 +10,6 @@ let monthCount = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
 
 class Graph extends Component {
    state = {
-      graphType: "Day",
       graphInterval: "preserveEnd",
       currentThermostat: "Thermostat #1",
       granularity: hours,
@@ -24,8 +23,8 @@ class Graph extends Component {
       ],
    };
 
-   async componentDidMount() {
-      this.updateGraph(this.state.graphType);
+   componentDidMount() {
+      this.updateGraph(this.props.graphType);
    };
 
    adjustLeapYear = (year) => {
@@ -58,14 +57,16 @@ class Graph extends Component {
       }
       switch (type) {
          case "Day":
-            length = this.props.data.sTemps.length;
-            data.sTemp = this.props.data.sTemps;
-            data.cTemp = this.props.data.cTemps;
-            data.oTemp = this.props.data.oTemps;
-            this.populateData(this.makeDayAxis(length), data, hours);
+            if (this.props.data) {
+               length = this.props.data.sTemps.length;
+               data.sTemp = this.props.data.sTemps;
+               data.cTemp = this.props.data.cTemps;
+               data.oTemp = this.props.data.oTemps;
+               this.populateData(this.makeDayAxis(length), data, hours);
+            }
             break;
          case "Week":
-            if (this.props.data) {
+            if (this.props.data && this.props.data[0]) {
                length = this.props.data[0].sTemps.length;
                for (let i = 0; i < this.props.data.length; ++i) {
                   data.sTemp.push(this.makeAverage(this.props.data[i].sTemps));
@@ -181,9 +182,9 @@ class Graph extends Component {
                   <YAxis label={{ value: 'Temperature (\xB0C)', angle: -90, position: 'center', dx: -15 }} />
                   <Tooltip />
 
-                  <Line type="monotone" dataKey="sTemp" stroke="orange" dot={false}/>
-                  <Line type="monotone" dataKey="cTemp" stroke="green" dot={false}/>
-                  <Line type="monotone" dataKey="oTemp" stroke="dodgerblue" dot={false}/>
+                  <Line type="monotone" dataKey="sTemp" stroke="orange" dot={false} />
+                  <Line type="monotone" dataKey="cTemp" stroke="green" dot={false} />
+                  <Line type="monotone" dataKey="oTemp" stroke="dodgerblue" dot={false} />
 
                   <Legend wrapperStyle={{ bottom: -10 }} />
                </LineChart>
