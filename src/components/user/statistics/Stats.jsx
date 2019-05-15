@@ -102,7 +102,7 @@ class Stats extends Component {
 
   getWeekData = async (index) => {
     let date = new Date();
-    let monthDate = date.getMonth() + 2;
+    let monthDate = date.getMonth() + 1;
     let yearDate = date.getFullYear();
     try {
       let host = "http://localhost:3000";
