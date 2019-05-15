@@ -193,6 +193,13 @@ class App extends Component {
     });
   };
 
+  /**
+   * Remove dis later
+   */
+  checkState = EventTarget => {
+    console.log(this.state);
+  };
+
   render() {
     if (this.state.isThermoSelected) {
       // return <Redirect to="/Schedule"/>
@@ -251,6 +258,7 @@ class App extends Component {
               />
             </Switch>
           </section>
+          <button onClick={this.checkState}>SEE STATE(debug only)</button>
         </div>
       </Router>
     );
