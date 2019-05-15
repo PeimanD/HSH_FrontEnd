@@ -54,7 +54,7 @@ const styles = theme => ({
 
 class Schedule extends React.Component {
   state = {
-    value: 0,
+    dayIndex: 0,
     mode: 0,
     status: true,
     setTemp: [
@@ -85,29 +85,12 @@ class Schedule extends React.Component {
     ]
   };
 
-  componentDidMount = () => {
-    console.log(
-      this.props
-      // this.props.thermostats[this.props.schedule_cur_thermo_id]["weekSchedule"]
-    );
-    this.setState(
-      {
-        setTemp: this.props.thermostats[this.props.schedule_cur_thermo_id][
-          "weekSchedule"
-        ]
-      },
-      () => {
-        console.log(this.state.setTemp);
-      }
-    );
+  handleChange = (event, dayIndex) => {
+    this.setState({ dayIndex });
   };
 
-  handleChange = (event, value) => {
-    this.setState({ value });
-  };
-
-  handleChangeIndex = index => {
-    this.setState({ value: index });
+  handleChangeIndex = dayIndex => {
+    this.setState({ dayIndex });
   };
 
   handleStatusChange = () => event => {
@@ -118,9 +101,6 @@ class Schedule extends React.Component {
     } = this.props;
     let status = !thermostats[schedule_cur_thermo_id].status;
     onThermoStatusChange(status, schedule_cur_thermo_id);
-    // handle the big on/off state change
-    // console.log("schedule:handlestatus change clicked: ", this.props);
-    // this.setState({ status: event.target.checked });
   };
 
   handleModeChange = event => {
@@ -131,177 +111,130 @@ class Schedule extends React.Component {
   render() {
     const { classes, theme, thermostats, schedule_cur_thermo_id } = this.props;
     const modeStrings = ["Manual", "Schedule", "Smart"];
-    return (
-      <div>
-        <SideNav />
-        <div className={classes.root}>
-          <Grid container justify="space-between" spacing={24}>
-            <Grid
-              style={{ display: "flex" }}
-              container
-              justify="flex-start"
-              item
-              xs={12}
-              sm={6}
-            >
-              <FormControlLabel
-                control={
-                  <Switch
-                    checked={
-                      this.props.thermostats[this.props.schedule_cur_thermo_id]
-                        .status
-                    }
-                    onChange={this.handleStatusChange()}
-                    classes={{
-                      switchBase: classes.colorSwitchBase,
-                      checked: classes.colorChecked,
-                      bar: classes.colorBar
-                    }}
-                  />
-                }
-                label="Status"
-                labelPlacement="start"
-              />
+    const dayStringIndexes = ["mon", "tue", "wed", "thu", "fri", "sat", "sun"];
+    if (
+      thermostats === undefined ||
+      schedule_cur_thermo_id === undefined ||
+      thermostats[schedule_cur_thermo_id] === undefined
+    ) {
+      window.location.replace("/Thermostats");
+    } else {
+      let dayTabs = dayStringIndexes.map((str, idx) => {
+        return (
+          <TabContainer key={`dayTabs${idx}`} dir={theme.direction}>
+            <SliderContainer
+              weekDay={str}
+              schedule_cur_thermo_id={schedule_cur_thermo_id}
+              setTemp={thermostats[schedule_cur_thermo_id].weekSchedule[str]}
+            />
+          </TabContainer>
+        );
+      });
+
+      return (
+        <div>
+          <SideNav />
+          <div className={classes.root}>
+            <Grid container justify="space-between" spacing={24}>
+              <Grid
+                style={{ display: "flex" }}
+                container
+                justify="flex-start"
+                item
+                xs={12}
+                sm={6}
+              >
+                <FormControlLabel
+                  control={
+                    <Switch
+                      checked={
+                        this.props.thermostats[
+                          this.props.schedule_cur_thermo_id
+                        ].status
+                      }
+                      onChange={this.handleStatusChange()}
+                      classes={{
+                        switchBase: classes.colorSwitchBase,
+                        checked: classes.colorChecked,
+                        bar: classes.colorBar
+                      }}
+                    />
+                  }
+                  label="Status"
+                  labelPlacement="start"
+                />
+              </Grid>
+              <Grid
+                style={{ display: "flex" }}
+                container
+                justify="flex-end"
+                item
+                xs={12}
+                sm={6}
+              >
+                <FormControlLabel
+                  control={
+                    <RadioGroup
+                      aria-label="Mode"
+                      name="mode"
+                      value={
+                        modeStrings[thermostats[schedule_cur_thermo_id].mode]
+                      }
+                      onChange={this.handleModeChange}
+                      row
+                    >
+                      <FormControlLabel
+                        value="Manual"
+                        control={<Radio value={0} color="primary" />}
+                        label="Manual"
+                        labelPlacement="start"
+                      />
+                      <FormControlLabel
+                        value="Schedule"
+                        control={<Radio value={1} color="primary" />}
+                        label="Schedule"
+                        labelPlacement="start"
+                      />
+                      <FormControlLabel
+                        value="Smart"
+                        control={<Radio value={2} color="primary" />}
+                        label="Smart"
+                        labelPlacement="start"
+                      />
+                    </RadioGroup>
+                  }
+                />
+              </Grid>
             </Grid>
-            <Grid
-              style={{ display: "flex" }}
-              container
-              justify="flex-end"
-              item
-              xs={12}
-              sm={6}
+            <AppBar position="static" color="default">
+              <Tabs
+                value={this.state.dayIndex}
+                onChange={this.handleChange}
+                indicatorColor="primary"
+                textColor="primary"
+                variant="scrollable"
+                scrollButtons={"auto"}
+              >
+                <Tab label="Monday" />
+                <Tab label="Tuesday" />
+                <Tab label="Wednesday" />
+                <Tab label="Thursday" />
+                <Tab label="Friday" />
+                <Tab label="Saturday" />
+                <Tab label="Sunday" />
+              </Tabs>
+            </AppBar>
+            <SwipeableViews
+              axis={theme.direction === "rtl" ? "x-reverse" : "x"}
+              index={this.state.dayIndex}
+              onChangeIndex={this.handleChangeIndex}
             >
-              <FormControlLabel
-                control={
-                  <RadioGroup
-                    aria-label="Mode"
-                    name="mode"
-                    value={
-                      modeStrings[thermostats[schedule_cur_thermo_id].mode]
-                    }
-                    onChange={this.handleModeChange}
-                    row
-                  >
-                    <FormControlLabel
-                      value="Manual"
-                      control={<Radio value={0} color="primary" />}
-                      label="Manual"
-                      labelPlacement="start"
-                    />
-                    <FormControlLabel
-                      value="Schedule"
-                      control={<Radio value={1} color="primary" />}
-                      label="Schedule"
-                      labelPlacement="start"
-                    />
-                    <FormControlLabel
-                      value="Smart"
-                      control={<Radio value={2} color="primary" />}
-                      label="Smart"
-                      labelPlacement="start"
-                    />
-                  </RadioGroup>
-                }
-              />
-            </Grid>
-          </Grid>
-          <AppBar position="static" color="default">
-            <Tabs
-              value={this.state.value}
-              onChange={this.handleChange}
-              indicatorColor="primary"
-              textColor="primary"
-              variant="scrollable"
-              scrollButtons={"auto"}
-            >
-              <Tab label="Monday" />
-              <Tab label="Tuesday" />
-              <Tab label="Wednesday" />
-              <Tab label="Thursday" />
-              <Tab label="Friday" />
-              <Tab label="Saturday" />
-              <Tab label="Sunday" />
-            </Tabs>
-          </AppBar>
-          <SwipeableViews
-            axis={theme.direction === "rtl" ? "x-reverse" : "x"}
-            index={this.state.value}
-            onChangeIndex={this.handleChangeIndex}
-          >
-            <TabContainer dir={theme.direction}>
-              <SliderContainer
-                schedule_cur_thermo_id={this.props.schedule_cur_thermo_id}
-                setTemp={
-                  this.state.setTemp
-                    ? this.state.setTemp["mon"]
-                    : this.state.setTemp
-                }
-              />
-            </TabContainer>
-            <TabContainer dir={theme.direction}>
-              <SliderContainer
-                schedule_cur_thermo_id={this.props.schedule_cur_thermo_id}
-                setTemp={
-                  this.state.setTemp
-                    ? this.state.setTemp["tue"]
-                    : this.state.setTemp
-                }
-              />
-            </TabContainer>
-            <TabContainer dir={theme.direction}>
-              <SliderContainer
-                schedule_cur_thermo_id={this.props.schedule_cur_thermo_id}
-                setTemp={
-                  this.state.setTemp
-                    ? this.state.setTemp["wed"]
-                    : this.state.setTemp
-                }
-              />
-            </TabContainer>
-            <TabContainer dir={theme.direction}>
-              <SliderContainer
-                schedule_cur_thermo_id={this.props.schedule_cur_thermo_id}
-                setTemp={
-                  this.state.setTemp
-                    ? this.state.setTemp["thu"]
-                    : this.state.setTemp
-                }
-              />
-            </TabContainer>
-            <TabContainer dir={theme.direction}>
-              <SliderContainer
-                schedule_cur_thermo_id={this.props.schedule_cur_thermo_id}
-                setTemp={
-                  this.state.setTemp
-                    ? this.state.setTemp["fri"]
-                    : this.state.setTemp
-                }
-              />
-            </TabContainer>
-            <TabContainer dir={theme.direction}>
-              <SliderContainer
-                schedule_cur_thermo_id={this.props.schedule_cur_thermo_id}
-                setTemp={
-                  this.state.setTemp
-                    ? this.state.setTemp["sat"]
-                    : this.state.setTemp
-                }
-              />
-            </TabContainer>
-            <TabContainer dir={theme.direction}>
-              <SliderContainer
-                schedule_cur_thermo_id={this.props.schedule_cur_thermo_id}
-                setTemp={
-                  this.state.setTemp
-                    ? this.state.setTemp["sun"]
-                    : this.state.setTemp
-                }
-              />
-            </TabContainer>
-          </SwipeableViews>
+              {dayTabs}
+            </SwipeableViews>
+          </div>
         </div>
-      </div>
-    );
+      );
+    }
   }
 }
 
