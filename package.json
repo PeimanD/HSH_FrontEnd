@@ -19,7 +19,7 @@
   },
   "scripts": {
     "start": "node server.js",
-    "dev": "PORT=8080 react-scripts start",
+    "dev": "set PORT=8080 && react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
