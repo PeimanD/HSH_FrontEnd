@@ -39,7 +39,6 @@ class TemperatureSlider extends Component {
   }
 
   handleChange = (event, value) => {
-    console.log("changed");
     this.props.setParent(this.props.index, value);
     // this.setState({ setTemp: value });
   };

@@ -17,6 +17,10 @@ import Radio from "@material-ui/core/Radio";
 
 import Grid from "@material-ui/core/Grid";
 
+import Button from "@material-ui/core/Button";
+
+import axios from "axios";
+
 function TabContainer({ children, dir }) {
   return (
     <Typography component="div" dir={dir} style={{ padding: 8 * 3 }}>
@@ -33,8 +37,9 @@ TabContainer.propTypes = {
 const styles = theme => ({
   root: {
     backgroundColor: theme.palette.background.paper,
-    width: "60vw",
-    marginLeft: "27vw"
+    // width: "60vw",
+    marginLeft: "18vw",
+    marginRight: "3vw"
   },
   colorSwitchBase: {
     "&$colorChecked": {
@@ -49,6 +54,13 @@ const styles = theme => ({
   },
   colorBar: {
     color: "orange"
+  },
+  saveButton: {
+    background: "orange",
+    borderRadius: 3,
+    margin: "0.5em 0",
+    border: 0,
+    color: "white"
   }
 });
 
@@ -99,13 +111,43 @@ class Schedule extends React.Component {
       onThermoStatusChange,
       schedule_cur_thermo_id
     } = this.props;
+    console.log("handleStatusChange");
     let status = !thermostats[schedule_cur_thermo_id].status;
     onThermoStatusChange(status, schedule_cur_thermo_id);
   };
 
   handleModeChange = event => {
     let { schedule_cur_thermo_id, onThermoModeChange } = this.props;
+    console.log("handleModeChange");
     onThermoModeChange(event.target.value, schedule_cur_thermo_id);
+  };
+
+  handleSetSingleSlider = (thermoIdx, weekDay, hourIdx, value) => {
+    this.props.onThermoScheduleChange(value, thermoIdx, weekDay, hourIdx);
+  };
+
+  handleSaveSchedule = async () => {
+    let { thermostats, schedule_cur_thermo_id } = this.props;
+    let { weekSchedule, thermostatId, masterDevId } = thermostats[
+      schedule_cur_thermo_id
+    ];
+    let url = "http://localhost:3000/api/thermostat/schedule";
+    let data = {
+      weekSchedule,
+      thermostatId,
+      masterDevId
+    };
+    let options = {
+      headers: {
+        "x-auth-token": window.localStorage.token
+      }
+    };
+    try {
+      let res = await axios.put(url, data, options);
+      console.log(res);
+    } catch (e) {
+      console.error(e);
+    }
   };
 
   render() {
@@ -126,6 +168,7 @@ class Schedule extends React.Component {
               weekDay={str}
               schedule_cur_thermo_id={schedule_cur_thermo_id}
               setTemp={thermostats[schedule_cur_thermo_id].weekSchedule[str]}
+              handleSetSingleSlider={this.handleSetSingleSlider}
             />
           </TabContainer>
         );
@@ -231,6 +274,12 @@ class Schedule extends React.Component {
             >
               {dayTabs}
             </SwipeableViews>
+            <Button
+              onClick={this.handleSaveSchedule}
+              className={classes.saveButton}
+            >
+              SAVE BUTON
+            </Button>
           </div>
         </div>
       );

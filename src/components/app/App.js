@@ -15,6 +15,8 @@ import Schedule from "../user/schedule/Schedule";
 import Statistics from "../user/statistics/Stats";
 import axios from "axios";
 
+let handler;
+
 class App extends Component {
   constructor(props) {
     super(props);
@@ -30,7 +32,6 @@ class App extends Component {
       month: null,
       year: null,
       firstLoad: true,
-      schedule: [],
       schedule_cur_thermo_id: 0,
       isThermoSelected: false
     };
@@ -177,20 +178,42 @@ class App extends Component {
     this.setState({ thermostats: newThermostats });
   };
   onThermoScheduleChange = (val, thermostat_index, day, hour_index) => {
-    this.setState(prevState => {
-      const thermostats = [...prevState.thermostats];
-      thermostats[thermostat_index] = {
-        ...thermostats[thermostat_index],
-        weekSchedule: {
-          ...thermostats[thermostat_index].weekSchedule,
-          [day]: {
-            ...thermostats[thermostat_index].weekSchedule[day],
-            [hour_index]: val
+    // onThermoScheduleChange = (thermostat_index, day, array) => {
+    // console.log(
+    //   `onThermoScheduleChange weekDay: ${day} thermo_idx: ${thermostat_index} slider:${hour_index}, val: ${val}`
+    // );
+    clearTimeout(handler);
+    handler = setTimeout(() => {
+      this.setState(prevState => {
+        const thermostats = [...prevState.thermostats];
+        // console.log(thermostats[thermostat_index].weekSchedule["mon"]);
+        let newDay = [...thermostats[thermostat_index].weekSchedule[day]];
+        newDay[hour_index] = val;
+        thermostats[thermostat_index] = {
+          ...thermostats[thermostat_index],
+          weekSchedule: {
+            ...thermostats[thermostat_index].weekSchedule,
+            [day]: newDay
           }
-        }
-      };
-      return thermostats;
-    });
+        };
+        return { ...this.state, thermostats };
+      });
+    }, 30);
+
+    // this.setState(prevState => {
+    //   const thermostats = [...prevState.thermostats];
+    //   thermostats[thermostat_index] = {
+    //     ...thermostats[thermostat_index],
+    //     weekSchedule: {
+    //       ...thermostats[thermostat_index].weekSchedule,
+    //       [day]: {
+    //         ...thermostats[thermostat_index].weekSchedule[day],
+    //         [hour_index]: val
+    //       }
+    //     }
+    //   };
+    //   return { ...this.state, thermostats };
+    // });
   };
 
   /**
@@ -201,9 +224,6 @@ class App extends Component {
   };
 
   render() {
-    if (this.state.isThermoSelected) {
-      // return <Redirect to="/Schedule"/>
-    }
     return (
       <Router>
         <div className="App">
