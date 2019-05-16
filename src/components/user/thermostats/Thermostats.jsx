@@ -5,7 +5,7 @@ import SideNav from "../SideNav";
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core";
 import Paper from "@material-ui/core/Paper";
-import BadLogin from "../badlogin/badLogin";
+import BadLogin from "../badlogin/BadLogin";
 
 class Thermostats extends Component {
   constructor(props) {

@@ -1,17 +1,13 @@
 import React, { Component } from "react";
 import Grid from "@material-ui/core/Grid/index";
 import { withStyles } from "@material-ui/core/styles";
-import DropdownList from "react-widgets/lib/DropdownList";
 import { Combobox } from "react-widgets";
 import TemperatureSlider from "./TemperatureSlider";
 import Button from "@material-ui/core/Button";
-import TextField from "@material-ui/core/TextField";
 import "./sliderContainer.css";
-import { orange } from "@material-ui/core/colors";
 
 const styles = {
   root: {
-    //background: 'linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)',
     background: "orange",
     borderRadius: 3,
     border: 0,
@@ -71,9 +67,8 @@ class SliderContainer extends Component {
             setParent={this.setTempState}
             index={i}
           />
-          {/*20 for now, but will need to be axio get from db*/}
         </div>
-      ); //will need to get setTemp from database
+      );
     }
     return (
       <div className="sliderContainer-midContainer">
@@ -84,7 +79,6 @@ class SliderContainer extends Component {
 
   resetSliders = () => {
     let { schedule_cur_thermo_id, weekDay } = this.props;
-    // let temp = [];
     for (let i = 0; i < 24; ++i) {
       console.log("SETALL CALLED, handleSetSingleSlider");
       this.props.handleSetSingleSlider(

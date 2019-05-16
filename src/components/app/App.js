@@ -1,10 +1,5 @@
 import React, { Component } from "react";
-import {
-  BrowserRouter as Router,
-  Route,
-  Switch,
-  Redirect
-} from "react-router-dom";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import "./App.css";
 
 import NavBar from "./Navbar";
@@ -15,9 +10,6 @@ import Schedule from "../user/schedule/Schedule";
 import Statistics from "../user/statistics/Stats";
 import BadLogin from "../user/badlogin/BadLogin";
 import axios from "axios";
-import { resolve } from "url";
-
-let handler;
 
 class App extends Component {
   constructor(props) {

@@ -1,5 +1,5 @@
 import React from "react";
-import { Combobox } from "react-widgets";
+import { DropdownList } from "react-widgets";
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
 import SwipeableViews from "react-swipeable-views";
@@ -63,6 +63,9 @@ const styles = theme => ({
     margin: "0.5em 0",
     border: 0,
     color: "white"
+  },
+  dropDown: {
+    width: "20vw"
   }
 });
 
@@ -137,7 +140,8 @@ class Schedule extends React.Component {
     if (
       thermostats === undefined ||
       schedule_cur_thermo_id === undefined ||
-      thermostats[schedule_cur_thermo_id] === undefined
+      thermostats[schedule_cur_thermo_id] === undefined ||
+      thermostats[0].id === 1
     ) {
       window.location.replace("/Thermostats");
     } else {
@@ -156,13 +160,14 @@ class Schedule extends React.Component {
           </TabContainer>
         );
       });
-
+      console.log("default", thermoNames[schedule_cur_thermo_id].roomName);
       return (
         <div>
           <SideNav />
           <div className={classes.root}>
             <Toolbar disableGutters>
-              <Combobox
+              <DropdownList
+                className={classes.dropDown}
                 data={thermoNames}
                 valueField="id"
                 textField="roomName"
