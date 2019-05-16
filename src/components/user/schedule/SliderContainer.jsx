@@ -55,39 +55,8 @@ const tempRange = [
 
 class SliderContainer extends Component {
   state = {
-    tempTemp: 20,
-    weekDay: this.props.weekDay,
-    setTemp: [
-      20,
-      20,
-      20,
-      20,
-      20,
-      20,
-      20,
-      20,
-      20,
-      20,
-      20,
-      20,
-      20,
-      20,
-      20,
-      20,
-      20,
-      20,
-      20,
-      20,
-      20,
-      20,
-      20,
-      20
-    ]
+    tempTemp: 20
   };
-
-  //   async componentDidMount() {
-  //     if (this.props.setTemp) this.setState({ setTemp: this.props.setTemp });
-  //   }
 
   populateSliders = () => {
     let sliders = [];
@@ -124,7 +93,6 @@ class SliderContainer extends Component {
         i,
         this.state.tempTemp
       );
-      // temp[i] = this.state.tempTemp;
     }
   };
 

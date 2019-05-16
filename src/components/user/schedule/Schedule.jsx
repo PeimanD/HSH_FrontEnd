@@ -1,10 +1,12 @@
 import React from "react";
+import { Combobox } from "react-widgets";
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
 import SwipeableViews from "react-swipeable-views";
 import AppBar from "@material-ui/core/AppBar";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
+import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import SideNav from "../SideNav";
 import SliderContainer from "./SliderContainer";
@@ -66,35 +68,7 @@ const styles = theme => ({
 
 class Schedule extends React.Component {
   state = {
-    dayIndex: 0,
-    mode: 0,
-    status: true,
-    setTemp: [
-      20,
-      20,
-      20,
-      20,
-      20,
-      20,
-      20,
-      20,
-      20,
-      20,
-      20,
-      20,
-      20,
-      20,
-      20,
-      20,
-      20,
-      20,
-      20,
-      20,
-      20,
-      20,
-      20,
-      20
-    ]
+    dayIndex: 0
   };
 
   handleChange = (event, dayIndex) => {
@@ -151,7 +125,13 @@ class Schedule extends React.Component {
   };
 
   render() {
-    const { classes, theme, thermostats, schedule_cur_thermo_id } = this.props;
+    const {
+      classes,
+      theme,
+      thermostats,
+      schedule_cur_thermo_id,
+      set_schedule_cur_thermo_id
+    } = this.props;
     const modeStrings = ["Manual", "Schedule", "Smart"];
     const dayStringIndexes = ["mon", "tue", "wed", "thu", "fri", "sat", "sun"];
     if (
@@ -161,6 +141,9 @@ class Schedule extends React.Component {
     ) {
       window.location.replace("/Thermostats");
     } else {
+      let thermoNames = thermostats.map((thermo, idx) => {
+        return { id: idx, roomName: thermo.roomName };
+      });
       let dayTabs = dayStringIndexes.map((str, idx) => {
         return (
           <TabContainer key={`dayTabs${idx}`} dir={theme.direction}>
@@ -178,6 +161,17 @@ class Schedule extends React.Component {
         <div>
           <SideNav />
           <div className={classes.root}>
+            <Toolbar disableGutters>
+              <Combobox
+                data={thermoNames}
+                valueField="id"
+                textField="roomName"
+                defaultValue={thermoNames[schedule_cur_thermo_id].roomName}
+                onChange={val => {
+                  set_schedule_cur_thermo_id(val.id);
+                }}
+              />
+            </Toolbar>
             <Grid container justify="space-between" spacing={24}>
               <Grid
                 style={{ display: "flex" }}
@@ -278,7 +272,7 @@ class Schedule extends React.Component {
               onClick={this.handleSaveSchedule}
               className={classes.saveButton}
             >
-              SAVE BUTON
+              {`SAVE SCHEDULE`}
             </Button>
           </div>
         </div>

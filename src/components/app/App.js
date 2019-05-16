@@ -153,13 +153,10 @@ class App extends Component {
   };
 
   set_schedule_cur_thermo_id = selected_thermostat => {
-    this.setState(
-      { schedule_cur_thermo_id: selected_thermostat, isThermoSelected: true },
-      () => {
-        console.log(this.state.schedule_cur_thermo_id);
-        // window.location.assign('/Schedule');
-      }
-    );
+    this.setState({
+      schedule_cur_thermo_id: selected_thermostat,
+      isThermoSelected: true
+    });
   };
 
   /**
@@ -267,6 +264,7 @@ class App extends Component {
                 render={() => (
                   <Schedule
                     thermostats={this.state.thermostats}
+                    set_schedule_cur_thermo_id={this.set_schedule_cur_thermo_id}
                     schedule_cur_thermo_id={this.state.schedule_cur_thermo_id}
                     onThermoStatusChange={this.onThermoStatusChange}
                     onThermoModeChange={this.onThermoModeChange}
