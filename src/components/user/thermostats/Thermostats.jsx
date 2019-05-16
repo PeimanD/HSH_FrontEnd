@@ -22,7 +22,7 @@ class Thermostats extends Component {
   render() {
     const { classes } = this.props;
     if (!window.localStorage.token) {
-      return <BadLogin />;
+      return <BadLogin history={this.props.history} />;
     }
     let renderedThermostats = this.props.thermostats.map((thermo, i) => {
       return (

@@ -29,8 +29,10 @@ class Login extends React.Component {
 
         try {
             let { data } = await Axios.post(host, {
-                "_id": "5ccf70df00f1f61e5889f3d3",
-                "password": "123456remimi",
+                 "_id": "5ccf70df00f1f61e5889f3d3",
+                 "password": "123456remimi",
+                //"_id" : userid,
+                //"password" : password,
             });
 
             window.localStorage.setItem("token", data.token);
@@ -178,7 +180,6 @@ const styles = theme => ({
     },
     bottomContainer: {
         textAlign: 'center',
-        // width: '90%',
         marginTop: '60px',
     },
     bottomLinks: {
