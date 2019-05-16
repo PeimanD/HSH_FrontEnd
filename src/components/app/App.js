@@ -182,38 +182,36 @@ class App extends Component {
     // console.log(
     //   `onThermoScheduleChange weekDay: ${day} thermo_idx: ${thermostat_index} slider:${hour_index}, val: ${val}`
     // );
-    clearTimeout(handler);
-    handler = setTimeout(() => {
-      this.setState(prevState => {
-        const thermostats = [...prevState.thermostats];
-        // console.log(thermostats[thermostat_index].weekSchedule["mon"]);
-        let newDay = [...thermostats[thermostat_index].weekSchedule[day]];
-        newDay[hour_index] = val;
-        thermostats[thermostat_index] = {
-          ...thermostats[thermostat_index],
-          weekSchedule: {
-            ...thermostats[thermostat_index].weekSchedule,
-            [day]: newDay
-          }
-        };
-        return { ...this.state, thermostats };
-      });
-    }, 30);
-
-    // this.setState(prevState => {
-    //   const thermostats = [...prevState.thermostats];
-    //   thermostats[thermostat_index] = {
-    //     ...thermostats[thermostat_index],
-    //     weekSchedule: {
-    //       ...thermostats[thermostat_index].weekSchedule,
-    //       [day]: {
-    //         ...thermostats[thermostat_index].weekSchedule[day],
-    //         [hour_index]: val
+    // clearTimeout(handler);
+    // handler = setTimeout(() => {
+    //   this.setState(prevState => {
+    //     const thermostats = [...prevState.thermostats];
+    //     let newDay = [...thermostats[thermostat_index].weekSchedule[day]];
+    //     newDay[hour_index] = val;
+    //     thermostats[thermostat_index] = {
+    //       ...thermostats[thermostat_index],
+    //       weekSchedule: {
+    //         ...thermostats[thermostat_index].weekSchedule,
+    //         [day]: newDay
     //       }
-    //     }
-    //   };
-    //   return { ...this.state, thermostats };
-    // });
+    //     };
+    //     return { ...this.state, thermostats };
+    //   });
+    // }, 30);
+
+    this.setState(prevState => {
+      const thermostats = [...prevState.thermostats];
+      let newDay = [...thermostats[thermostat_index].weekSchedule[day]];
+      newDay[hour_index] = val;
+      thermostats[thermostat_index] = {
+        ...thermostats[thermostat_index],
+        weekSchedule: {
+          ...thermostats[thermostat_index].weekSchedule,
+          [day]: newDay
+        }
+      };
+      return { ...this.state, thermostats };
+    });
   };
 
   /**
