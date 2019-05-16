@@ -1,32 +1,31 @@
-import React from 'react';
-import Paper from '@material-ui/core/Paper';
-import {withStyles} from '@material-ui/core/styles/index';
+import React, { Component } from 'react';
+import Button from '@material-ui/core/Button/index';
+import { withStyles } from '@material-ui/core/styles/index';
 
 const style = theme => ({
-    paper: {
+    button: {
         height: '250px',
         width: '250px',
         marginTop: '10%',
         borderRadius: '15px',
-        backgroundColor: 'smokewhite',
+        backgroundColor: 'orange',
         textAlign: 'center',
         margin: 'auto',
+        color: 'white',
     },
-    innerText: {
-        position: 'relative',
-        top: '50%',
-        left: '50%',
-        transform: 'translate(-50%, -50%)',
-    }
 });
 
-function badLogin(props) {
-    const {classes} = props;
-    return (
-        <Paper className={classes.paper}>
-            <p className={classes.innerText}>Please log in to view</p>
-        </Paper>
-    );
+class BadLogin extends Component {
+    redirectLogin = () => {
+        this.props.history.push("/Login");
+    }
+
+    render() {
+        const { classes } = this.props;
+        return (
+            <Button className={classes.button} onClick={this.redirectLogin}>Please log in to view</Button>
+        );
+    }
 }
 
-export default withStyles(style)(badLogin)
+export default withStyles(style)(BadLogin)

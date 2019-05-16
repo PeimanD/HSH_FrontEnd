@@ -8,6 +8,7 @@ import Login from '../login/Login';
 import Thermostats from "../user/thermostats/Thermostats";
 import Schedule from "../user/schedule/Schedule";
 import Statistics from "../user/statistics/Stats";
+import BadLogin from "../user/badlogin/BadLogin";
 import axios from "axios";
 import { resolve } from 'url';
 
@@ -50,7 +51,7 @@ class App extends Component {
                             {/* <Route path="/login" component={Login}/> */}
                             <Route path="/login"
                                 render={(routeProps) => <Login
-                                    {...routeProps}  />} />
+                                    {...routeProps} />} />
                             <Route path="/Thermostats"
                                 render={(routeProps) => <Thermostats
                                     update={this.updateThermostat}
@@ -62,6 +63,9 @@ class App extends Component {
 
                             <Route path="/Schedule"
                                 render={() => <Schedule />} />
+                            <Route path="/BadLogin"
+                                render={(routeProps) => <BadLogin 
+                                    {...routeProps}/>} />
                         </Switch>
                     </section>
                 </div>

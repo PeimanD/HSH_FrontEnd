@@ -5,7 +5,7 @@ import SideNav from '../SideNav'
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core";
 import Paper from '@material-ui/core/Paper';
-import BadLogin from "../badlogin/badLogin";
+import BadLogin from "../badlogin/BadLogin";
 
 class Thermostats extends Component {
     constructor(props) {
@@ -43,7 +43,7 @@ class Thermostats extends Component {
         const { classes } = this.props;
         if (!(window.localStorage.token)) {
             return (
-                <BadLogin />
+                <BadLogin history={this.props.history}/>
             );
         }
         let renderedThermostats = this.props.thermostats.map((thermo, i) => {

@@ -7,7 +7,7 @@ import Grid from '@material-ui/core/Grid';
 import 'react-widgets/dist/css/react-widgets.css';
 import './graph.css';
 import SideNav from "../SideNav";
-import BadLogin from "../badlogin/badLogin";
+import BadLogin from "../badlogin/BadLogin";
 import BadData from "./BadData";
 import axios from "axios";
 
@@ -20,7 +20,6 @@ class Stats extends Component {
     if (props.thermostats[0].id === 1) {
       if (!(window.localStorage.statsState)) {
         this.props.history.push('/Login');
-        return;
       } else {
         this.state = JSON.parse(window.localStorage.statsState);
       }
@@ -68,7 +67,9 @@ class Stats extends Component {
   };
 
   async componentDidMount() {
-    this.getDayData(this.state.currentIndex);
+    if (this.state) {
+      this.getDayData(this.state.currentIndex);
+    }
   }
 
   getDayData = async (index) => {
@@ -94,6 +95,10 @@ class Stats extends Component {
     } catch (e) {
       if (e.response.status === 404) {
         this.setState({ badRequest: true, firstLoad: false });
+        return;
+      }
+      if (e.response.status === 401) {
+        this.props.history.push("/BadLogin")
         return;
       }
       this.props.history.push("/Login");
@@ -124,6 +129,10 @@ class Stats extends Component {
         this.setState({ badRequest: true, firstLoad: false });
         return;
       }
+      if (e.response.status === 401) {
+        this.props.history.push("/BadLogin")
+        return;
+      }
       this.props.history.push("/Login");
     }
   }
@@ -146,9 +155,13 @@ class Stats extends Component {
         }
       });
       this.setState({ graphType: 'Month', data: data, month: data, currentIndex: index, badRequest: false });
-    } catch (e) {
+    } catch (e) {;
       if (e.response.status === 404) {
         this.setState({ badRequest: true, firstLoad: false });
+        return;
+      }
+      if (e.response.status === 401) {
+        this.props.history.push("/BadLogin")
         return;
       }
       this.props.history.push("/Login");
@@ -175,6 +188,10 @@ class Stats extends Component {
         this.setState({ badRequest: true, firstLoad: false });
         return;
       }
+      if (e.response.status === 401) {
+        this.props.history.push("/BadLogin")
+        return;
+      }
       this.props.history.push("/Login");
     }
   }
@@ -193,7 +210,7 @@ class Stats extends Component {
   render() {
     if (!(window.localStorage.token)) {
       return (
-        <BadLogin />
+        <BadLogin history={this.props.history}/>
       );
     }
 
