@@ -105,14 +105,16 @@ class Schedule extends React.Component {
 
   handleSaveSchedule = async () => {
     let { thermostats, schedule_cur_thermo_id } = this.props;
-    let { weekSchedule, thermostatId, masterDevId } = thermostats[
+    let { weekSchedule, thermostatId, masterDevId, mode, status } = thermostats[
       schedule_cur_thermo_id
     ];
     let url = "http://localhost:3000/api/thermostat/schedule";
     let data = {
       weekSchedule,
       thermostatId,
-      masterDevId
+      masterDevId,
+      mode,
+      status
     };
     let options = {
       headers: {

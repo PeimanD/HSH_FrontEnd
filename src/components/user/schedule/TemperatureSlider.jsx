@@ -8,10 +8,11 @@ const minTemp = 0;
 
 const styles = {
   root: {
+    display: "flex",
     height: "20vw"
   },
   slider: {
-    padding: "0 25px"
+    padding: "0 25px",
   },
   track: {
     backgroundColor: "orange"
