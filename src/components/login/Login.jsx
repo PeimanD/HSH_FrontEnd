@@ -59,11 +59,13 @@ class Login extends React.Component {
                 className={classes.textField}
                 margin="normal"
                 variant="outlined"
+                color="white"
                 onChange={event => this.setState({ id: event.target.value })}
                 ref={this.userid}
                 InputProps={{
                   classes: {
-                    notchedOutline: classes.notchedOutline
+                    notchedOutline: classes.notchedOutline,
+                    input: classes.textColor
                   }
                 }}
                 InputLabelProps={{
@@ -81,13 +83,16 @@ class Login extends React.Component {
                 className={classes.textField}
                 margin="normal"
                 variant="outlined"
+                type="password"
+                color="white"
                 onChange={event =>
                   this.setState({ password: event.target.value })
                 }
                 ref={this.password}
                 InputProps={{
                   classes: {
-                    notchedOutline: classes.notchedOutline
+                    notchedOutline: classes.notchedOutline,
+                    input: classes.textColor,
                   }
                 }}
                 InputLabelProps={{
@@ -151,7 +156,7 @@ const styles = theme => ({
     marginLeft: theme.spacing.unit,
     marginRight: theme.spacing.unit,
     width: "90%",
-    marginBottom: "10px"
+    marginBottom: "10px",
   },
   notchedOutline: {
     borderWidth: "1px",
@@ -194,6 +199,9 @@ const styles = theme => ({
   },
   bottomLinks: {
     color: "white !important"
+  },
+  textColor: {
+    color: "white"
   }
 });
 

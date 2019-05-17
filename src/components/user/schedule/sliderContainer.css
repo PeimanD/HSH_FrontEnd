@@ -18,3 +18,11 @@
     overflow-x: auto;
     overflow-y: hidden;
 }
+
+.sliderContainer-center {
+    justify-content: center;
+}
+
+.sliderContainer-start {
+    justify-content: flex-start;
+}

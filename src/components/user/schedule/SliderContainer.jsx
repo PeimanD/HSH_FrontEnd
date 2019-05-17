@@ -50,9 +50,24 @@ const tempRange = [
 ];
 
 class SliderContainer extends Component {
+  constructor(props) {
+    super(props);
+    this.tempSliders = React.createRef();
+  }
+
   state = {
-    tempTemp: 20
+    tempTemp: 20,
+    overflowed: false,
   };
+
+  componentDidMount() {
+    let tempSliders = this.tempSliders.current;
+    let overflowed = tempSliders.offsetWidth < tempSliders.scrollWidth;
+
+    if (overflowed) {
+      this.setState({ overflowed: true })
+    }
+  }
 
   populateSliders = () => {
     let sliders = [];
@@ -70,9 +85,16 @@ class SliderContainer extends Component {
         </div>
       );
     }
+    if (this.state.overflowed) {
+      return (
+        <div className="sliderContainer-midContainer">
+          <div className="sliderContainer-innerContainer sliderContainer-start" ref={this.tempSliders}>{sliders}</div>
+        </div>
+      )
+    }
     return (
       <div className="sliderContainer-midContainer">
-        <div className="sliderContainer-innerContainer">{sliders}</div>
+        <div className="sliderContainer-innerContainer sliderContainer-center" ref={this.tempSliders}>{sliders}</div>
       </div>
     );
   };
