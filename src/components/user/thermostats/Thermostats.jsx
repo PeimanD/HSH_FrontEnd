@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { withRouter } from "react-router";
 import Grid from "@material-ui/core/Grid/index";
 import Thermostat from "./Thermostat.jsx";
 import SideNav from "../SideNav";
@@ -91,4 +92,4 @@ Thermostats.defaultProps = {
   ]
 };
 
-export default withStyles(styles)(Thermostats);
+export default withRouter(withStyles(styles)(Thermostats));

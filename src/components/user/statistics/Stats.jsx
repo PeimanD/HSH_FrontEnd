@@ -218,7 +218,7 @@ class Stats extends Component {
     let graph;
 
     if (this.state.badRequest) {
-      graph = (this.state.firstLoad) ? <></> : <BadData />;
+      graph = (this.state.firstLoad) ? <></> : <BadData history={this.props.history} />;
     } else {
       graph = (this.state.firstLoad) ? <></> : <Graph graphType={this.state.graphType} currentThermostat={this.state.thermostats[this.state.currentIndex].thermostatId} data={this.state.data} />
     }
