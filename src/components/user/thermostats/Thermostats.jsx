@@ -1,103 +1,95 @@
-import axios from "axios/index";
-import React, {Component} from 'react';
-import Grid from '@material-ui/core/Grid/index';
+import React, { Component } from "react";
+import { withRouter } from "react-router";
+import Grid from "@material-ui/core/Grid/index";
 import Thermostat from "./Thermostat.jsx";
-import SideNav from '../SideNav'
+import SideNav from "../SideNav";
 import PropTypes from "prop-types";
-import {withStyles} from "@material-ui/core";
-import Paper from '@material-ui/core/Paper';
-import BadLogin from "../badlogin/badLogin";
+import { withStyles } from "@material-ui/core";
+import Paper from "@material-ui/core/Paper";
+import BadLogin from "../badlogin/BadLogin";
 
 class Thermostats extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            user: null
-        };
+  constructor(props) {
+    super(props);
+    this.state = {
+      dataReceived: this.props.dataReceived
     };
+  }
 
-    async componentWillMount() {
-        let host = "http://localhost:3000";
-        const {data} = await axios.get(host + "/api/users/me");
-        this.setState({user: data.user});
-    };
+  componentDidMount = async () => {
+    await this.props.update();
+  };
 
-    render() {
-        const {classes} = this.props;
-        // check localStorage for the token, if no token return a div telling the user to log in
-        if (!(window.localStorage.token)) {
-            return (
-                <BadLogin />
-            );
-        }
-
-        return (
-            <div>
-                <SideNav/>
-                <div className={classes.root}>
-                    <Paper className={classes.paper}>
-                        <Grid container spacing={8}>
-                            <Grid item xs={6}>
-                                <Thermostat
-                                    id={1}
-                                    status={true}
-                                    mode={true}
-                                    setTemp={20}
-                                    currentTemp={30}
-                                />
-                            </Grid>
-                            <Grid item xs={6}>
-                                <Thermostat
-                                    id={2}
-                                    status={true}
-                                    mode={true}
-                                    setTemp={20}
-                                    currentTemp={30}
-                                />
-                            </Grid>
-                            <Grid item xs={6}>
-                                <Thermostat
-                                    id={3}
-                                    status={false}
-                                    mode={true}
-                                    setTemp={20}
-                                    currentTemp={30}
-                                />
-                            </Grid>
-                            <Grid item xs={6}>
-                                <Thermostat
-                                    id={4}
-                                    status={false}
-                                    mode={true}
-                                    setTemp={20}
-                                    currentTemp={30}
-                                />
-                            </Grid>
-                        </Grid>
-                    </Paper>
-                </div>
-            </div>
-        );
+  render() {
+    const { classes } = this.props;
+    if (!window.localStorage.token) {
+      return <BadLogin history={this.props.history} />;
     }
+    let renderedThermostats = this.props.thermostats.map((thermo, i) => {
+      return (
+        <Grid item xs={6} key={i}>
+          <Thermostat
+            id={i}
+            status={thermo.status}
+            setTemp={thermo.setTemp}
+            currentTemp={30}
+            thermostatId={thermo.thermostatId}
+            masterDevId={thermo.masterDevId}
+            set_schedule_cur_thermo_id={this.props.set_schedule_cur_thermo_id}
+          />
+        </Grid>
+      );
+    });
+
+    return (
+      <div>
+        <SideNav />
+        <div className={classes.root}>
+          {this.props.dataReceived ? (
+            <Paper className={classes.paper}>
+              <Grid container spacing={8}>
+                {renderedThermostats}
+              </Grid>
+            </Paper>
+          ) : (
+            ""
+          )}
+        </div>
+      </div>
+    );
+  }
 }
 
 const styles = {
-    root: {
-        marginLeft: '240px'
-    },
-    paper: {
-        height: '50%',
-        width: '80%',
-        marginTop: '10%',
-        marginRight: '10%',
-        marginLeft: '10%',
-        borderRadius: '15px',
-        textAlign: 'center',
-    },
+  root: {
+    marginLeft: "240px"
+  },
+  paper: {
+    height: "50%",
+    width: "80%",
+    marginTop: "10%",
+    marginRight: "10%",
+    marginLeft: "10%",
+    borderRadius: "15px",
+    textAlign: "center"
+  }
 };
 
 Thermostats.propTypes = {
-    classes: PropTypes.object.isRequired,
+  classes: PropTypes.object.isRequired,
+  thermostats: PropTypes.array.isRequired
 };
 
-export default withStyles(styles)(Thermostats);
+Thermostats.defaultProps = {
+  dataReceived: false,
+  thermostats: [
+    {
+      id: 1,
+      status: false,
+      setTemp: 4,
+      currentTemp: 30
+    }
+  ]
+};
+
+export default withRouter(withStyles(styles)(Thermostats));

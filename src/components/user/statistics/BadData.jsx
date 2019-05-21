@@ -1,12 +1,11 @@
 import React from 'react';
-import Paper from '@material-ui/core/Paper';
 import {withStyles} from '@material-ui/core/styles/index';
+import './graph.css';
 
 const style = theme => ({
     paper: {
-        height: '250px',
-        width: '250px',
-        marginTop: '10%',
+        width: '70vw',
+        height: '50vh',
         borderRadius: '15px',
         backgroundColor: 'smokewhite',
         textAlign: 'center',
@@ -20,13 +19,14 @@ const style = theme => ({
     }
 });
 
-function badLogin(props) {
+let BadData = props => {
     const {classes} = props;
     return (
-        <Paper className={classes.paper}>
-            <p className={classes.innerText}>Please log in to view</p>
-        </Paper>
+        <div className={classes.paper}>
+            <p className={classes.innerText}>No Data Found</p>
+        </div>
     );
-}
+};
 
-export default withStyles(style)(badLogin)
+
+export default withStyles(style)(BadData);
