@@ -22,7 +22,12 @@ class Login extends React.Component {
   }
 
   validateLogin = async () => {
-    let host = "http://localhost:3000/api/auth";
+    let hRoot =
+      process.env.NODE_ENV === "production"
+        ? "https://hsweeth-backend.herokuapp.com"
+        : "http://localhost:3000";
+    let host = `${hRoot}/api/auth`;
+
     let userid = this.state.id; //this.userid.current.getValue();
     let password = this.state.password; //this.password.current.getValue();
     console.log("userid: " + userid + " password: " + password);
@@ -92,7 +97,7 @@ class Login extends React.Component {
                 InputProps={{
                   classes: {
                     notchedOutline: classes.notchedOutline,
-                    input: classes.textColor,
+                    input: classes.textColor
                   }
                 }}
                 InputLabelProps={{
@@ -156,7 +161,7 @@ const styles = theme => ({
     marginLeft: theme.spacing.unit,
     marginRight: theme.spacing.unit,
     width: "90%",
-    marginBottom: "10px",
+    marginBottom: "10px"
   },
   notchedOutline: {
     borderWidth: "1px",

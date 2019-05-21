@@ -108,7 +108,12 @@ class Schedule extends React.Component {
     let { weekSchedule, thermostatId, masterDevId, mode, status } = thermostats[
       schedule_cur_thermo_id
     ];
-    let url = "http://localhost:3000/api/thermostat/schedule";
+
+    let hRoot =
+      process.env.NODE_ENV === "production"
+        ? "https://hsweeth-backend.herokuapp.com"
+        : "http://localhost:3000";
+    let url = `${hRoot}/api/thermostat/schedule`;
     let data = {
       weekSchedule,
       thermostatId,
