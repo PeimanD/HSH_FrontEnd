@@ -38,7 +38,11 @@ class App extends Component {
 
   updateThermostat = async () => {
     try {
-      let host = "http://localhost:3000";
+      let host =
+        process.env.NODE_ENV === "production"
+          ? "https://hsweeth-backend.herokuapp.com"
+          : "http://localhost:3000";
+
       let { data } = await axios.get(host + "/api/thermostat/all", {
         headers: {
           "x-auth-token": window.localStorage.token
