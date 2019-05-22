@@ -22,11 +22,7 @@ const styles = {
   },
   label: {
     margin: "auto",
-    height: "20px"
   },
-  overContainer: {
-    height: "58vw"
-  }
 };
 
 /**
@@ -58,7 +54,7 @@ class TemperatureSlider extends Component {
     const { classes } = this.props;
 
     return (
-      <div className={classes.overContainer}>
+      <div>
         <div className={classes.root}>
           <Slider
             classes={{
