@@ -81,35 +81,48 @@ class Schedule extends React.Component {
     dayIndex: 0
   };
 
+  /**
+   * Event callback to when user changes day tabs
+   */
   handleChange = (event, dayIndex) => {
     this.setState({ dayIndex });
   };
 
-  handleChangeIndex = dayIndex => {
-    this.setState({ dayIndex });
-  };
-
-  handleStatusChange = () => event => {
+  /**
+   * Event callback to when user changes the status of the thermostat
+   *    Calls the given prop callback function so that the component state residing in App.js is changed
+   */
+  handleStatusChange = event => {
     let {
       thermostats,
       onThermoStatusChange,
       schedule_cur_thermo_id
     } = this.props;
-    console.log("handleStatusChange");
     let status = !thermostats[schedule_cur_thermo_id].status;
     onThermoStatusChange(status, schedule_cur_thermo_id);
   };
 
+  /**
+   * Event callback to when user changes the mode of the thermostat
+   *    Calls the given prop callback function so that the component state residing in App.js is changed
+   */
   handleModeChange = event => {
     let { schedule_cur_thermo_id, onThermoModeChange } = this.props;
-    console.log("handleModeChange");
     onThermoModeChange(event.target.value, schedule_cur_thermo_id);
   };
 
+  /**
+   * Event callback to when user changes the temperature for each slider
+   *    Calls the given prop callback function from App.js so that the schedule residing in App.js is changed
+   *    Passed down to child component (Each individual slider) so each slider can change the state in App.js
+   */
   handleSetSingleSlider = (thermoIdx, weekDay, hourIdx, value) => {
     this.props.onThermoScheduleChange(value, thermoIdx, weekDay, hourIdx);
   };
 
+  /**
+   * Calls the API call to save the current schedule in App.js to MongoAtlas
+   */
   handleSaveSchedule = async () => {
     let { thermostats, schedule_cur_thermo_id } = this.props;
     let { weekSchedule, thermostatId, masterDevId, mode, status } = thermostats[
@@ -164,7 +177,11 @@ class Schedule extends React.Component {
       });
       let dayTabs = dayStringIndexes.map((str, idx) => {
         return (
-          <TabContainer key={`dayTabs${idx}`} dir={theme.direction} className={classes.flexTab} >
+          <TabContainer
+            key={`dayTabs${idx}`}
+            dir={theme.direction}
+            className={classes.flexTab}
+          >
             <SliderContainer
               weekDay={str}
               schedule_cur_thermo_id={schedule_cur_thermo_id}
@@ -208,7 +225,7 @@ class Schedule extends React.Component {
                           this.props.schedule_cur_thermo_id
                         ].status
                       }
-                      onChange={this.handleStatusChange()}
+                      onChange={this.handleStatusChange}
                       classes={{
                         switchBase: classes.colorSwitchBase,
                         checked: classes.colorChecked,
@@ -285,7 +302,6 @@ class Schedule extends React.Component {
             <SwipeableViews
               axis={theme.direction === "rtl" ? "x-reverse" : "x"}
               index={this.state.dayIndex}
-              onChangeIndex={this.handleChangeIndex}
             >
               {dayTabs}
             </SwipeableViews>

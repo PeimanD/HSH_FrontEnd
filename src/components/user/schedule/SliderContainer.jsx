@@ -61,7 +61,7 @@ class SliderContainer extends Component {
 
   state = {
     tempTemp: 20,
-    overflowed: false,
+    overflowed: false
   };
 
   componentDidMount() {
@@ -69,7 +69,7 @@ class SliderContainer extends Component {
     let overflowed = tempSliders.offsetWidth < tempSliders.scrollWidth;
 
     if (overflowed) {
-      this.setState({ overflowed: true })
+      this.setState({ overflowed: true });
     }
   }
 
@@ -97,7 +97,12 @@ class SliderContainer extends Component {
     }
     return (
       <div className="sliderContainer-midContainer">
-        <div className="sliderContainer-innerContainer sliderContainer-center" ref={this.tempSliders}>{sliders}</div>
+        <div
+          className="sliderContainer-innerContainer sliderContainer-center"
+          ref={this.tempSliders}
+        >
+          {sliders}
+        </div>
       </div>
     );
   };
@@ -105,7 +110,6 @@ class SliderContainer extends Component {
   resetSliders = () => {
     let { schedule_cur_thermo_id, weekDay } = this.props;
     for (let i = 0; i < 24; ++i) {
-      console.log("SETALL CALLED, handleSetSingleSlider");
       this.props.handleSetSingleSlider(
         schedule_cur_thermo_id,
         weekDay,
@@ -127,6 +131,10 @@ class SliderContainer extends Component {
     }
   };
 
+  /**
+   * Callback fn that is passed into TemperatureSlider so that whenever the slider changes, this is callled
+   *    This function calls the given prop function with the required params to change the schedule in App.js
+   */
   setTempState = (index, value) => {
     let { schedule_cur_thermo_id, weekDay } = this.props;
     this.props.handleSetSingleSlider(
