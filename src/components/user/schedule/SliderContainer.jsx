@@ -49,6 +49,10 @@ const tempRange = [
   30
 ];
 
+/**
+ * SliderContainer class
+ * -Contains all the temperature sliders
+ */
 class SliderContainer extends Component {
   constructor(props) {
     super(props);
@@ -69,6 +73,12 @@ class SliderContainer extends Component {
     }
   }
 
+  /**
+   * populateSliders
+   * Return: a div containing the temperature sliders
+   * -Creates with temperatures to be displayed
+   * -Sets the display style according to the display screen size
+   */
   populateSliders = () => {
     let sliders = [];
     for (let i = 0; i < 24; ++i) {
@@ -113,7 +123,10 @@ class SliderContainer extends Component {
   };
 
   /**
-   * Sets the SetAll value
+   * setResetTemp
+   * Input: value
+   *          -the SetAll value for all sliders
+   * -Sets the SetAll value for all sliders
    */
   setResetTemp = value => {
     if (Number.isInteger(value)) {

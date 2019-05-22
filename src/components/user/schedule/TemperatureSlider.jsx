@@ -29,31 +29,30 @@ const styles = {
   }
 };
 
+/**
+ * TemperatureSlider class
+ * -Contains a single slider with button to zero it.
+ * -Also contains the label delinating what the slider value is.
+ */
 class TemperatureSlider extends Component {
-  //   state = {
-  //     index: 0,
-  //     setTemp: 0
-  //   };
 
-  componentDidMount() {
-    // this.setState({ index: this.props.index, setTemp: this.props.setTemp });
-  }
-
+  /**
+   * handleChange
+   * Input: value
+   *          -the value of the slider
+   * Updates the parent component on slider value changes
+   */
   handleChange = (event, value) => {
     this.props.setParent(this.props.index, value);
-    // this.setState({ setTemp: value });
   };
 
+  /**
+   * resetZero
+   * -Sets the slider value to zero
+   */
   resetZero = () => {
     this.props.setParent(this.props.index, 0);
-    // this.setState({ setTemp: 0 });
   };
-
-  componentDidUpdate(prevProps) {
-    // if (prevProps.setTemp !== this.props.setTemp) {
-    //     this.setState({ setTemp: this.props.setTemp });
-    // }
-  }
 
   render() {
     const { classes } = this.props;

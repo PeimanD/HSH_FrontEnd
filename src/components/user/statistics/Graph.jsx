@@ -55,6 +55,10 @@ const months = [
 ];
 let monthCount = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
 
+/**
+ * Graph class
+ * -Handles the actual graphing of the data being requested
+ */
 class Graph extends Component {
   state = {
     graphInterval: "preserveEnd",
@@ -80,12 +84,28 @@ class Graph extends Component {
     this.updateGraph(this.props.graphType);
   }
 
+  /**
+   * adjustLeapYear
+   * Input: year
+   *          -the year we are plotting
+   * -Adjust the default x-axis to user 29 as maximum days for February if it is a leap year
+   */
   adjustLeapYear = year => {
     if (new Date(year, 1, 29).getDate() === 29) {
       monthCount[1] = 29;
     }
   };
 
+  /**
+   * populateData
+   * Input: xaxis
+   *          -the x-axis of the plot
+   *        array
+   *          -the formatted data being plotted
+   *        type
+   *          -use to set the x-axis values being displayed
+   * -Populate the state with formatted data and plot accordingly
+   */
   populateData = (xaxis, array, type) => {
     let data = [];
     for (let i = 0; i < array.sTemp.length; ++i) {
@@ -105,6 +125,12 @@ class Graph extends Component {
     });
   };
 
+  /**
+   * updateGraph
+   * Input: type
+   *          -the type of data we are plotting: Day, Week, Month, or Year
+   * -Determines what kind of plot is being requested and format the data accordingly
+   */
   updateGraph = type => {
     let length = 0;
     let data = {
@@ -158,6 +184,14 @@ class Graph extends Component {
     }
   };
 
+  /**
+   * makeDayAxis
+   * Input: length
+   *          -the length of the data being plotted
+   * Return: xaxis
+   *          -the x-axis of the plot
+   * -Creates the x-axis for a day plot
+   */
   makeDayAxis = length => {
     let xaxis = [];
     let hour = -1;
@@ -173,6 +207,14 @@ class Graph extends Component {
     return xaxis;
   };
 
+  /**
+   * makeWeekAxis
+   * Input: length
+   *          -the length of the data being plotted
+   * Return: xaxis
+   *          -the x-axis of the plot
+   * -Creates the x-axis for a week plot
+   */
   makeWeekAxis = length => {
     let xaxis = [];
     for (let i = 0; i < length; ++i) {
@@ -181,6 +223,14 @@ class Graph extends Component {
     return xaxis;
   };
 
+  /**
+   * makeMonthAxis
+   * Input: length
+   *          -the length of the data being plotted
+   * Return: xaxis
+   *          -the x-axis of the plot
+   * -Creates the x-axis for a month plot
+   */
   makeMonthAxis = (length, month) => {
     let xaxis = [];
     for (let i = 1; i <= length; ++i) {
@@ -190,6 +240,14 @@ class Graph extends Component {
     return xaxis;
   };
 
+  /**
+   * makeYearAxis
+   * Input: length
+   *          -the length of the data being plotted
+   * Return: xaxis
+   *          -the x-axis of the plot
+   * -Creates the x-axis for a year plot
+   */
   makeYearAxis = length => {
     let xaxis = [];
     let counter = 0;
@@ -211,6 +269,13 @@ class Graph extends Component {
     return xaxis;
   };
 
+  /**
+   * makeAverage
+   * Input: array
+   *          -a day's worth of data being averaged
+   * Return: the average value of a 1 day data set
+   * -Finds the average temperature for a day
+   */
   makeAverage = array => {
     let sum = array.reduce((previous, current) => {
       return current + previous;
@@ -219,6 +284,14 @@ class Graph extends Component {
     return Math.round(average * 100) / 100;
   };
 
+  /**
+   * padNumber
+   * Input: number
+   *          -the value being padded
+   * Return: the padded version of the number
+   * -Pads a 0 to the front of a number if it is single digit
+   * -For display purposes only
+   */
   padNumber = number => {
     return number < 10 ? "0" + number.toString() : number.toString();
   };
