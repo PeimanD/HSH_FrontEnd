@@ -9,7 +9,7 @@ const minTemp = 0;
 const styles = {
   root: {
     display: "flex",
-    height: "20vw"
+    height: "50vh"
   },
   slider: {
     padding: "0 25px",
@@ -25,7 +25,7 @@ const styles = {
     height: "20px"
   },
   overContainer: {
-    height: "28vw"
+    height: "58vw"
   }
 };
 

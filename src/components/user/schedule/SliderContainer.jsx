@@ -95,13 +95,6 @@ class SliderContainer extends Component {
         </div>
       );
     }
-    if (this.state.overflowed) {
-      return (
-        <div className="sliderContainer-midContainer">
-          <div className="sliderContainer-innerContainer sliderContainer-start" ref={this.tempSliders}>{sliders}</div>
-        </div>
-      )
-    }
     return (
       <div className="sliderContainer-midContainer">
         <div className="sliderContainer-innerContainer sliderContainer-center" ref={this.tempSliders}>{sliders}</div>
