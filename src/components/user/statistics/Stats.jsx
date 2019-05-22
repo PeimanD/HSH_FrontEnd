@@ -282,7 +282,7 @@ class Stats extends Component {
   getMonday = () => {
     let today = new Date();
     let day = today.getDay();
-    let difference = today.getDate() - day + (day == 0 ? -6 : 1);
+    let difference = today.getDate() - day + (day === 0 ? -6 : 1);
     return difference;
   }
 
