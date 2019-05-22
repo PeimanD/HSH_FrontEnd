@@ -9,6 +9,10 @@ import logo from "../../assets/images/logo.png";
 import Button from "@material-ui/core/Button/index";
 import Axios from "axios";
 
+/**
+ * Login Class
+ * -Handles login validation and setting the token to localStorage
+ */
 class Login extends React.Component {
   state = {
     id: "",
@@ -21,6 +25,12 @@ class Login extends React.Component {
     this.password = React.createRef();
   }
 
+  /**
+   * validateLogin
+   * -Gets user entered id and password.
+   * -Request token from backend server.
+   * -Populate localStorage with the token from the request reponse.
+   */
   validateLogin = async () => {
     let hRoot =
       process.env.NODE_ENV === "production"
@@ -28,14 +38,11 @@ class Login extends React.Component {
         : "http://localhost:3000";
     let host = `${hRoot}/api/auth`;
 
-    let userid = this.state.id; //this.userid.current.getValue();
-    let password = this.state.password; //this.password.current.getValue();
-    console.log("userid: " + userid + " password: " + password);
+    let userid = this.state.id;
+    let password = this.state.password;
 
     try {
       let { data } = await Axios.post(host, {
-        // "_id": "5ccf70df00f1f61e5889f3d3",
-        // "password": "123456remimi",
         _id: userid,
         password: password
       });
@@ -43,7 +50,7 @@ class Login extends React.Component {
       window.localStorage.setItem("token", data.token);
       this.props.history.replace("./Thermostats");
     } catch (e) {
-      // tell them they have a bad login
+      //do nothing
     }
   };
 

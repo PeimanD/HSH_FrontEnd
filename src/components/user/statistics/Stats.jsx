@@ -72,6 +72,12 @@ class Stats extends Component {
     }
   }
 
+  /**
+   * getDayData
+   * Input: index
+   *          -the index of the thermostat in the thermostat array in the state we are getting the logs for
+   * -Gets today's thermostat temperature data from the back-end
+   */
   getDayData = async index => {
     let date = new Date();
     let dayDate = date.getDate();
@@ -116,10 +122,17 @@ class Stats extends Component {
     }
   };
 
+  /**
+   * getWeekData
+   * Input: index
+   *          -the index of the thermostat in the thermostat array in the state we are getting the logs for
+   * -Gets this week's thermostat temperature data from the back-end
+   */
   getWeekData = async index => {
     let date = new Date();
     let monthDate = date.getMonth() + 1;
     let yearDate = date.getFullYear();
+    let dayDate = this.getMonday();
     try {
       let host =
         process.env.NODE_ENV === "production"
@@ -133,7 +146,7 @@ class Stats extends Component {
         params: {
           master_id: this.state.thermostats[index].masterDevId,
           thermostat_id: this.state.thermostats[index].thermostatId,
-          day: 8,
+          day: dayDate,
           month: monthDate,
           year: yearDate
         }
@@ -158,6 +171,12 @@ class Stats extends Component {
     }
   };
 
+  /**
+   * getMonthData
+   * Input: index
+   *          -the index of the thermostat in the thermostat array in the state we are getting the logs for
+   * -Gets this month's thermostat temperature data from the back-end
+   */
   getMonthData = async index => {
     let date = new Date();
     let monthDate = date.getMonth() + 1;
@@ -199,6 +218,12 @@ class Stats extends Component {
     }
   };
 
+  /**
+   * getYearData
+   * Input: index
+   *          -the index of the thermostat in the thermostat array in the state we are getting the logs for
+   * -Gets this year's thermostat temperature data from the back-end
+   */
   getYearData = async index => {
     let yearDate = new Date().getFullYear();
     try {
@@ -237,6 +262,12 @@ class Stats extends Component {
     }
   };
 
+  /**
+   * getThermostatName
+   * Return: name
+   *          -a list of room names corresponding to each thermostat in the thermostat array
+   * -Finds from the thermostat array in the state, all the thermostats' room name
+   */
   getThermostatName = () => {
     let name = [];
     for (let i = 0; i < this.state.thermostats.length; ++i) {
@@ -247,6 +278,13 @@ class Stats extends Component {
     }
     return name;
   };
+
+  getMonday = () => {
+    let today = new Date();
+    let day = today.getDay();
+    let difference = today.getDate() - day + (day == 0 ? -6 : 1);
+    return difference;
+  }
 
   render() {
     if (!window.localStorage.token) {

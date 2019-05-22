@@ -39,7 +39,6 @@ TabContainer.propTypes = {
 const styles = theme => ({
   root: {
     backgroundColor: theme.palette.background.paper,
-    // width: "60vw",
     marginLeft: "18vw",
     marginRight: "3vw"
   },
@@ -69,6 +68,10 @@ const styles = theme => ({
   }
 });
 
+/**
+ * Schedule class
+ * -Upper level component that contains all the SliderContainers to set the thermostat schedule for each day of the week
+ */
 class Schedule extends React.Component {
   state = {
     dayIndex: 0

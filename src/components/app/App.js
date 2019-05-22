@@ -11,6 +11,11 @@ import Statistics from "../user/statistics/Stats";
 import BadLogin from "../user/badlogin/BadLogin";
 import axios from "axios";
 
+/**
+ * App class
+ * -Contains the route to all other pages
+ * -Contains api calls for the 
+ */
 class App extends Component {
   constructor(props) {
     super(props);
@@ -36,6 +41,10 @@ class App extends Component {
     });
   };
 
+  /**
+   * updateThermostat
+   * -Gets the list of thermostats from the backend and populate them to the state
+   */
   updateThermostat = async () => {
     try {
       let host =
@@ -53,7 +62,12 @@ class App extends Component {
   };
 
   /**
-   * Thermostat controlled components
+   * onThermoStatusChange
+   * Input: status
+   *          -the status of the selected thermostat
+   *        thermostat_index
+   *          -the index selected corresponding to the array of thermostats in the state
+   * -Sets the state with a new selected thermostat via its index
    */
   onThermoStatusChange = (status, thermostat_index) => {
     const { thermostats } = { ...this.state };
@@ -61,12 +75,34 @@ class App extends Component {
     newState[thermostat_index].status = status;
     this.setState({ thermostats: newState });
   };
+
+  /**
+   * onThermoModeChange
+   * Input: mode
+   *          -the mode of the selected thermostat
+   *        thermostat_index
+   *          -the index selected corresponding to the array of thermostats in the state
+   * -Sets the mode with a new selected thermostat via its index
+   */
   onThermoModeChange = (mode, thermostat_index) => {
     const { thermostats } = { ...this.state };
     const newThermostats = thermostats;
     newThermostats[thermostat_index].mode = parseInt(mode);
     this.setState({ thermostats: newThermostats });
   };
+
+  /**
+   * onThermoScheduleChange
+   * Input: val
+   *          -the new temperature setting value
+   *        thermostat_index
+   *          -the index selected corresponding to the array of thermostats in the state
+   *        day
+   *          -the specific day of the week of the schedule that is being changed
+   *        hour_index
+   *          -the specific hour of the day of the schedule that is being changed
+   * -Sets the thermostat schedule for a particular day at the particular hour
+   */
   onThermoScheduleChange = (val, thermostat_index, day, hour_index) => {
     this.setState(prevState => {
       const thermostats = [...prevState.thermostats];
@@ -83,13 +119,6 @@ class App extends Component {
     });
   };
 
-  /**
-   * Remove dis later
-   */
-  checkState = EventTarget => {
-    console.log(this.state);
-  };
-
   render() {
     return (
       <Router>
@@ -98,7 +127,6 @@ class App extends Component {
           <section className="margin-space">
             <Switch>
               <Route exact path="/" component={Home} />
-              {/* <Route path="/login" component={Login}/> */}
               <Route
                 path="/login"
                 render={routeProps => <Login {...routeProps} />}
@@ -139,7 +167,6 @@ class App extends Component {
               />
             </Switch>
           </section>
-          <button onClick={this.checkState}>SEE STATE(debug only)</button>
         </div>
       </Router>
     );

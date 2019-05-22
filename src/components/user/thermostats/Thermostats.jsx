@@ -8,6 +8,10 @@ import { withStyles } from "@material-ui/core";
 import Paper from "@material-ui/core/Paper";
 import BadLogin from "../badlogin/BadLogin";
 
+/**
+ * Thermostats class
+ * -Contains all the thermostats cards displays
+ */
 class Thermostats extends Component {
   constructor(props) {
     super(props);
