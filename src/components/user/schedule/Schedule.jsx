@@ -65,6 +65,10 @@ const styles = theme => ({
   },
   dropDown: {
     width: "20vw"
+  },
+  flexTab: {
+    display: "flex",
+    justifyContent: "center"
   }
 });
 
@@ -160,7 +164,7 @@ class Schedule extends React.Component {
       });
       let dayTabs = dayStringIndexes.map((str, idx) => {
         return (
-          <TabContainer key={`dayTabs${idx}`} dir={theme.direction}>
+          <TabContainer key={`dayTabs${idx}`} dir={theme.direction} className={classes.flexTab} >
             <SliderContainer
               weekDay={str}
               schedule_cur_thermo_id={schedule_cur_thermo_id}
@@ -259,22 +263,24 @@ class Schedule extends React.Component {
               </Grid>
             </Grid>
             <AppBar position="static" color="default">
-              <Tabs
-                value={this.state.dayIndex}
-                onChange={this.handleChange}
-                indicatorColor="primary"
-                textColor="primary"
-                variant="scrollable"
-                scrollButtons={"auto"}
-              >
-                <Tab label="Monday" />
-                <Tab label="Tuesday" />
-                <Tab label="Wednesday" />
-                <Tab label="Thursday" />
-                <Tab label="Friday" />
-                <Tab label="Saturday" />
-                <Tab label="Sunday" />
-              </Tabs>
+              <div className={classes.flexTab}>
+                <Tabs
+                  value={this.state.dayIndex}
+                  onChange={this.handleChange}
+                  indicatorColor="primary"
+                  textColor="primary"
+                  variant="scrollable"
+                  scrollButtons={"auto"}
+                >
+                  <Tab label="Monday" />
+                  <Tab label="Tuesday" />
+                  <Tab label="Wednesday" />
+                  <Tab label="Thursday" />
+                  <Tab label="Friday" />
+                  <Tab label="Saturday" />
+                  <Tab label="Sunday" />
+                </Tabs>
+              </div>
             </AppBar>
             <SwipeableViews
               axis={theme.direction === "rtl" ? "x-reverse" : "x"}
