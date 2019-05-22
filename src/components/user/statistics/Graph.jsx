@@ -14,147 +14,180 @@ const weekDays = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Satur
 const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
 class Graph extends Component {
-   state = {
-      graphType: "Day",
-      graphInterval: "preserveEnd",
-      currentThermostat: "Thermostat #1",
-      granularity: hours,
-      graphData: [
-         {
-            name: '00:00', sTemp: 21, cTemp: 18, oTemp: 2,
-         },
-         {
-            name: '01:00', sTemp: 21, cTemp: 18, oTemp: 4
-         },
-      ],
-   };
+  state = {
+    graphType: "Day",
+    graphInterval: "preserveEnd",
+    currentThermostat: "Thermostat #1",
+    granularity: hours,
+    graphData: [
+      {
+        name: '00:00', sTemp: 21, cTemp: 18, oTemp: 2,
+      },
+      {
+        name: '01:00', sTemp: 21, cTemp: 18, oTemp: 4
+      },
+    ],
+  };
 
-   async componentDidMount() {
-      //set the currentThermostat to the prop thermostat
+  async componentDidMount() {
+    //set the currentThermostat to the prop thermostat
 
-      //do a day data population
-      this.populateData(24, hours);
-   };
+    //do a day data population
+    this.populateData(24, hours);
+  };
 
-   injectData = async () => {
-      let host = "http://localhost:3000/api/log/dev/days";
-      let monthDaysCount = [31, 28, 31, 30, 17, 30, 31, 31, 30, 31, 30, 31];
-      let data = [];
-
-      for (let k = 0; k < 5; ++k) {
-         for (let j = 0; j < monthDaysCount[k]; ++j) {
-            let log = {
-               year: 2019,
-               month: 1,
-               day: 1,
-               thermostatId: "pre-ree",
-               masterDevId: "ree",
-               cTemps: [],
-               oTemps: [],
-               sTemps: [],
-            }
-            log.month = k + 1;
-            log.day = j + 1;
-            for (let i = 0; i < 144; ++i) {
-               log.sTemps[i] = 20 + this.getRandomInt(2);
-               log.cTemps[i] = log.sTemps[i] - 1 - this.getRandomInt(3);
-               log.oTemps[i] = log.sTemps[i] - 12 - this.getRandomInt(2);
-            }
-            data.push(log);
-         }
+  injectSingleRange = async () => {
+    let host = "http://localhost:3000/api/log/dev/days";
+    let data = [];
+    for (let j = 18; j < 24; ++j) {
+      let log = {
+        year: 2019,
+        month: 1,
+        day: 1,
+        thermostatId: "pre-ree3",
+        masterDevId: "ree",
+        cTemps: [],
+        oTemps: [],
+        sTemps: [],
       }
-
-      console.log(data);
-
-      await axios.post(host, {
-         data : {
-            logs : data
-         }
-      });
-   }
-
-   populateData = (amount, unit) => {
-      let data = [];
-      // will need to replace the for loop with axios.get request to get data from mongodb
-      // use this,props.currentThermostat to find out which thermostat we want
-      for (let i = 0; i < amount; ++i) {
-         let tempData = { name: '', sTemp: 0, cTemp: 0, oTemp: 0 };
-         tempData.name = unit[i];
-         tempData.sTemp = 20 + this.getRandomInt(2);
-         tempData.cTemp = tempData.sTemp - 1 - this.getRandomInt(3);
-         tempData.oTemp = tempData.sTemp - 12 - this.getRandomInt(2);
-         data[i] = tempData;
+      log.month = 5;
+      log.day = j;
+      for (let i = 0; i < 144; ++i) {
+        log.sTemps[i] = 20 + this.getRandomInt(2) + 1;
+        log.cTemps[i] = log.sTemps[i] - 1 - this.getRandomInt(3) + 1;
+        log.oTemps[i] = log.sTemps[i] - 12 - this.getRandomInt(2) + 1;
       }
+      data.push(log);
+    }
+    console.log(data);
 
-      // update state with the data, 
-      this.setState({ graphData: data, currentThermostat: this.props.currentThermostat, granularity: unit });
-   }
-
-   getRandomInt = max => {
-      return Math.floor(Math.random() * Math.floor(max));
-   }
-
-   updateGraph = async (type) => {
-      switch (type) {
-         case "Day":
-            //axio get Day data
-            this.populateData(24, hours);
-            break;
-         case "Week":
-            //axio get Week data
-            this.populateData(7, weekDays);
-            break;
-         case "Month":
-            //axio get Month data
-            this.populateData(30, this.getMonth());
-            break;
-         default:
-            //axio get Year data
-            this.populateData(12, months);
-            break;
+    await axios.post(host, {
+      data: {
+        logs: data
       }
-   }
+    });
+  }
 
-   getMonth = () => {
-      let date = new Date();
-      let curMonth = date.getMonth();
-      let dateArray = [];
-      let numDays = new Date(date.getFullYear(), curMonth + 1, 0).getDate();
-      for (let i = 0; i < numDays; ++i) {
-         dateArray[i] = months[curMonth] + " " + (i + 1);
+  injectData = async () => {
+    let host = "http://localhost:3000/api/log/dev/days";
+    let monthDaysCount = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+    let data = [];
+
+    for (let k = 0; k < 12; ++k) {
+      for (let j = 0; j < monthDaysCount[k]; ++j) {
+        let log = {
+          year: 2019,
+          month: 1,
+          day: 1,
+          thermostatId: "pre-ree",
+          masterDevId: "ree",
+          cTemps: [],
+          oTemps: [],
+          sTemps: [],
+        }
+        log.month = k + 1;
+        log.day = j + 1;
+        for (let i = 0; i < 144; ++i) {
+          log.sTemps[i] = 20 + this.getRandomInt(2);
+          log.cTemps[i] = log.sTemps[i] - 1 - this.getRandomInt(3);
+          log.oTemps[i] = log.sTemps[i] - 12 - this.getRandomInt(2);
+        }
+        data.push(log);
       }
-      return dateArray;
-   }
+    }
 
-   componentDidUpdate(prevProps) {
-      if (prevProps.currentThermostat !== this.props.currentThermostat) {
-         this.updateGraph(this.props.graphType, this.props.currentThermostat);
+    console.log(data);
+
+    await axios.post(host, {
+      data: {
+        logs: data
       }
-      if (prevProps.graphType !== this.props.graphType) {
-         this.updateGraph(this.props.graphType);
-      }
-   }
+    });
+  }
 
-   render() {
-      return (
-         <div className="graph-inner-container">
-            <ResponsiveContainer>
-               <LineChart data={this.state.graphData}>
-                  <CartesianGrid stroke="#ccc" strokeDasharray="5 5" />
-                  <XAxis ticks={this.state.granularity} dataKey="name" interval={this.state.graphInterval} />
-                  <YAxis label={{ value: 'Temperature (\xB0C)', angle: -90, position: 'center', dx: -15 }} />
-                  <Tooltip />
-                  <Legend />
+  populateData = (amount, unit) => {
+    let data = [];
+    // will need to replace the for loop with axios.get request to get data from mongodb
+    // use this,props.currentThermostat to find out which thermostat we want
+    for (let i = 0; i < amount; ++i) {
+      let tempData = { name: '', sTemp: 0, cTemp: 0, oTemp: 0 };
+      tempData.name = unit[i];
+      tempData.sTemp = 20 + this.getRandomInt(2);
+      tempData.cTemp = tempData.sTemp - 1 - this.getRandomInt(3);
+      tempData.oTemp = tempData.sTemp - 12 - this.getRandomInt(2);
+      data[i] = tempData;
+    }
 
-                  <Line type="monotone" dataKey="sTemp" stroke="orange" />
-                  <Line type="monotone" dataKey="cTemp" stroke="green" />
-                  <Line type="monotone" dataKey="oTemp" stroke="dodgerblue" />
-               </LineChart>
-            </ResponsiveContainer>
-            <Button onClick={this.injectData}>Upload Fake Data</Button>
-         </div>
-      );
-   };
+    // update state with the data, 
+    this.setState({ graphData: data, currentThermostat: this.props.currentThermostat, granularity: unit });
+  }
+
+  getRandomInt = max => {
+    return Math.floor(Math.random() * Math.floor(max));
+  }
+
+  updateGraph = async (type) => {
+    switch (type) {
+      case "Day":
+        //axio get Day data
+        this.populateData(24, hours);
+        break;
+      case "Week":
+        //axio get Week data
+        this.populateData(7, weekDays);
+        break;
+      case "Month":
+        //axio get Month data
+        this.populateData(30, this.getMonth());
+        break;
+      default:
+        //axio get Year data
+        this.populateData(12, months);
+        break;
+    }
+  }
+
+  getMonth = () => {
+    let date = new Date();
+    let curMonth = date.getMonth();
+    let dateArray = [];
+    let numDays = new Date(date.getFullYear(), curMonth + 1, 0).getDate();
+    for (let i = 0; i < numDays; ++i) {
+      dateArray[i] = months[curMonth] + " " + (i + 1);
+    }
+    return dateArray;
+  }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.currentThermostat !== this.props.currentThermostat) {
+      this.updateGraph(this.props.graphType, this.props.currentThermostat);
+    }
+    if (prevProps.graphType !== this.props.graphType) {
+      this.updateGraph(this.props.graphType);
+    }
+  }
+
+  render() {
+    return (
+      <div className="graph-inner-container">
+        <ResponsiveContainer>
+          <LineChart data={this.state.graphData}>
+            <CartesianGrid stroke="#ccc" strokeDasharray="5 5" />
+            <XAxis ticks={this.state.granularity} dataKey="name" interval={this.state.graphInterval} />
+            <YAxis label={{ value: 'Temperature (\xB0C)', angle: -90, position: 'center', dx: -15 }} />
+            <Tooltip />
+            <Legend />
+
+            <Line type="monotone" dataKey="sTemp" stroke="orange" />
+            <Line type="monotone" dataKey="cTemp" stroke="green" />
+            <Line type="monotone" dataKey="oTemp" stroke="dodgerblue" />
+          </LineChart>
+        </ResponsiveContainer>
+        <Button onClick={this.injectData}>Upload Fake Data</Button>
+        <Button onClick={this.injectSingleRange}>Upload Single Range Data</Button>
+      </div>
+    );
+  };
 }
 
 export default Graph;
