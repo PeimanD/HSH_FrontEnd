@@ -124,50 +124,46 @@ class App extends Component {
       <Router>
         <div className="App">
           <NavBar />
-          <section className="margin-space">
-            <Switch>
-              <Route exact path="/" component={Home} />
-              <Route
-                path="/login"
-                render={routeProps => <Login {...routeProps} />}
-              />
-              <Route
-                path="/Thermostats"
-                render={() => (
-                  <Thermostats
-                    update={this.updateThermostat}
-                    thermostats={this.state.thermostats}
-                    dataReceived={this.state.dataReceived}
-                    set_schedule_cur_thermo_id={this.set_schedule_cur_thermo_id}
-                  />
-                )}
-              />
-              <Route
-                path="/Statistics"
-                render={() => (
-                  <Statistics thermostats={this.state.thermostats} />
-                )}
-              />
-              <Route
-                path="/Schedule"
-                render={routeProps => (
-                  <Schedule
-                    {...routeProps}
-                    thermostats={this.state.thermostats}
-                    set_schedule_cur_thermo_id={this.set_schedule_cur_thermo_id}
-                    schedule_cur_thermo_id={this.state.schedule_cur_thermo_id}
-                    onThermoStatusChange={this.onThermoStatusChange}
-                    onThermoModeChange={this.onThermoModeChange}
-                    onThermoScheduleChange={this.onThermoScheduleChange}
-                  />
-                )}
-              />
-              <Route
-                path="/BadLogin"
-                render={routeProps => <BadLogin {...routeProps} />}
-              />
-            </Switch>
-          </section>
+          <Switch>
+            <Route exact path="/" component={Home} />
+            <Route
+              path="/login"
+              render={routeProps => <Login {...routeProps} />}
+            />
+            <Route
+              path="/Thermostats"
+              render={() => (
+                <Thermostats
+                  update={this.updateThermostat}
+                  thermostats={this.state.thermostats}
+                  dataReceived={this.state.dataReceived}
+                  set_schedule_cur_thermo_id={this.set_schedule_cur_thermo_id}
+                />
+              )}
+            />
+            <Route
+              path="/Statistics"
+              render={() => <Statistics thermostats={this.state.thermostats} />}
+            />
+            <Route
+              path="/Schedule"
+              render={routeProps => (
+                <Schedule
+                  {...routeProps}
+                  thermostats={this.state.thermostats}
+                  set_schedule_cur_thermo_id={this.set_schedule_cur_thermo_id}
+                  schedule_cur_thermo_id={this.state.schedule_cur_thermo_id}
+                  onThermoStatusChange={this.onThermoStatusChange}
+                  onThermoModeChange={this.onThermoModeChange}
+                  onThermoScheduleChange={this.onThermoScheduleChange}
+                />
+              )}
+            />
+            <Route
+              path="/BadLogin"
+              render={routeProps => <BadLogin {...routeProps} />}
+            />
+          </Switch>
         </div>
       </Router>
     );

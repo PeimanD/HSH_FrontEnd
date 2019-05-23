@@ -161,7 +161,7 @@ const styles = theme => ({
     left: 0,
     right: 0,
     minWidth: "100vw",
-    minHeight: "60vw",
+    minHeight: "calc(100% - 64px)",
     margin: "auto 0"
   },
   textField: {
