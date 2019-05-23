@@ -14,7 +14,7 @@ import axios from "axios";
 /**
  * App class
  * -Contains the route to all other pages
- * -Contains api calls for the 
+ * -Contains api calls for the
  */
 class App extends Component {
   constructor(props) {
@@ -150,8 +150,9 @@ class App extends Component {
               />
               <Route
                 path="/Schedule"
-                render={() => (
+                render={routeProps => (
                   <Schedule
+                    {...routeProps}
                     thermostats={this.state.thermostats}
                     set_schedule_cur_thermo_id={this.set_schedule_cur_thermo_id}
                     schedule_cur_thermo_id={this.state.schedule_cur_thermo_id}

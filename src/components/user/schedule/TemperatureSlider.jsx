@@ -9,10 +9,10 @@ const minTemp = 0;
 const styles = {
   root: {
     display: "flex",
-    height: "50vh"
+    height: "35vh"
   },
   slider: {
-    padding: "0 25px",
+    padding: "0 25px"
   },
   track: {
     backgroundColor: "orange"
@@ -21,8 +21,8 @@ const styles = {
     backgroundColor: "green"
   },
   label: {
-    margin: "auto",
-  },
+    margin: "auto"
+  }
 };
 
 /**
@@ -31,7 +31,6 @@ const styles = {
  * -Also contains the label delinating what the slider value is.
  */
 class TemperatureSlider extends Component {
-
   /**
    * handleChange
    * Input: value

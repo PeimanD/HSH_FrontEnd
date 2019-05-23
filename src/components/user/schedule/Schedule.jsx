@@ -40,7 +40,8 @@ const styles = theme => ({
   root: {
     backgroundColor: theme.palette.background.paper,
     marginLeft: "18vw",
-    marginRight: "3vw"
+    marginRight: "3vw",
+    paddingBottom: "3vmin"
   },
   colorSwitchBase: {
     "&$colorChecked": {
@@ -78,7 +79,9 @@ const styles = theme => ({
  */
 class Schedule extends React.Component {
   state = {
-    dayIndex: 0
+    dayIndex: 0,
+    saveStateText: ["SAVE SCHEDULE", "SAVING", "SAVED", "FAILED"],
+    saveState: 0
   };
 
   /**
@@ -147,10 +150,17 @@ class Schedule extends React.Component {
       }
     };
     try {
-      let res = await axios.put(url, data, options);
-      console.log(res);
+      this.setState({ saveState: 1 });
+      await axios.put(url, data, options);
+      this.setState({ saveState: 2 });
+      await new Promise(res => setTimeout(res, 2000));
+      this.props.history.push("/Thermostats");
+      // console.log(res);
     } catch (e) {
       console.error(e);
+      this.setState({ saveState: 3 });
+      await new Promise(res => setTimeout(res, 2000));
+      this.setState({ saveState: 0 });
     }
   };
 
@@ -191,7 +201,6 @@ class Schedule extends React.Component {
           </TabContainer>
         );
       });
-      console.log("default", thermoNames[schedule_cur_thermo_id].roomName);
       return (
         <div>
           <SideNav />
@@ -308,8 +317,9 @@ class Schedule extends React.Component {
             <Button
               onClick={this.handleSaveSchedule}
               className={classes.saveButton}
+              disabled={this.state.saveState === 1 ? true : false}
             >
-              {`SAVE SCHEDULE`}
+              {this.state.saveStateText[this.state.saveState]}
             </Button>
           </div>
         </div>
